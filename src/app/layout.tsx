@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn(raleway.className, 'max-w-screen-2xl mx-auto')}>
+      <body className={cn(raleway.className, 'max-w-xl md:max-w-screen-2xl mx-auto')}>
         <TopBar />
         {children}
       </body>
