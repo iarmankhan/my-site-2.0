@@ -2,6 +2,7 @@ import './globals.css'
 import {Raleway} from 'next/font/google'
 import {TopBar} from "@/components/top-bar";
 import {cn} from "@/lib/utils";
+import {Analytics} from "@/components/analytics";
 
 const raleway = Raleway({ subsets: ['latin'] })
 
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={cn(raleway.className, 'max-w-xl md:max-w-screen-2xl mx-auto')}>
         <TopBar />
         {children}
+        <Analytics />
       </body>
     </html>
   )
