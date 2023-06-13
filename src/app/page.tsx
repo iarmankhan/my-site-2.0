@@ -1,10 +1,9 @@
-import Image from 'next/image'
 import {GithubIcon, LinkedinIcon} from "lucide-react";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center  p-24">
-      <h1 className='text-9xl font-extrabold'>Arman Khan</h1>
+      <h1 className='text-9xl font-extrabold'>Hey 👋🏼</h1>
       <p className='text-4xl mt-8 font-semibold'>Fullstack engineer</p>
 
       <ul className="flex space-x-4 mt-6">

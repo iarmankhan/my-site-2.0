@@ -1,7 +1,9 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import {Raleway} from 'next/font/google'
+import {TopBar} from "@/components/top-bar";
+import {cn} from "@/lib/utils";
 
-const inter = Inter({ subsets: ['latin'] })
+const raleway = Raleway({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Arman Khan',
@@ -15,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn(raleway.className, 'max-w-screen-2xl mx-auto')}>
+        <TopBar />
+        {children}
+      </body>
     </html>
   )
 }
