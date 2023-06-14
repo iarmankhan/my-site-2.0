@@ -1,4 +1,4 @@
-import {MyInfo} from "@/components/my-info";
+import { MyInfo } from "@/components/my-info"
 
 export default function Home() {
   return (
@@ -7,4 +7,3 @@ export default function Home() {
     </main>
   )
 }
-
