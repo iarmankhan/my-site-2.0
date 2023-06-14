@@ -25,7 +25,9 @@ export default function RootLayout({
         )}
       >
         <TopBar />
-        {children}
+        <main className="flex-auto min-h-screen min-w-0 flex flex-col px-2 md:px-0">
+          {children}
+        </main>
         <Analytics />
       </body>
     </html>
