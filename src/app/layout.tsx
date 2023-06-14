@@ -1,14 +1,14 @@
-import './globals.css'
-import {Raleway} from 'next/font/google'
-import {TopBar} from "@/components/top-bar";
-import {cn} from "@/lib/utils";
-import {Analytics} from "@/components/analytics";
+import { cn } from "@/lib/utils"
+import { Analytics } from "@/components/analytics"
+import { TopBar } from "@/components/top-bar"
+import "./globals.css"
+import { Raleway } from "next/font/google"
 
-const raleway = Raleway({ subsets: ['latin'] })
+const raleway = Raleway({ subsets: ["latin"] })
 
 export const metadata = {
-  title: 'Arman Khan',
-  description: 'Fullstack Engineer',
+  title: "Arman Khan",
+  description: "Fullstack Engineer",
 }
 
 export default function RootLayout({
@@ -18,7 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn(raleway.className, 'max-w-xl md:max-w-screen-2xl mx-auto')}>
+      <body
+        className={cn(
+          raleway.className,
+          "mx-auto max-w-xl md:max-w-screen-2xl"
+        )}
+      >
         <TopBar />
         {children}
         <Analytics />
