@@ -16,9 +16,9 @@ export const TopBar = () => {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <span className="text-gray-800 font-bold text-xl">
+              <Link href="/" className="text-gray-800 font-bold text-xl">
                 Arman Khan
-              </span>
+              </Link>
             </div>
           </div>
           <div className="flex items-center">

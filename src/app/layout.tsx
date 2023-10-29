@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={cn(
           raleway.className,
-          "mx-auto max-w-xl md:max-w-screen-2xl"
+          "mx-2 md:mx-auto max-w-xl md:max-w-screen-2xl"
         )}
       >
         <TopBar />
