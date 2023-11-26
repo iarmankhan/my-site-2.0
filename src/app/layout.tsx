@@ -1,10 +1,15 @@
-import { cn } from "@/lib/utils"
-import { Analytics } from "@/components/analytics"
-import { TopBar } from "@/components/top-bar"
-import "./globals.css"
-import { Raleway } from "next/font/google"
+import { cn } from "@/lib/utils";
+import { Analytics } from "@/components/analytics";
+import { TopBar } from "@/components/top-bar";
+import "./globals.css";
+import React from "react";
+import { IBM_Plex_Mono } from "next/font/google"
 
-const raleway = Raleway({ subsets: ["latin"] })
+
+const ibmPlexMono = IBM_Plex_Mono({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+})
 
 export const metadata = {
   title: "Arman Khan",
@@ -18,14 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          raleway.className,
-          "mx-2 md:mx-auto max-w-xl md:max-w-screen-2xl"
-        )}
-      >
-        <TopBar />
-        <main className="flex-auto min-h-screen min-w-0 flex flex-col px-2 md:px-0">
+      <body className={cn(ibmPlexMono.className, "bg-white text-slate-950")}>
+        <main className="min-h-screen px-2 md:px-0">
+          <TopBar />
           {children}
         </main>
         <Analytics />

@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1",
+        "name": "Informed IQ",
+        "logo": "./assets/companies/informed.jpeg",
+        "description": "A fintech company"
+    },
+    {
+        "id": "2",
+        "name": "Propelius Technologies",
+        "logo": "./assets/companies/propelius.jpeg",
+        "description": "IT services"
+    },
+    {
+        "id": "3",
+        "name": "ReConvert",
+        "logo": "./assets/companies/reconvert.webp",
+        "description": "E-commerce & shopify"
+    },
+    {
+        "id": "4",
+        "name": "Techtico IO",
+        "logo": "./assets/companies/techtico-1.jpeg",
+        "description": "Hospital management app"
+    },
+    {
+        "id": "5",
+        "name": "TopLegal",
+        "logo": "./assets/companies/toplegal.jpeg",
+        "description": "Legal contracts app"
+    }
+]

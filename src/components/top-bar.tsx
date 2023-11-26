@@ -11,7 +11,7 @@ export const TopBar = () => {
   }
 
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 w-full bg-white shadow-lg">
+    <nav className="w-full bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
