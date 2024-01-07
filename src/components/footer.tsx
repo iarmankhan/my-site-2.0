@@ -3,7 +3,7 @@ export function Footer() {
 
     return (
         <footer className="bg-gray-800 py-4">
-            <div className="container mx-auto flex justify-between items-center">
+            <div className="container mx-auto flex justify-between items-center flex-wrap gap-2 sm:flex-nowrap">
                 <div className="flex space-x-4">
                     <a href="https://github.com/iarmankhan" className="text-white hover:text-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0,0,256,256">
