@@ -1,4 +1,5 @@
 import COMPANIES from '@/data/companies.json'
+import Image from 'next/image';
 
 interface ICompany {
   id: string;
@@ -37,7 +38,7 @@ function Company({company}: {
   } = company
   return (
     <div className="overflow-hidden p-4 flex items-center space-x-4 w-[340px]">
-      <img className="w-16 h-16 object-cover rounded-lg" src={logo} alt="Company Logo" />
+      <Image width={64} height={64} className="w-16 h-16 object-cover rounded-lg" src={logo} alt="Company Logo" />
       <div>
         <h4 className='font-bold mb-1'>
           {name}

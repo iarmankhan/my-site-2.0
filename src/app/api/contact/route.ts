@@ -1,4 +1,5 @@
 import { EmailTemplate } from '@/components/email-template';
+import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
 export const runtime = 'nodejs';
@@ -10,13 +11,13 @@ export async function POST(req: Request) {
         const body = await req.json()
 
         if (!body) {
-            return Response.json({
+            return NextResponse.json({
                 error: "Body is not available"
             })
         }
 
         if (!body?.fullName || !body?.email || !body?.message) {
-            return Response.json({
+            return NextResponse.json({
                 error: "Required fields are missing"
             })
         } 
@@ -32,8 +33,8 @@ export async function POST(req: Request) {
             }),
         });
 
-        return Response.json(data);
+        return NextResponse.json(data);
     } catch (error) {
-        return Response.json({ error });
+        return NextResponse.json({ error });
     }
 }
