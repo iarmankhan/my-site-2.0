@@ -1,5 +1,3 @@
-import { GithubIcon, LinkedinIcon, TwitterIcon } from "lucide-react"
-import { ContactChip } from "@/components/contact-chip"
 import { ContactForm } from "@/components/contact-form"
 
 export default async function ContactMe() {
@@ -14,7 +12,7 @@ export default async function ContactMe() {
           something or just fancy saying hey, then get in touch.
         </p>
       </div>
-
+ 
         <div className="mt-8">
           <ContactForm />
         </div>
