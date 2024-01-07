@@ -5,5 +5,5 @@ interface BlogLayoutProps {
 }
 
 export default function BlogLayout({ children }: BlogLayoutProps) {
-  return <div className="mt-24">{children}</div>
+  return <div className="">{children}</div>
 }

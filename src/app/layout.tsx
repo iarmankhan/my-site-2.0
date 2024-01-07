@@ -24,12 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn(ibmPlexMono.className, "bg-white text-slate-950")}>
-        <main className="min-h-screen px-2 md:px-0">
-          <TopBar />
+      <body className={cn(ibmPlexMono.className, "bg-white text-slate-950 flex flex-col min-h-screen")}>
+        <TopBar />
+        <main className="px-2 md:px-0 flex-1">
           {children}
-          <Footer/>
         </main>
+        <Footer />
         <Analytics />
       </body>
     </html>
