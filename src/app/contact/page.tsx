@@ -2,7 +2,7 @@ import { ContactForm } from "@/components/contact-form"
 
 export default async function ContactMe() {
   return (
-    <div className="max-w-4xl mx-auto py-8">
+    <div className="max-w-4xl mx-auto py-8 px-4">
       <h1 className="font-bold text-4xl text-center">Get in touch</h1>
 
       <div className="flex flex-col items-center py-8">
