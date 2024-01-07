@@ -1,0 +1,97 @@
+[
+    {
+        "id": "1",
+        "title": "HospiOS",
+        "subtitle": "A hospital management system (EPR)",
+        "image": "/assets/projects/hospios.png",
+        "techStack": [
+            "React",
+            "Next.js",
+            "TypeScript",
+            "Nodejs",
+            "Supabase",
+            "TipTap",
+            "Postgresql"
+        ],
+        "url": "#"
+    }, 
+    {
+        "id": "2",
+        "title": "PowerSales",
+        "subtitle": "A sales CRM",
+        "image": "/assets/projects/4site.png",
+        "techStack": [
+            "React",
+            "Next.js",
+            "TypeScript",
+            "MUI",
+            "Django",
+            "Postgresql"
+        ],
+        "url": "https://powersales.live"
+    },
+    {
+        "id": "3",
+        "title": "4Site",
+        "subtitle": "Buildings monitoring using sensors",
+        "image": "/assets/projects/4site.png",
+        "techStack": [
+            "React",
+            "TypeScript",
+            "MUI",
+            "Python",
+            "AWS",
+            "Vite"
+        ],
+        "url": "https://www.4sitebycort.com/"
+    },
+    {
+        "id": "4",
+        "title": "TopLegal",
+        "subtitle": "A legal contracts management system",
+        "image": "/assets/projects/toplegal.png",
+        "techStack": [
+            "React",
+            "TypeScript",
+            "MUI",
+            "Nodejs",
+            "Vite",
+            "DynamoDB",
+            "ElasticSearch"
+        ],
+        "url": "https://top.legal"
+    },
+    {
+        "id": "5",
+        "title": "LivLyt",
+        "subtitle": "An e-commerce platform",
+        "image": "/assets/projects/livlyt.png",
+        "techStack": [
+            "React",
+            "TypeScript",
+            "Next.js",
+            "MUI",
+            "Nodejs",
+            "Postgresql",
+            "Stripe"
+        ],
+        "url": "https://livlyt.com"
+    },
+    {
+        "id": "6",
+        "title": "Informed Projects",
+        "subtitle": "Various projects in FinTech market",
+        "image": "/assets/projects/informed-project.png",
+        "techStack": [
+            "React",
+            "TypeScript",
+            "Next.js",
+            "MUI",
+            "Nodejs",
+            "Postgresql",
+            "AWS",
+            "Terraform"
+        ],
+        "url": "https://informed.iq"
+    }
+]

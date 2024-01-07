@@ -15,7 +15,7 @@ export function Companies() {
           Companies I&apos;ve worked with
         </h2>
 
-        <div className="flex flex-wrap items-center justify-evenly gap-x-3 gap-y-6 mt-4">
+        <div className="flex flex-wrap items-center justify-evenly gap-x-3 gap-y-6 mt-6">
           {
             COMPANIES.map(company => {
               return <Company key={company.id} company={company} />
@@ -26,6 +26,7 @@ export function Companies() {
     </section>
   )
 }
+
 
 function Company({company}: {
   company: ICompany

@@ -4,6 +4,7 @@ import { TopBar } from "@/components/top-bar";
 import "./globals.css";
 import React from "react";
 import { IBM_Plex_Mono } from "next/font/google"
+import { Footer } from "@/components/footer";
 
 
 const ibmPlexMono = IBM_Plex_Mono({
@@ -27,6 +28,7 @@ export default function RootLayout({
         <main className="min-h-screen px-2 md:px-0">
           <TopBar />
           {children}
+          <Footer/>
         </main>
         <Analytics />
       </body>

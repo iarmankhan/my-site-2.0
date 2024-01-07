@@ -114,7 +114,7 @@ const NavBarLinks = ({ mobile }: { mobile?: boolean }) => {
       />
       <NavBarLink
         title="Projects"
-        href="/projects"
+        href="/#projects"
         extraClassNames={mobile ? "block" : ""}
       />
       <NavBarLink
