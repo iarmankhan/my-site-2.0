@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 export const MyInfo = () => {
   return (
@@ -22,8 +23,11 @@ export const MyInfo = () => {
             </p>
 
             <div className="mt-6 flex justify-center md:justify-normal">
-              <a className="bg-black hover:bg-blue-600 text-white font-bold py-2 px-4 cursor-pointer" href='mailto:work.armankhan@gmail.com'>
+              <Link className="bg-black hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition-all cursor-pointer" href='/contact'>
                 Contact Me
+              </Link>
+              <a className="border border-black hover:bg-blue-600 text-black hover:text-white hover:border-white transition-all font-bold py-2 px-4 rounded-md cursor-pointer ml-4" href='/assets/Amaan-Resume-FullStack-Engineer.pdf' download>
+                Download Resume
               </a>
             </div>
           </div>

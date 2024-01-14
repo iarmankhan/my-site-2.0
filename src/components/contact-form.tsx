@@ -14,6 +14,13 @@ type ContactFormErrors = {
     message?: string
 }
 
+const suggestions = [
+    "I have a project idea and I need help with it",
+    "I need a website for my business",
+    "I want to learn more about your services",
+    "I want to collaborate with you",
+]
+
 export function ContactForm() {
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
@@ -108,6 +115,10 @@ export function ContactForm() {
         }
     }
 
+    const handleSuggestionsClick = (suggestion: string) => {
+        setMessage(suggestion)
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -152,11 +163,23 @@ export function ContactForm() {
                     className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 ></textarea>
                 {errors.message && <p className="text-sm text-red-500 mt-1">{errors.message}</p>}
+                {
+                    suggestions.length > 0 && (
+                        <div className="mt-2">
+                            <p className="text-gray-600 text-sm mb-2">Suggestions:</p>
+                            <ul className="list-inside flex flex-wrap gap-2">
+                                {suggestions.map((suggestion, index) => (
+                                    <li key={index} onClick={() => handleSuggestionsClick(suggestion)} className="text-sm text-gray-500 cursor-pointer transition-all hover:bg-gray-500 hover:text-white border-2 px-2 py-1 rounded-sm">{suggestion}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )
+                }
             </div>
             <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center gap-3 disabled:bg-blue-400 disabled:cursor-not-allowed"
+                className="bg-black hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition-all flex items-center gap-3 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
                 {submitting && (
                     <svg aria-hidden="true" className="inline w-4 h-4 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
