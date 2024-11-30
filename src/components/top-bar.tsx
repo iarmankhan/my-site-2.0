@@ -1,18 +1,25 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 
 export const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Close menu when route changes
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
 
   return (
-    <nav className="fixed w-full bg-slate-900/50 backdrop-blur-xl border-b border-white/10 z-50">
+    <nav className="fixed w-full bg-slate-900/80 backdrop-blur-xl border-b border-white/10 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -33,9 +40,9 @@ export const TopBar = () => {
               <button
                 onClick={toggleMenu}
                 className="relative p-2 inline-flex items-center justify-center rounded-lg text-blue-400 hover:text-blue-300 
-                         bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 
+                         bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 
                          hover:border-white/20 transition-all duration-300"
-                aria-expanded="false"
+                aria-expanded={isOpen}
               >
                 <span className="sr-only">Open main menu</span>
                 {isOpen ? (
@@ -47,10 +54,13 @@ export const TopBar = () => {
             </div>
           </div>
         </div>
+        {/* Mobile menu */}
         <div
-          className={`md:hidden ${
-            isOpen ? "animate-fade-in-down" : "hidden"
-          } absolute top-16 left-0 right-0 border-b border-white/10 backdrop-blur-xl bg-slate-900/50`}
+          className={`md:hidden transition-all duration-300 ease-in-out ${
+            isOpen
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 -translate-y-4 pointer-events-none"
+          } absolute top-16 left-0 right-0 bg-slate-900/95 border-b border-white/10 backdrop-blur-xl`}
         >
           <div className="px-2 pt-2 pb-3 space-y-1">
             <NavBarLinks mobile />
@@ -64,22 +74,31 @@ export const TopBar = () => {
 const NavBarLink = ({
   title,
   href,
+  mobile = false,
   extraClassNames = "",
 }: {
   title: string
   href: string
+  mobile?: boolean
   extraClassNames?: string
 }) => {
+  const pathname = usePathname()
+  const isActive =
+    pathname === href || (href !== "/" && pathname.startsWith(href))
+
   return (
     <Link
       href={href}
-      className={`relative group px-4 py-2 rounded-lg text-sm font-medium
-                text-blue-200 hover:text-blue-100
-                transition-all duration-300
-                before:absolute before:inset-0 before:rounded-lg
-                before:bg-white/5 before:backdrop-blur-xl before:border before:border-white/10
-                before:opacity-0 before:transition-all before:duration-300
-                hover:before:opacity-100 
+      className={`relative px-3 py-2 text-sm font-medium transition-all duration-300
+                ${
+                  isActive
+                    ? "text-blue-400"
+                    : "text-blue-200 hover:text-blue-400"
+                }
+                ${
+                  !mobile &&
+                  "after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-blue-400 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-center"
+                }
                 ${extraClassNames}`}
     >
       {title}
@@ -93,21 +112,25 @@ const NavBarLinks = ({ mobile }: { mobile?: boolean }) => {
       <NavBarLink
         title="Home"
         href="/"
+        mobile={mobile}
         extraClassNames={mobile ? "block w-full" : ""}
       />
       <NavBarLink
         title="Blog"
         href="/blog"
+        mobile={mobile}
         extraClassNames={mobile ? "block w-full" : ""}
       />
       <NavBarLink
         title="Projects"
         href="/#projects"
+        mobile={mobile}
         extraClassNames={mobile ? "block w-full" : ""}
       />
       <NavBarLink
         title="Contact"
         href="/contact"
+        mobile={mobile}
         extraClassNames={mobile ? "block w-full" : ""}
       />
     </>

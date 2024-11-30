@@ -22,17 +22,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          ibmPlexMono.className,
-          "bg-white text-slate-950 flex flex-col min-h-screen"
-        )}
-      >
-        <TopBar />
-        <main className="px-0 md:px-0 flex-1">{children}</main>
-        <Footer />
-        <Analytics />
+    <html lang="en" className="scroll-smooth">
+      <body className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        <div className="flex min-h-screen flex-col">
+          <TopBar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   )

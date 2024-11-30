@@ -121,10 +121,7 @@ export function ContactForm() {
   }
 
   return (
-    <section className="relative py-8 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 overflow-hidden">
-      {/* Background grid pattern */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
-
+    <section className="relative py-8">
       <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-4xl py-24">
         <div className="max-w-2xl mx-auto text-center mb-8">
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
