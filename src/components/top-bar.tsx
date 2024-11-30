@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { Menu, X } from "lucide-react"
 
 export const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -11,12 +12,15 @@ export const TopBar = () => {
   }
 
   return (
-    <nav className="w-full bg-white">
+    <nav className="fixed w-full bg-slate-900/50 backdrop-blur-xl border-b border-white/10 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="text-gray-800 font-bold text-xl">
+              <Link
+                href="/"
+                className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent hover:from-blue-300 hover:to-cyan-300 transition-all duration-300"
+              >
                 Arman Khan
               </Link>
             </div>
@@ -28,50 +32,27 @@ export const TopBar = () => {
             <div className="flex md:hidden">
               <button
                 onClick={toggleMenu}
-                className="p-2 inline-flex items-center justify-center rounded-md text-gray-400 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                className="relative p-2 inline-flex items-center justify-center rounded-lg text-blue-400 hover:text-blue-300 
+                         bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/10 
+                         hover:border-white/20 transition-all duration-300"
                 aria-expanded="false"
               >
                 <span className="sr-only">Open main menu</span>
-                <svg
-                  className={`${isOpen ? "hidden" : "block"} h-6 w-6`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-                <svg
-                  className={`${isOpen ? "block" : "hidden"} h-6 w-6`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                {isOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </button>
             </div>
           </div>
         </div>
         <div
           className={`md:hidden ${
-            isOpen ? "absolute" : "hidden"
-          } top-16 left-0 right-0 bg-white z-40`}
+            isOpen ? "animate-fade-in-down" : "hidden"
+          } absolute top-16 left-0 right-0 border-b border-white/10 backdrop-blur-xl bg-slate-900/50`}
         >
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <div className="px-2 pt-2 pb-3 space-y-1">
             <NavBarLinks mobile />
           </div>
         </div>
@@ -92,7 +73,14 @@ const NavBarLink = ({
   return (
     <Link
       href={href}
-      className={`text-gray-800 hover:bg-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium ${extraClassNames}`}
+      className={`relative group px-4 py-2 rounded-lg text-sm font-medium
+                text-blue-200 hover:text-blue-100
+                transition-all duration-300
+                before:absolute before:inset-0 before:rounded-lg
+                before:bg-white/5 before:backdrop-blur-xl before:border before:border-white/10
+                before:opacity-0 before:transition-all before:duration-300
+                hover:before:opacity-100 
+                ${extraClassNames}`}
     >
       {title}
     </Link>
@@ -105,22 +93,22 @@ const NavBarLinks = ({ mobile }: { mobile?: boolean }) => {
       <NavBarLink
         title="Home"
         href="/"
-        extraClassNames={mobile ? "block" : ""}
+        extraClassNames={mobile ? "block w-full" : ""}
       />
       <NavBarLink
         title="Blog"
         href="/blog"
-        extraClassNames={mobile ? "block" : ""}
+        extraClassNames={mobile ? "block w-full" : ""}
       />
       <NavBarLink
         title="Projects"
         href="/#projects"
-        extraClassNames={mobile ? "block" : ""}
+        extraClassNames={mobile ? "block w-full" : ""}
       />
       <NavBarLink
         title="Contact"
         href="/contact"
-        extraClassNames={mobile ? "block" : ""}
+        extraClassNames={mobile ? "block w-full" : ""}
       />
     </>
   )

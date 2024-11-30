@@ -1,97 +1,130 @@
 [
-    {
-        "id": "1",
-        "title": "HospiOS",
-        "subtitle": "A hospital management system (EPR)",
-        "image": "/assets/projects/hospios.png",
-        "techStack": [
-            "React",
-            "Next.js",
-            "TypeScript",
-            "Nodejs",
-            "Supabase",
-            "TipTap",
-            "Postgresql"
-        ],
-        "url": "#"
-    }, 
-    {
-        "id": "2",
-        "title": "PowerSales",
-        "subtitle": "A sales CRM",
-        "image": "/assets/projects/4site.png",
-        "techStack": [
-            "React",
-            "Next.js",
-            "TypeScript",
-            "MUI",
-            "Django",
-            "Postgresql"
-        ],
-        "url": "https://powersales.live"
-    },
-    {
-        "id": "3",
-        "title": "4Site",
-        "subtitle": "Buildings monitoring using sensors",
-        "image": "/assets/projects/4site.png",
-        "techStack": [
-            "React",
-            "TypeScript",
-            "MUI",
-            "Python",
-            "AWS",
-            "Vite"
-        ],
-        "url": "https://www.4sitebycort.com/"
-    },
-    {
-        "id": "4",
-        "title": "TopLegal",
-        "subtitle": "A legal contracts management system",
-        "image": "/assets/projects/toplegal.png",
-        "techStack": [
-            "React",
-            "TypeScript",
-            "MUI",
-            "Nodejs",
-            "Vite",
-            "DynamoDB",
-            "ElasticSearch"
-        ],
-        "url": "https://top.legal"
-    },
-    {
-        "id": "5",
-        "title": "LivLyt",
-        "subtitle": "An e-commerce platform",
-        "image": "/assets/projects/livlyt.png",
-        "techStack": [
-            "React",
-            "TypeScript",
-            "Next.js",
-            "MUI",
-            "Nodejs",
-            "Postgresql",
-            "Stripe"
-        ],
-        "url": "https://livlyt.com"
-    },
-    {
-        "id": "6",
-        "title": "Informed Projects",
-        "subtitle": "Various projects in FinTech market",
-        "image": "/assets/projects/informed-project.png",
-        "techStack": [
-            "React",
-            "TypeScript",
-            "Next.js",
-            "MUI",
-            "Nodejs",
-            "Postgresql",
-            "AWS",
-            "Terraform"
-        ],
-        "url": "https://informed.iq"
-    }
+  {
+    "id": "1",
+    "title": "HospiOS",
+    "subtitle": "A comprehensive hospital management system (EPR)",
+    "description": "A modern Electronic Patient Record system that helps hospitals manage patient data, appointments, and medical records efficiently. Features include real-time updates, collaborative note-taking, and secure document management.",
+    "image": "/assets/projects/hospios.png",
+    "techStack": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "Supabase",
+      "TipTap",
+      "PostgreSQL"
+    ],
+    "highlights": [
+      "Real-time collaborative medical notes",
+      "Secure document management",
+      "Appointment scheduling system",
+      "Patient portal integration"
+    ],
+    "url": "#",
+    "status": "In Development"
+  },
+  {
+    "id": "2",
+    "title": "PowerSales",
+    "subtitle": "An intelligent sales CRM platform",
+    "description": "A modern CRM system designed for sales teams to manage leads, track opportunities, and analyze performance. Features include AI-powered insights, automated follow-ups, and comprehensive reporting.",
+    "image": "/assets/projects/4site.png",
+    "techStack": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Material UI",
+      "Django",
+      "PostgreSQL"
+    ],
+    "highlights": [
+      "AI-powered sales insights",
+      "Automated lead scoring",
+      "Performance analytics",
+      "Integration with popular tools"
+    ],
+    "url": "https://powersales.live",
+    "status": "Live"
+  },
+  {
+    "id": "3",
+    "title": "4Site",
+    "subtitle": "Smart building monitoring platform",
+    "description": "An IoT platform that enables real-time monitoring of building systems through sensor networks. Provides insights into energy usage, occupancy, and environmental conditions to optimize building operations.",
+    "image": "/assets/projects/4site.png",
+    "techStack": [
+      "React",
+      "TypeScript",
+      "Material UI",
+      "Python",
+      "AWS IoT",
+      "Vite"
+    ],
+    "highlights": [
+      "Real-time sensor monitoring",
+      "Energy usage optimization",
+      "Predictive maintenance",
+      "Custom alert system"
+    ],
+    "url": "https://www.4sitebycort.com/",
+    "status": "Live"
+  },
+  {
+    "id": "4",
+    "title": "TopLegal",
+    "subtitle": "AI-powered legal contract management",
+    "description": "A sophisticated legal contract management system that streamlines the creation, review, and management of legal documents. Features AI-assisted contract analysis and automated workflows.",
+    "image": "/assets/projects/toplegal.png",
+    "techStack": [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "OpenAI",
+      "PostgreSQL"
+    ],
+    "highlights": [
+      "AI contract analysis",
+      "Document version control",
+      "Automated workflows",
+      "Compliance tracking"
+    ],
+    "url": "#",
+    "status": "In Development"
+  },
+  {
+    "id": "5",
+    "title": "LivLyt",
+    "subtitle": "An e-commerce platform",
+    "image": "/assets/projects/livlyt.png",
+    "techStack": [
+      "React",
+      "TypeScript",
+      "Next.js",
+      "MUI",
+      "Nodejs",
+      "Postgresql",
+      "Stripe"
+    ],
+    "highlights": [],
+    "url": "https://livlyt.com"
+  },
+  {
+    "id": "6",
+    "title": "Informed Projects",
+    "subtitle": "Various projects in FinTech market",
+    "image": "/assets/projects/informed-project.png",
+    "techStack": [
+      "React",
+      "TypeScript",
+      "Next.js",
+      "MUI",
+      "Nodejs",
+      "Postgresql",
+      "AWS",
+      "Terraform"
+    ],
+    "highlights": [],
+    "url": "https://informed.iq"
+  }
 ]

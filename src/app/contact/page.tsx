@@ -2,20 +2,14 @@ import { ContactForm } from "@/components/contact-form"
 
 export default async function ContactMe() {
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
-      <h1 className="font-bold text-4xl text-center">Get in touch</h1>
+    <main className="flex-1 bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="relative">
+        {/* Background pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
-      <div className="flex flex-col items-center py-8">
-        <p className="max-w-2xl text-center">
-          I&apos;m currently looking for new opportunities. If you have a
-          project that you want to get started, think you need my help with
-          something or just fancy saying hey, then get in touch.
-        </p>
+        {/* Content */}
+        <ContactForm />
       </div>
- 
-        <div className="mt-8">
-          <ContactForm />
-        </div>
-    </div>
+    </main>
   )
 }
