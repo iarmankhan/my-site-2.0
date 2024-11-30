@@ -128,7 +128,7 @@ export function ContactForm() {
       <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-4xl py-24">
         <div className="max-w-2xl mx-auto text-center mb-8">
           <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-            Let's Connect
+            Let&apos;s Connect
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-blue-200">
             Have a project in mind? Want to collaborate? Or just want to say hi?
@@ -290,7 +290,7 @@ export function ContactForm() {
             {success && (
               <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
                 <p className="text-green-400 text-sm">
-                  Thank you for your message! I'll get back to you soon.
+                  Thank you for your message! I&apos;ll get back to you soon.
                 </p>
               </div>
             )}

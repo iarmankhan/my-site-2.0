@@ -1,4 +1,5 @@
-import { Github, Instagram, Linkedin, Code2, Terminal } from 'lucide-react'
+import Link from "next/link"
+import { Code2, Github, Instagram, Linkedin, Terminal } from "lucide-react"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -14,7 +15,8 @@ export function Footer() {
               <h3 className="text-xl font-bold text-white">Arman Khan</h3>
             </div>
             <p className="text-gray-300 max-w-xs">
-              Senior Fullstack Engineer crafting elegant solutions to complex problems
+              Senior Fullstack Engineer crafting elegant solutions to complex
+              problems
             </p>
           </div>
 
@@ -23,19 +25,28 @@ export function Footer() {
             <h3 className="text-lg font-semibold text-white">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/blog" className="text-gray-300 hover:text-blue-400 transition-colors">
+                <Link
+                  href="/blog"
+                  className="text-gray-300 hover:text-blue-400 transition-colors"
+                >
                   Blog
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/projects" className="text-gray-300 hover:text-blue-400 transition-colors">
+                <Link
+                  href="/#projects"
+                  className="text-gray-300 hover:text-blue-400 transition-colors"
+                >
                   Projects
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/contact" className="text-gray-300 hover:text-blue-400 transition-colors">
+                <Link
+                  href="/contact"
+                  className="text-gray-300 hover:text-blue-400 transition-colors"
+                >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
