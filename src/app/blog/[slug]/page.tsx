@@ -9,7 +9,8 @@ export async function generateStaticParams() {
   }))
 }
 
-export default async function Blog({ params }: { params: { slug: string } }) {
+export default async function Blog(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const post = allBlogs.find((post) => post.slug === params.slug)
 
   if (!post) {
