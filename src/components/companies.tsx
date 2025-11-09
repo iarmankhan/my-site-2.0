@@ -2,7 +2,6 @@
 
 import COMPANIES from "@/data/companies.json"
 import Image from "next/image"
-import { Building2 } from "lucide-react"
 import { useEffect, useRef } from "react"
 
 interface ICompany {
@@ -60,22 +59,24 @@ export function Companies() {
   const duplicatedCompanies = [...COMPANIES, ...COMPANIES]
 
   return (
-    <section className="relative py-10 sm:py-16 lg:py-20 border-b-4 border-black bg-white overflow-visible">
-      <div className="relative mb-8">
-        <div className="max-w-2xl mx-auto text-center px-4">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Building2 className="w-8 h-8 text-black" />
-            <h2 className="text-3xl sm:text-4xl font-bold text-black">
-              Companies I&apos;ve worked with
-            </h2>
-          </div>
+    <section className="relative py-16 sm:py-20 lg:py-24 border-b-4 border-black bg-white overflow-visible">
+      {/* Section Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 lg:mb-16">
+        <div className="inline-block px-4 py-2 bg-yellow-400 brutalist-border mb-4">
+          <span className="font-bold text-black uppercase text-sm tracking-wide">
+            Experience
+          </span>
         </div>
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black">
+          COMPANIES I&apos;VE WORKED WITH
+        </h2>
       </div>
 
+      {/* Carousel - Full Width */}
       <div className="relative">
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-hidden px-4 py-8 sm:py-12 lg:py-16"
+          className="flex gap-6 overflow-x-hidden py-4"
           style={{ scrollBehavior: "auto" }}
         >
           {duplicatedCompanies.map((company, index) => (

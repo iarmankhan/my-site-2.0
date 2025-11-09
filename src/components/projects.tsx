@@ -1,24 +1,26 @@
 import PROJECTS from "@/data/projects.json"
-import { Code2, ExternalLink } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 
 export function Projects() {
   return (
     <section
       id="projects"
-      className="relative py-10 sm:py-16 lg:py-24 overflow-hidden border-b-4 border-black bg-white"
+      className="relative py-16 sm:py-20 lg:py-24 overflow-hidden border-b-4 border-black bg-white"
     >
-      <div className="relative px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center mb-10">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Code2 className="w-8 h-8 text-black" />
-            <h2 className="text-3xl sm:text-4xl font-bold text-black">
-              Featured Projects
-            </h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="mb-12 lg:mb-16">
+          <div className="inline-block px-4 py-2 bg-yellow-400 brutalist-border mb-4">
+            <span className="font-bold text-black uppercase text-sm tracking-wide">
+              Portfolio
+            </span>
           </div>
-
-          <p className="text-lg text-black">
-            Here are some of my notable projects that showcase my technical
-            expertise
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-4">
+            FEATURED PROJECTS
+          </h2>
+          <p className="text-lg sm:text-xl text-black/70 max-w-3xl">
+            Projects that showcase my technical expertise across web, mobile,
+            and AI development
           </p>
         </div>
 
@@ -39,12 +41,7 @@ interface ProjectProps {
   url: string
 }
 
-function Project({
-  title,
-  subtitle,
-  techStack,
-  url,
-}: ProjectProps) {
+function Project({ title, subtitle, techStack, url }: ProjectProps) {
   return (
     <div className="group relative bg-white card-brutalist overflow-hidden hover:bg-black transition-colors duration-200">
       <a href={url} target="_blank" rel="noopener noreferrer" className="block">

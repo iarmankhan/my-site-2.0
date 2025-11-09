@@ -1,0 +1,137 @@
+# Portfolio Design System - Brutalist Aesthetic
+
+## Core Design Principles
+
+### Colors
+
+- Background: `bg-white`
+- Text: `text-black`
+- Accent: `bg-yellow-400` (hover states, badges)
+- Secondary text: `text-black/70`
+- Borders: `border-black`
+
+### Typography
+
+- Headings: `font-bold uppercase` with sizes `text-4xl sm:text-5xl lg:text-6xl`
+- Labels: `text-sm font-bold uppercase tracking-wide`
+- Body: `text-lg sm:text-xl text-black/70`
+- Line height: `leading-tight` (headings), `leading-relaxed` (body)
+
+### Spacing
+
+- Sections: `py-16 sm:py-20 lg:py-24`
+- Container: `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`
+- Elements: `space-y-8 lg:space-y-12` or `gap-4`
+
+### Borders (Brutalist)
+
+- Primary: `brutalist-border` (4px solid)
+- Thin: `brutalist-border-thin` (2px solid)
+- Section dividers: `border-b-4 border-black`
+
+## Component Patterns
+
+### Section Header
+
+```tsx
+<div className="mb-12 lg:mb-16">
+  <div className="inline-block px-4 py-2 bg-yellow-400 brutalist-border mb-4">
+    <span className="font-bold text-black uppercase text-sm tracking-wide">
+      Badge Text
+    </span>
+  </div>
+  <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-4">
+    SECTION TITLE
+  </h2>
+  <p className="text-lg sm:text-xl text-black/70 max-w-3xl">
+    Description
+  </p>
+</div>
+```
+
+### Interactive Card
+
+```tsx
+<div className="group brutalist-border bg-white p-6 hover:bg-black transition-all duration-300">
+  <h3 className="text-xl font-bold text-black group-hover:text-white transition-colors">
+    Title
+  </h3>
+  <p className="text-sm text-black/70 group-hover:text-white/70 transition-colors">
+    Content
+  </p>
+</div>
+```
+
+### Primary Button
+
+```tsx
+<button className="px-8 py-4 font-bold uppercase text-sm bg-black text-white brutalist-border hover:bg-yellow-400 hover:text-black transition-all duration-300">
+  BUTTON TEXT →
+</button>
+```
+
+### Secondary Button
+
+```tsx
+<button className="px-8 py-4 font-bold uppercase text-sm bg-white text-black brutalist-border hover:bg-black hover:text-white transition-all duration-300">
+  BUTTON TEXT
+</button>
+```
+
+### Icon Button
+
+```tsx
+<button className="p-3 brutalist-border bg-white hover:bg-yellow-400 transition-all duration-300">
+  <Icon className="w-5 h-5" />
+</button>
+```
+
+### Form Input
+
+```tsx
+<label className="block text-sm font-bold text-black uppercase tracking-wide mb-3">
+  Label
+</label>
+<input className="block w-full px-4 py-4 text-black bg-white brutalist-border focus:bg-yellow-400/20 focus:outline-none transition-colors" />
+```
+
+## Key Rules
+
+### ✅ Do's
+
+- Use uppercase for headings, buttons, labels
+- Apply tracking-wide to uppercase text
+- Use yellow (#FACC15) for accents
+- Keep borders thick (2px/4px)
+- Use duration-300 for transitions
+- Maintain consistent spacing
+- Use group hover patterns
+
+### ❌ Don'ts
+
+- No rounded corners
+- No soft shadows (use hard offsets)
+- No gradients
+- No thin borders (<2px)
+- No mixed accent colors
+- No lowercase for headings/buttons
+
+## Hover Patterns
+
+- Cards: `hover:bg-black` → text to white
+- Buttons: `hover:bg-yellow-400`
+- Icons: Add `group-hover:translate-x-2`
+- Always use `transition-all duration-300`
+
+## Responsive Pattern
+
+```
+text-4xl sm:text-5xl lg:text-6xl  // Headings
+text-lg sm:text-xl                 // Body
+py-16 sm:py-20 lg:py-24           // Sections
+```
+
+## Reference
+
+Inspired by <https://michalskolak.pl> with brutalist aesthetic
+Full guidelines: See DESIGN_GUIDELINES.md

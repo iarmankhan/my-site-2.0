@@ -21,48 +21,41 @@ export const TopBar = () => {
   return (
     <nav className="fixed w-full bg-white border-b-4 border-black z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link
-                href="/"
-                className="text-xl font-bold text-black hover:bg-black hover:text-white px-2 py-1 transition-all duration-200"
-              >
-                Arman Khan
-              </Link>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <div className="hidden md:flex md:space-x-4">
+        <div className="flex justify-between items-center h-20">
+          <Link
+            href="/"
+            className="text-2xl font-bold text-black hover:bg-yellow-400 px-4 py-2 transition-all duration-200"
+          >
+            ARMAN KHAN
+          </Link>
+
+          <div className="flex items-center gap-2">
+            <div className="hidden md:flex md:gap-2">
               <NavBarLinks />
             </div>
-            <div className="flex md:hidden">
-              <button
-                onClick={toggleMenu}
-                className="relative p-2 inline-flex items-center justify-center brutalist-border text-black hover:bg-black hover:text-white transition-all duration-200"
-                aria-expanded={isOpen}
-              >
-                <span className="sr-only">Open main menu</span>
-                {isOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
-              </button>
+            <button
+              onClick={toggleMenu}
+              className="md:hidden p-3 brutalist-border text-black hover:bg-yellow-400 transition-all duration-200"
+              aria-expanded={isOpen}
+            >
+              <span className="sr-only">Toggle menu</span>
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden border-t-2 border-black bg-white py-4">
+            <div className="space-y-2">
+              <NavBarLinks mobile />
             </div>
           </div>
-        </div>
-        <div
-          className={`md:hidden transition-all duration-300 ease-in-out ${
-            isOpen
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 -translate-y-4 pointer-events-none"
-          } absolute top-16 left-0 right-0 bg-white border-b-4 border-black`}
-        >
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <NavBarLinks mobile />
-          </div>
-        </div>
+        )}
       </div>
     </nav>
   )
@@ -86,11 +79,11 @@ const NavBarLink = ({
   return (
     <Link
       href={href}
-      className={`px-4 py-2 text-sm font-bold transition-all duration-200 brutalist-border
+      className={`px-5 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-200 brutalist-border
                 ${
                   isActive
                     ? "bg-black text-white"
-                    : "text-black hover:bg-black hover:text-white"
+                    : "text-black hover:bg-yellow-400 hover:text-black"
                 }
                 ${extraClassNames}`}
     >
@@ -111,6 +104,12 @@ const NavBarLinks = ({ mobile }: { mobile?: boolean }) => {
       <NavBarLink
         title="Blog"
         href="/blog"
+        mobile={mobile}
+        extraClassNames={mobile ? "block w-full" : ""}
+      />
+      <NavBarLink
+        title="Apps"
+        href="/apps"
         mobile={mobile}
         extraClassNames={mobile ? "block w-full" : ""}
       />
