@@ -1,32 +1,79 @@
 [
-    {
-        "id": "1",
-        "name": "Informed IQ",
-        "logo": "/assets/companies/informed.jpeg",
-        "description": "A fintech company"
-    },
-    {
-        "id": "2",
-        "name": "Propelius Technologies",
-        "logo": "/assets/companies/propelius.jpeg",
-        "description": "IT services"
-    },
-    {
-        "id": "3",
-        "name": "ReConvert",
-        "logo": "/assets/companies/reconvert.webp",
-        "description": "E-commerce & shopify"
-    },
-    {
-        "id": "4",
-        "name": "Techtico IO",
-        "logo": "/assets/companies/techtico-1.jpeg",
-        "description": "Hospital management app"
-    },
-    {
-        "id": "5",
-        "name": "TopLegal",
-        "logo": "/assets/companies/toplegal.jpeg",
-        "description": "Legal contracts app"
-    }
+  {
+    "id": "1",
+    "name": "Somethings",
+    "logo": "/assets/companies/somethings.png",
+    "description": "Mental health support for teens",
+    "url": "https://www.somethings.com/"
+  },
+  {
+    "id": "2",
+    "name": "Heyflow",
+    "logo": "/assets/companies/heyflow.png",
+    "description": "No-code funnel builder",
+    "url": "https://heyflow.com/"
+  },
+  {
+    "id": "3",
+    "name": "Postman",
+    "logo": "/assets/companies/postman-icon.png",
+    "description": "API development platform",
+    "url": "https://www.postman.com/"
+  },
+  {
+    "id": "4",
+    "name": "Lobeco",
+    "logo": "/assets/companies/lobeco.png",
+    "description": "Digital solutions company",
+    "url": "https://www.lobeco.de/en/"
+  },
+  {
+    "id": "5",
+    "name": "Madespace",
+    "logo": "/assets/companies/madespace.svg",
+    "description": "AI-powered platform",
+    "url": "https://madespace.ai/"
+  },
+  {
+    "id": "6",
+    "name": "InsightOrca",
+    "logo": "/assets/companies/InsightOrca-Logo.webp",
+    "description": "Data analytics platform",
+    "url": "https://insightorca.com/"
+  },
+  {
+    "id": "7",
+    "name": "Informed IQ",
+    "logo": "/assets/companies/informed.jpeg",
+    "description": "A fintech company",
+    "url": "https://informediq.com/"
+  },
+  {
+    "id": "8",
+    "name": "Propelius Technologies",
+    "logo": "/assets/companies/propelius.jpeg",
+    "description": "IT services",
+    "url": "https://propelius.tech/"
+  },
+  {
+    "id": "9",
+    "name": "ReConvert",
+    "logo": "/assets/companies/reconvert.webp",
+    "description": "E-commerce & shopify",
+    "url": "https://reconvert.io/"
+  },
+  {
+    "id": "10",
+    "name": "Techtico IO",
+    "logo": "/assets/companies/techtico-1.jpeg",
+    "description": "Hospital management app",
+    "url": "https://techtico.io/"
+  },
+  {
+    "id": "11",
+    "name": "TopLegal",
+    "logo": "/assets/companies/toplegal.jpeg",
+    "description": "Legal contracts app",
+    "url": "https://top.legal/"
+  }
 ]
