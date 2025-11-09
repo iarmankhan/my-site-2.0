@@ -5,68 +5,68 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    --foreground: 0 0% 0%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 0 0% 0%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card-foreground: 0 0% 0%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 0 0% 0%;
+    --input: 0 0% 0%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 0%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 0% 0%;
+    --destructive-foreground: 0 0% 100%;
 
-    --ring: 215 20.2% 65.1%;
+    --ring: 0 0% 0%;
 
-    --radius: 0.5rem;
+    --radius: 0rem;
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
 
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
+    --border: 0 0% 100%;
+    --input: 0 0% 100%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 100%;
 
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 0% 100%;
+    --destructive-foreground: 0 0% 0%;
 
-    --ring: 216 34% 17%;
+    --ring: 0 0% 100%;
 
-    --radius: 0.5rem;
+    --radius: 0rem;
   }
 }
 
@@ -78,4 +78,77 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+@layer utilities {
+  /* Simplified brutalist borders */
+  .brutalist-border {
+    border: 4px solid black;
+  }
+
+  .brutalist-border-thick {
+    border: 6px solid black;
+  }
+
+  .brutalist-border-thin {
+    border: 2px solid black;
+  }
+
+  /* Offset shadow effect */
+  .brutalist-shadow {
+    box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .brutalist-shadow-sm {
+    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.15);
+  }
+
+  /* Button styles */
+  .btn-brutalist {
+    border: 4px solid black;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .btn-brutalist:hover {
+    transform: translate(2px, 2px);
+  }
+
+  .btn-brutalist-primary {
+    border: 4px solid black;
+    border-top-width: 5px;
+    border-left-width: 5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-brutalist-primary:hover {
+    transform: translate(2px, 2px);
+  }
+
+  /* Card styles */
+  .card-brutalist {
+    border: 4px solid black;
+    background: white;
+    transition: all 0.2s ease;
+  }
+
+  .card-brutalist:hover {
+    box-shadow: 12px 12px 0 0 rgba(0, 0, 0, 0.1);
+    transform: translate(-2px, -2px);
+  }
+
+  /* Image container */
+  .img-brutalist {
+    border: 6px solid black;
+    padding: 8px;
+    background: white;
+  }
+
+  /* Badge styles */
+  .badge-brutalist {
+    border: 2px solid black;
+    display: inline-block;
+    padding: 4px 12px;
+  }
+
 }

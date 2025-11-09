@@ -3,10 +3,10 @@ import { Analytics } from "@/components/analytics"
 import { TopBar } from "@/components/top-bar"
 import "./globals.css"
 import React from "react"
-import { IBM_Plex_Mono } from "next/font/google"
+import { Space_Grotesk } from "next/font/google"
 import { Footer } from "@/components/footer"
 
-const ibmPlexMono = IBM_Plex_Mono({
+const spaceGrotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 })
@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      <body className={cn("min-h-screen bg-white text-black", spaceGrotesk.className)}>
         <div className="flex min-h-screen flex-col">
           <TopBar />
           <main className="flex-1">{children}</main>

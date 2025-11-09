@@ -121,27 +121,24 @@ export function ContactForm() {
   }
 
   return (
-    <section className="relative py-8">
-      <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-4xl py-24">
-        <div className="max-w-2xl mx-auto text-center mb-8">
-          <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+    <section className="relative py-10 sm:py-16 lg:py-24 bg-white border-b-4 border-black">
+      <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-4xl">
+        <div className="max-w-2xl mx-auto text-center mb-12">
+          <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
             Let&apos;s Connect
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-blue-200">
+          <p className="mt-4 text-lg leading-relaxed text-black">
             Have a project in mind? Want to collaborate? Or just want to say hi?
           </p>
         </div>
 
         <div className="max-w-xl mx-auto">
-          <div className="relative bg-white/5 backdrop-blur-2xl rounded-2xl p-6 sm:p-8 shadow-2xl border border-white/10">
-            {/* Glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-3xl -z-10" />
-
+          <div className="relative bg-white card-brutalist p-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label
                   htmlFor="fullName"
-                  className="text-base font-medium text-blue-200"
+                  className="text-base font-bold text-black"
                 >
                   Full Name
                 </label>
@@ -153,18 +150,17 @@ export function ContactForm() {
                     placeholder="Your name"
                     value={fullName}
                     onChange={handleInputChange}
-                    className={`block w-full px-4 py-3 text-white placeholder-blue-400/60 
-                                                bg-white/5 border border-white/10 rounded-lg focus:ring-2 
-                                                focus:ring-blue-500/50 focus:border-blue-500/50 
-                                                transition-colors duration-200 
+                    className={`block w-full px-4 py-3 text-black placeholder-gray-400 
+                                                bg-white brutalist-border focus:border-black focus:outline-none
+                                                transition-colors duration-200
                                                 ${
                                                   errors.fullName
-                                                    ? "border-red-500/50"
+                                                    ? "border-red-500"
                                                     : ""
                                                 }`}
                   />
                   {errors.fullName && (
-                    <p className="mt-2 text-sm text-red-400">
+                    <p className="mt-2 text-sm text-red-500">
                       {errors.fullName}
                     </p>
                   )}
@@ -174,7 +170,7 @@ export function ContactForm() {
               <div>
                 <label
                   htmlFor="email"
-                  className="text-base font-medium text-blue-200"
+                  className="text-base font-bold text-black"
                 >
                   Email
                 </label>
@@ -186,18 +182,19 @@ export function ContactForm() {
                     placeholder="Your email"
                     value={email}
                     onChange={handleInputChange}
-                    className={`block w-full px-4 py-3 text-white placeholder-blue-400/60 
-                                                bg-white/5 border border-white/10 rounded-lg focus:ring-2 
-                                                focus:ring-blue-500/50 focus:border-blue-500/50 
-                                                transition-colors duration-200 
+                    className={`block w-full px-4 py-3 text-black placeholder-gray-400 
+                                                bg-white brutalist-border focus:border-black focus:outline-none
+                                                transition-colors duration-200
                                                 ${
                                                   errors.email
-                                                    ? "border-red-500/50"
+                                                    ? "border-red-500"
                                                     : ""
                                                 }`}
                   />
                   {errors.email && (
-                    <p className="mt-2 text-sm text-red-400">{errors.email}</p>
+                    <p className="mt-2 text-sm text-red-500">
+                      {errors.email}
+                    </p>
                   )}
                 </div>
               </div>
@@ -205,7 +202,7 @@ export function ContactForm() {
               <div>
                 <label
                   htmlFor="message"
-                  className="text-base font-medium text-blue-200"
+                  className="text-base font-bold text-black"
                 >
                   Message
                 </label>
@@ -216,19 +213,18 @@ export function ContactForm() {
                     placeholder="Your message"
                     value={message}
                     onChange={handleInputChange}
-                    className={`block w-full px-4 py-3 text-white placeholder-blue-400/60 
-                                                bg-white/5 border border-white/10 rounded-lg focus:ring-2 
-                                                focus:ring-blue-500/50 focus:border-blue-500/50 
-                                                transition-colors duration-200 
+                    className={`block w-full px-4 py-3 text-black placeholder-gray-400 
+                                                bg-white brutalist-border focus:border-black focus:outline-none
+                                                transition-colors duration-200
                                                 ${
                                                   errors.message
-                                                    ? "border-red-500/50"
+                                                    ? "border-red-500"
                                                     : ""
                                                 }`}
                     rows={4}
                   />
                   {errors.message && (
-                    <p className="mt-2 text-sm text-red-400">
+                    <p className="mt-2 text-sm text-red-500">
                       {errors.message}
                     </p>
                   )}
@@ -237,7 +233,7 @@ export function ContactForm() {
 
               <div className="mt-2">
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-blue-200">
+                  <p className="text-sm font-bold text-black">
                     Quick Suggestions:
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -246,11 +242,8 @@ export function ContactForm() {
                         key={suggestion}
                         type="button"
                         onClick={() => setMessage(suggestion)}
-                        className="px-3 py-1 text-sm font-medium rounded-full 
-                                                         bg-gradient-to-r from-blue-500/10 to-purple-500/10 
-                                                         border border-blue-500/20 text-blue-300
-                                                         hover:from-blue-500/20 hover:to-purple-500/20 
-                                                         transition-colors duration-300"
+                        className="px-3 py-1 text-sm font-medium badge-brutalist text-black
+                                                         hover:bg-black hover:text-white transition-colors duration-200"
                       >
                         {suggestion}
                       </button>
@@ -263,15 +256,12 @@ export function ContactForm() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className={`inline-flex w-full items-center justify-center px-6 py-4 text-base font-medium text-white transition-all duration-200 
-                                            bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-lg 
-                                            hover:from-blue-700 hover:to-blue-800 
-                                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-                                            disabled:opacity-70 disabled:cursor-not-allowed
-                                            group relative overflow-hidden`}
+                  className={`inline-flex w-full items-center justify-center px-6 py-4 text-base font-bold text-white transition-all duration-200 
+                                            bg-black btn-brutalist-primary 
+                                            hover:bg-white hover:text-black 
+                                            focus:outline-none
+                                            disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                  {/* Button background glow effect */}
-                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
                   {submitting ? (
                     <div className="flex items-center space-x-2">
                       <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
@@ -285,16 +275,16 @@ export function ContactForm() {
             </form>
 
             {success && (
-              <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
-                <p className="text-green-400 text-sm">
+              <div className="mt-4 p-4 bg-white brutalist-border">
+                <p className="text-black text-sm">
                   Thank you for your message! I&apos;ll get back to you soon.
                 </p>
               </div>
             )}
 
             {error && (
-              <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-                <p className="text-red-400 text-sm">
+              <div className="mt-4 p-4 bg-white brutalist-border border-red-500">
+                <p className="text-red-500 text-sm">
                   Something went wrong. Please try again later.
                 </p>
               </div>
