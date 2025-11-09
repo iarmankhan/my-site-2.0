@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 import Link from "next/link"
 import { allBlogs } from "contentlayer/generated"
-import { ArrowRight, BookOpen, Calendar } from "lucide-react"
+import { ArrowRight, Calendar } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -10,25 +10,27 @@ export const metadata: Metadata = {
 
 export default async function Blog() {
   return (
-    <section className="relative min-h-[calc(100vh-4rem)] py-10 sm:py-16 lg:py-24 bg-white">
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="max-w-2xl mx-auto text-center mb-12">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <BookOpen className="w-8 h-8 text-black" />
-            <h1 className="font-bold text-4xl md:text-5xl text-black">
-              Technical Blog
-            </h1>
+    <section className="relative min-h-[calc(100vh-4rem)] py-16 sm:py-20 lg:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        {/* Section Header */}
+        <div className="mb-12 lg:mb-16">
+          <div className="inline-block px-4 py-2 bg-yellow-400 brutalist-border mb-4">
+            <span className="font-bold text-black uppercase text-sm tracking-wide">
+              Writing
+            </span>
           </div>
-
-          <p className="text-lg text-black">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-4">
+            TECHNICAL BLOG
+          </h1>
+          <p className="text-lg sm:text-xl text-black/70 max-w-3xl">
             Sharing my insights and experiences in software development, system
             design, and tech best practices
           </p>
         </div>
 
         {allBlogs.length === 0 ? (
-          <div className="relative bg-white brutalist-border p-8 text-center">
-            <p className="text-black text-lg">
+          <div className="relative bg-white brutalist-border p-12 text-center">
+            <p className="text-black text-lg font-medium">
               No blog posts yet. Check back soon!
             </p>
           </div>
@@ -41,33 +43,31 @@ export default async function Blog() {
                 }
                 return 1
               })
-              .map((post, index) => (
+              .map((post) => (
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
                   className="group block"
                 >
-                  <article className="relative bg-white p-6 card-brutalist group-hover:bg-black transition-colors duration-200">
-                    <div className="relative flex justify-between items-start">
-                      <div className="space-y-3">
-                        <h2 className="font-bold text-xl text-black group-hover:text-white transition-colors duration-200">
+                  <article className="relative bg-white p-8 card-brutalist group-hover:bg-black transition-colors duration-300">
+                    <div className="relative flex justify-between items-start gap-4">
+                      <div className="flex-1 space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-bold text-black/60 group-hover:text-white/60 transition-colors duration-300">
+                          <Calendar className="w-4 h-4" />
+                          <time dateTime={post.publishedAt}>
+                            {post.publishedAt}
+                          </time>
+                        </div>
+                        <h2 className="font-bold text-2xl sm:text-3xl text-black group-hover:text-white transition-colors duration-300">
                           {post.title}
                         </h2>
-                        <div className="flex items-center space-x-4 text-sm text-black group-hover:text-white transition-colors duration-200">
-                          <div className="flex items-center space-x-1">
-                            <Calendar size={16} className="text-black group-hover:text-white transition-colors duration-200" />
-                            <time
-                              dateTime={post.publishedAt}
-                            >
-                              {post.publishedAt}
-                            </time>
-                          </div>
-                        </div>
-                        <p className="text-black group-hover:text-white line-clamp-2 transition-colors duration-200">
+                        <p className="text-black/70 group-hover:text-white/70 line-clamp-2 transition-colors duration-300 leading-relaxed">
                           {post.summary}
                         </p>
                       </div>
-                      <ArrowRight className="w-5 h-5 text-black group-hover:text-white group-hover:translate-x-1 transition-all duration-200" />
+                      <div className="flex items-center justify-center w-10 h-10 bg-yellow-400 brutalist-border-thin group-hover:translate-x-2 transition-transform duration-300">
+                        <ArrowRight className="w-5 h-5 text-black" />
+                      </div>
                     </div>
                   </article>
                 </Link>

@@ -1,5 +1,6 @@
 import { Companies } from "@/components/companies"
 import { MyInfo } from "@/components/my-info"
+import { Skills } from "@/components/skills"
 // import { Projects } from "@/components/projects"
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <div className="relative min-h-screen bg-white">
       <div className="relative">
         <MyInfo />
+        <Skills />
         <Companies />
         {/* <Projects /> */}
       </div>
