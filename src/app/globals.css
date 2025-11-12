@@ -38,33 +38,36 @@
 
   .dark {
     --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    --foreground: 0 0% 85%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 75%;
 
     --popover: 0 0% 0%;
-    --popover-foreground: 0 0% 100%;
+    --popover-foreground: 0 0% 85%;
 
     --card: 0 0% 0%;
-    --card-foreground: 0 0% 100%;
+    --card-foreground: 0 0% 85%;
 
-    --border: 0 0% 100%;
-    --input: 0 0% 100%;
+    --border: 0 0% 30%;
+    --input: 0 0% 30%;
 
-    --primary: 0 0% 100%;
+    --primary: 0 0% 85%;
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 25%;
+    --secondary-foreground: 0 0% 85%;
 
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 25%;
+    --accent-foreground: 0 0% 85%;
 
-    --destructive: 0 0% 100%;
+    --destructive: 0 0% 85%;
     --destructive-foreground: 0 0% 0%;
 
-    --ring: 0 0% 100%;
+    --ring: 0 0% 30%;
+
+    --yellow: 45 100% 60%;
+    --yellow-dark: 45 80% 45%;
 
     --radius: 0rem;
   }
@@ -76,36 +79,47 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
 }
 
 @layer utilities {
+  /* Theme-aware yellow accent */
+  .bg-yellow-accent {
+    background-color: hsl(var(--yellow));
+  }
+
+  .dark .bg-yellow-accent {
+    background-color: hsl(var(--yellow-dark));
+  }
+
   /* Simplified brutalist borders */
   .brutalist-border {
-    border: 4px solid black;
+    border: 4px solid hsl(var(--foreground));
   }
 
   .brutalist-border-thick {
-    border: 6px solid black;
+    border: 6px solid hsl(var(--foreground));
   }
 
   .brutalist-border-thin {
-    border: 2px solid black;
+    border: 2px solid hsl(var(--foreground));
   }
 
   /* Offset shadow effect */
   .brutalist-shadow {
-    box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 8px 8px 0 0 hsl(var(--border));
   }
 
   .brutalist-shadow-sm {
-    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 4px 4px 0 0 hsl(var(--border));
   }
 
   /* Button styles */
   .btn-brutalist {
-    border: 4px solid black;
+    border: 4px solid hsl(var(--foreground));
     transition: all 0.2s ease;
     position: relative;
   }
@@ -115,7 +129,7 @@
   }
 
   .btn-brutalist-primary {
-    border: 4px solid black;
+    border: 4px solid hsl(var(--foreground));
     border-top-width: 5px;
     border-left-width: 5px;
     transition: all 0.2s ease;
@@ -127,28 +141,27 @@
 
   /* Card styles */
   .card-brutalist {
-    border: 4px solid black;
-    background: white;
+    border: 4px solid hsl(var(--foreground));
+    background: hsl(var(--background));
     transition: all 0.2s ease;
   }
 
   .card-brutalist:hover {
-    box-shadow: 12px 12px 0 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 12px 12px 0 0 hsl(var(--border));
     transform: translate(-2px, -2px);
   }
 
   /* Image container */
   .img-brutalist {
-    border: 6px solid black;
+    border: 6px solid hsl(var(--foreground));
     padding: 8px;
-    background: white;
+    background: hsl(var(--background));
   }
 
   /* Badge styles */
   .badge-brutalist {
-    border: 2px solid black;
+    border: 2px solid hsl(var(--foreground));
     display: inline-block;
     padding: 4px 12px;
   }
-
 }

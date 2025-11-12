@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Analytics } from "@/components/analytics"
 import { TopBar } from "@/components/top-bar"
+import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css"
 import React from "react"
 import { Space_Grotesk } from "next/font/google"
@@ -22,13 +23,27 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={cn("min-h-screen bg-white text-black", spaceGrotesk.className)}>
-        <div className="flex min-h-screen flex-col">
-          <TopBar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <body
+        className={cn(
+          "min-h-screen bg-background text-foreground",
+          spaceGrotesk.className
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="arman-theme"
+        >
+          <div className="flex min-h-screen flex-col">
+            <TopBar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )
