@@ -24,20 +24,20 @@ export default function AppsPage() {
   const tools = apps
 
   return (
-    <div className="relative min-h-screen bg-white pt-20">
+    <div className="relative min-h-screen bg-background pt-20">
       <div className="py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <div className="mb-12 lg:mb-16">
             <div className="inline-block px-4 py-2 bg-yellow-400 brutalist-border mb-4">
-              <span className="font-bold text-black uppercase text-sm tracking-wide">
+              <span className="font-bold text-foreground uppercase text-sm tracking-wide">
                 Utilities
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black mb-4">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-4">
               DEVELOPER TOOLS
             </h1>
-            <p className="text-lg sm:text-xl text-black/70 max-w-3xl">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl">
               Useful tools for developers to format, validate, and convert data.
             </p>
           </div>
@@ -54,23 +54,23 @@ export default function AppsPage() {
   )
 }
 
-function AppCard({ app }: { app: typeof apps[0] }) {
+function AppCard({ app }: { app: (typeof apps)[0] }) {
   const Icon = app.icon
 
   return (
     <Link
       href={app.href}
-      className="group block bg-white card-brutalist p-8 hover:bg-black transition-colors duration-300"
+      className="group block bg-background card-brutalist p-8 hover:bg-muted transition-colors duration-300"
     >
       <div className="flex items-start gap-6">
-        <div className="p-3 bg-yellow-400 brutalist-border-thin group-hover:bg-white transition-colors duration-300">
-          <Icon className="w-7 h-7 text-black" />
+        <div className="p-3 bg-yellow-400 brutalist-border-thin group-hover:bg-muted transition-colors duration-300">
+          <Icon className="w-7 h-7 text-foreground" />
         </div>
         <div className="flex-1">
-          <h3 className="text-xl sm:text-2xl font-bold text-black group-hover:text-white mb-3 transition-colors duration-300">
+          <h3 className="text-xl sm:text-2xl font-bold text-foreground group-hover:text-muted-foreground mb-3 transition-colors duration-300">
             {app.title}
           </h3>
-          <p className="text-sm text-black/70 group-hover:text-white/70 transition-colors duration-300 leading-relaxed">
+          <p className="text-sm text-muted-foreground group-hover:text-muted-foreground transition-colors duration-300 leading-relaxed">
             {app.description}
           </p>
         </div>
@@ -78,4 +78,3 @@ function AppCard({ app }: { app: typeof apps[0] }) {
     </Link>
   )
 }
-

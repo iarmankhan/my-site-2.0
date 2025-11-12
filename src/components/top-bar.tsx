@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
+import { ThemeToggle } from "./theme-toggle"
 
 export const TopBar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -19,12 +20,12 @@ export const TopBar = () => {
   }
 
   return (
-    <nav className="fixed w-full bg-white border-b-4 border-black z-50">
+    <nav className="fixed w-full bg-background border-b-4 border-foreground z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <Link
             href="/"
-            className="text-2xl font-bold text-black hover:bg-yellow-400 px-4 py-2 transition-all duration-200"
+            className="text-2xl font-bold text-foreground hover:bg-yellow-accent px-4 py-2 transition-all duration-200"
           >
             ARMAN KHAN
           </Link>
@@ -33,9 +34,10 @@ export const TopBar = () => {
             <div className="hidden md:flex md:gap-2">
               <NavBarLinks />
             </div>
+            <ThemeToggle />
             <button
               onClick={toggleMenu}
-              className="md:hidden p-3 brutalist-border text-black hover:bg-yellow-400 transition-all duration-200"
+              className="md:hidden p-3 brutalist-border text-foreground bg-yellow-accent transition-all duration-200"
               aria-expanded={isOpen}
             >
               <span className="sr-only">Toggle menu</span>
@@ -50,9 +52,12 @@ export const TopBar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden border-t-2 border-black bg-white py-4">
+          <div className="md:hidden border-t-2 border-foreground bg-background py-4">
             <div className="space-y-2">
               <NavBarLinks mobile />
+              <div className="pt-2 border-t border-foreground/20">
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         )}
@@ -82,8 +87,8 @@ const NavBarLink = ({
       className={`px-5 py-2 text-sm font-bold uppercase tracking-wide transition-all duration-200 brutalist-border
                 ${
                   isActive
-                    ? "bg-black text-white"
-                    : "text-black hover:bg-yellow-400 hover:text-black"
+                    ? "bg-foreground text-background"
+                    : "text-foreground bg-yellow-accent hover:text-foreground"
                 }
                 ${extraClassNames}`}
     >
