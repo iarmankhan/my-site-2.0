@@ -43,7 +43,7 @@ export const MyInfo = () => {
                 GET IN TOUCH →
               </Link>
               <Link
-                href="/assets/Amaan-FullStack-Resume.pdf"
+                href="/assets/Amaan_Resume.pdf"
                 download
                 className="inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-black bg-white brutalist-border hover:bg-black hover:text-white transition-all"
               >
