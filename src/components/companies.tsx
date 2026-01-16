@@ -59,15 +59,15 @@ export function Companies() {
   const duplicatedCompanies = [...COMPANIES, ...COMPANIES]
 
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 border-b-4 border-black bg-white overflow-visible">
+    <section className="relative py-16 sm:py-20 lg:py-24 border-b-4 border-foreground bg-background overflow-visible">
       {/* Section Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 lg:mb-16">
         <div className="inline-block px-4 py-2 bg-yellow-400 brutalist-border mb-4">
-          <span className="font-bold text-black uppercase text-sm tracking-wide">
+          <span className="font-bold text-foreground uppercase text-sm tracking-wide">
             Experience
           </span>
         </div>
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-black">
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
           COMPANIES I&apos;VE WORKED WITH
         </h2>
       </div>
@@ -93,7 +93,7 @@ function Company({ company }: { company: ICompany }) {
 
   const content = (
     <div className="flex items-center gap-4 min-w-[320px]">
-      <div className="relative w-16 h-16 shrink-0 brutalist-border-thin p-2 bg-white group-hover:border-white transition-colors">
+      <div className="relative w-16 h-16 shrink-0 brutalist-border-thin p-2 bg-background group-hover:border-muted transition-colors">
         <Image
           width={64}
           height={64}
@@ -104,10 +104,10 @@ function Company({ company }: { company: ICompany }) {
       </div>
 
       <div className="flex-1">
-        <h4 className="text-lg font-bold text-black group-hover:text-white mb-1 transition-colors">
+        <h4 className="text-lg font-bold text-foreground group-hover:text-muted-foreground mb-1 transition-colors">
           {name}
         </h4>
-        <p className="text-sm text-black group-hover:text-white transition-colors">
+        <p className="text-sm text-foreground group-hover:text-muted-foreground transition-colors">
           {description}
         </p>
       </div>
@@ -120,7 +120,7 @@ function Company({ company }: { company: ICompany }) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative bg-white card-brutalist p-6 hover:bg-black transition-colors duration-200 cursor-pointer"
+        className="group relative bg-background card-brutalist p-6 hover:bg-muted transition-colors duration-200 cursor-pointer"
       >
         {content}
       </a>
@@ -128,7 +128,7 @@ function Company({ company }: { company: ICompany }) {
   }
 
   return (
-    <div className="group relative bg-white card-brutalist p-6 hover:bg-black transition-colors duration-200">
+    <div className="group select-none relative bg-background card-brutalist p-6 hover:bg-muted transition-colors duration-200">
       {content}
     </div>
   )

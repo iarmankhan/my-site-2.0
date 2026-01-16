@@ -4,21 +4,21 @@ import Link from "next/link"
 
 export const MyInfo = () => {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden border-b-4 border-black bg-white pt-20">
+    <section className="relative min-h-screen flex items-center overflow-hidden border-b-4 border-foreground bg-background pt-20">
       <div className="w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
         <div className="max-w-4xl mx-auto">
           <div className="space-y-10 sm:space-y-12 lg:space-y-14">
             {/* Availability Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2.5 bg-green-400 brutalist-border">
-              <span className="w-2 h-2 bg-black rounded-full animate-pulse"></span>
-              <span className="font-bold text-black uppercase text-xs sm:text-sm tracking-wide">
+              <span className="w-2 h-2 bg-foreground rounded-full animate-pulse"></span>
+              <span className="font-bold text-foreground uppercase text-xs sm:text-sm tracking-wide">
                 Available for Work!
               </span>
             </div>
 
             {/* Main Heading */}
             <div className="space-y-6 sm:space-y-8">
-              <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-black leading-tight">
+              <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground leading-tight">
                 Hi I&apos;m a{" "}
                 <span className="relative inline-block">
                   Full-Stack Developer
@@ -27,7 +27,7 @@ export const MyInfo = () => {
                 building web, mobile & AI solutions.
               </h1>
 
-              <p className="text-base sm:text-lg lg:text-xl text-black/70 max-w-3xl leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl leading-relaxed">
                 I build end-to-end solutions across web, mobile, and AI/ML
                 systems. From React and Next.js to React Native, Python, and
                 beyond.
@@ -38,14 +38,14 @@ export const MyInfo = () => {
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-white bg-black brutalist-border hover:bg-yellow-400 hover:text-black transition-all"
+                className="inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-background bg-foreground brutalist-border hover:bg-muted hover:text-muted-foreground transition-all"
               >
                 GET IN TOUCH →
               </Link>
               <Link
                 href="/assets/Amaan_Resume.pdf"
                 download
-                className="inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-black bg-white brutalist-border hover:bg-black hover:text-white transition-all"
+                className="inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-foreground bg-background brutalist-border hover:bg-foreground hover:text-background transition-all"
               >
                 DOWNLOAD CV ↓
               </Link>
@@ -57,7 +57,7 @@ export const MyInfo = () => {
                 href="https://linkedin.com/in/yourprofile"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 border-2 border-black bg-white hover:bg-yellow-400 transition-all"
+                className="p-3 border-2 border-foreground bg-background bg-yellow-accent transition-all"
                 aria-label="LinkedIn"
               >
                 <svg
@@ -72,7 +72,7 @@ export const MyInfo = () => {
                 href="https://github.com/yourprofile"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-3 border-2 border-black bg-white hover:bg-yellow-400 transition-all"
+                className="p-3 border-2 border-foreground bg-background bg-yellow-accent transition-all"
                 aria-label="GitHub"
               >
                 <svg
