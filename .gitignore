@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -26,6 +24,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -35,7 +34,6 @@ yarn-error.log*
 next-env.d.ts
 .idea
 
-# contentlaye
-r
-.contentlayer
-.env
+# velite
+.velite
+public/static
