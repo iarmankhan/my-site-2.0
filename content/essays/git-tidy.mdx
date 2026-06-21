@@ -1,0 +1,30 @@
+---
+title: "I built a thing to delete dead git branches"
+slug: git-tidy
+date: 2026-06-17
+description: "git-tidy: a small CLI for cleaning up stale branches. I used it to clear 449 dead ones across three repos."
+featured: true
+draft: false
+---
+
+One of my repos had 485 branches. Maybe 50 were alive. The rest were merged-and-forgotten features, dead spikes, and a few hundred `sync-main-to-dev-*` branches some automation kept spitting out and never cleaning up.
+
+Deleting them by hand is the kind of chore I'll avoid for months, partly because it's boring and partly because I'm scared of nuking a branch that had work I forgot about. So I made [git-tidy](https://www.npmjs.com/package/git-tidy-cli).
+
+```bash
+npx git-tidy-cli
+```
+
+It only ever offers to delete stuff that's safe: branches already merged into your default branch (the commits live on in `main`, so you lose nothing), and never `main`/`develop`/`staging`/`production` or whatever you're sitting on. And it's dry-run by default, so a first run just prints a list.
+
+It also has a `--json` mode, which means I can point an agent at it: "tidy the merged branches older than 90 days on origin" and it shows me the list before touching anything.
+
+The first time I used it for real I nearly made a mess. I wanted to clear out old sync branches, so I ran `--pattern 'sync-*' --age 7`. The dry-run came back with about half the repo. Took me a second to realise the filters were OR'd: it read that as "sync branches, or anything older than a week." Not what I meant. So I added a `--match all` flag for when you want every condition to hold:
+
+```bash
+git-tidy --match all --pattern 'sync-*' --age 7 --scope remote
+```
+
+Then I pointed it at three of my repos. I read each dry-run, hit execute, and watched 449 branches disappear — 884 down to 435. Didn't lose anything that wasn't already in `main`. The funny part was how little of that was real work. Almost all of it was one sync bot that had been quietly littering for a year because nobody wired up the cleanup.
+
+That's the whole tool. It's on [npm](https://www.npmjs.com/package/git-tidy-cli) and [GitHub](https://github.com/ArmandBrworworworx/git-tidy). Go run it on your worst repo and see what falls out.

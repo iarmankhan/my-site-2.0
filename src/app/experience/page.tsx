@@ -4,6 +4,13 @@ import { experience } from "@/data/experience"
 export const metadata: Metadata = {
   title: "Experience",
   description: "Where I've worked and what I've been up to.",
+  alternates: { canonical: "/experience" },
+  openGraph: {
+    type: "website",
+    url: "/experience",
+    title: "Experience",
+    description: "Where I've worked and what I've been up to.",
+  },
 }
 
 export default function ExperiencePage() {

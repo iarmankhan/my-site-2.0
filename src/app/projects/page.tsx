@@ -4,6 +4,13 @@ import { projects } from "@/data/projects"
 export const metadata: Metadata = {
   title: "Projects",
   description: "Things I've built — from hospital management systems to e-commerce platforms.",
+  alternates: { canonical: "/projects" },
+  openGraph: {
+    type: "website",
+    url: "/projects",
+    title: "Projects",
+    description: "Things I've built — from hospital management systems to e-commerce platforms.",
+  },
 }
 
 export default function ProjectsPage() {

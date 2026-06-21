@@ -1,6 +1,31 @@
 import Link from "next/link"
 import { format } from "date-fns"
 import { getRecentWriting } from "@/lib/content"
+import { JsonLd } from "@/components/json-ld"
+import { siteConfig } from "@/lib/seo"
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: siteConfig.author.name,
+  url: siteConfig.url,
+  email: siteConfig.author.email,
+  jobTitle: "Software Engineer",
+  sameAs: [
+    siteConfig.author.twitterUrl,
+    siteConfig.author.github,
+    siteConfig.author.linkedin,
+  ],
+}
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteConfig.name,
+  url: siteConfig.url,
+  description: siteConfig.description,
+  author: { "@type": "Person", name: siteConfig.author.name },
+}
 
 const now = [
   "Building mental health tech at Somethings",
@@ -10,26 +35,13 @@ const now = [
   "Maintaining this site (sometimes)",
 ]
 
-const featured = [
-  {
-    title: "HospiOS",
-    description: "A comprehensive hospital management system I'm building from scratch",
-    href: "/projects",
-    tag: "Project",
-  },
-  {
-    title: "Hello World",
-    description: "First post — kicking off the writing habit",
-    href: "/writing/hello-world",
-    tag: "Post",
-  },
-]
-
 export default function Home() {
   const recentWriting = getRecentWriting(3)
 
   return (
     <div className="animate-in space-y-16">
+      <JsonLd data={personJsonLd} />
+      <JsonLd data={websiteJsonLd} />
       {/* Intro */}
       <section>
         <h1 className="font-bold text-4xl sm:text-5xl tracking-tight leading-[1.1]">
@@ -64,41 +76,15 @@ export default function Home() {
           {now.map((item) => (
             <li
               key={item}
-              className="flex items-start gap-3 text-(--color-foreground-muted)"
+              className="flex gap-3 text-(--color-foreground-muted)"
             >
-              <span className="mt-2 block h-1.5 w-1.5 shrink-0 rounded-full bg-(--color-accent)" />
+              <span className="flex h-[1.7em] shrink-0 items-center">
+                <span className="block h-1.5 w-1.5 rounded-full bg-(--color-accent)" />
+              </span>
               <span>{item}</span>
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* Featured */}
-      <section>
-        <h2 className="font-bold text-2xl tracking-tight mb-4">Featured</h2>
-        <div className="space-y-4">
-          {featured.map((item) => (
-            <Link
-              key={item.title}
-              href={item.href}
-              className="group block"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-medium group-hover:text-(--color-accent) transition-colors">
-                    {item.title}
-                  </p>
-                  <p className="text-sm text-(--color-foreground-muted) mt-0.5">
-                    {item.description}
-                  </p>
-                </div>
-                <span className="shrink-0 text-xs font-mono text-(--color-foreground-muted) mt-1">
-                  {item.tag}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
       </section>
 
       {/* Recent Writing */}

@@ -60,26 +60,45 @@ body {
 .prose h4 {
   font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
   color: var(--color-foreground);
-  margin-top: 2em;
-  margin-bottom: 0.5em;
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+  scroll-margin-top: 2rem;
 }
 
 .prose h1 {
-  font-size: 2rem;
+  font-size: 1.875rem;
 }
 
 .prose h2 {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
 }
 
 .prose h3 {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
+}
+
+/* Autolinked headings (rehype-autolink-headings, behavior: "wrap") should
+   read as headings, not accent-colored links. */
+.prose :is(h1, h2, h3, h4) a {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.prose :is(h1, h2, h3, h4) a:hover {
+  color: var(--color-accent);
 }
 
 .prose p {
   margin-bottom: 1.25em;
+}
+
+/* Tighten the gap when a heading immediately follows a section's first content */
+.prose > :first-child {
+  margin-top: 0;
 }
 
 .prose a {
@@ -95,10 +114,13 @@ body {
 
 .prose code {
   font-family: var(--font-mono);
-  font-size: 0.875em;
+  font-size: 0.85em;
   background-color: var(--color-background-alt);
-  padding: 0.15em 0.35em;
+  border: 1px solid var(--color-border);
+  color: var(--color-accent);
+  padding: 0.1em 0.35em;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 .prose pre {
@@ -112,9 +134,12 @@ body {
 
 .prose pre code {
   background: none;
+  border: none;
+  color: inherit;
   padding: 0;
   font-size: 0.875rem;
   line-height: 1.6;
+  white-space: pre;
 }
 
 .prose blockquote {

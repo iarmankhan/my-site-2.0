@@ -6,6 +6,13 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Writing",
   description: "Essays, notes, and thoughts on building software and other things.",
+  alternates: { canonical: "/writing" },
+  openGraph: {
+    type: "website",
+    url: "/writing",
+    title: "Writing",
+    description: "Essays, notes, and thoughts on building software and other things.",
+  },
 }
 
 export default function WritingPage() {

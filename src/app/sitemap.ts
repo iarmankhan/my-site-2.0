@@ -1,19 +1,25 @@
 import type { MetadataRoute } from "next"
-import { essays, notes } from "#velite"
+import { essays } from "#velite"
+import { absoluteUrl } from "@/lib/seo"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const essayEntries = essays
+  const now = new Date()
+
+  const staticRoutes: MetadataRoute.Sitemap = [
+    { url: absoluteUrl("/"), lastModified: now, changeFrequency: "monthly", priority: 1 },
+    { url: absoluteUrl("/writing"), lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: absoluteUrl("/projects"), lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: absoluteUrl("/experience"), lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+  ]
+
+  const essayRoutes: MetadataRoute.Sitemap = essays
     .filter((e) => !e.draft)
     .map((e) => ({
-      url: `https://armankhan.dev/writing/${e.slug}`,
+      url: absoluteUrl(`/writing/${e.slug}`),
       lastModified: new Date(e.date),
+      changeFrequency: "yearly",
+      priority: 0.6,
     }))
 
-  return [
-    { url: "https://armankhan.dev", lastModified: new Date() },
-    { url: "https://armankhan.dev/writing", lastModified: new Date() },
-    { url: "https://armankhan.dev/projects", lastModified: new Date() },
-    { url: "https://armankhan.dev/experience", lastModified: new Date() },
-    ...essayEntries,
-  ]
+  return [...staticRoutes, ...essayRoutes]
 }

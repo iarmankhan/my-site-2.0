@@ -4,6 +4,8 @@ import { format } from "date-fns"
 import { essays } from "#velite"
 import { getEssayBySlug } from "@/lib/content"
 import { MDXContent } from "@/components/mdx-content"
+import { JsonLd } from "@/components/json-ld"
+import { absoluteUrl, siteConfig } from "@/lib/seo"
 import type { Metadata } from "next"
 
 interface Props {
@@ -14,9 +16,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const essay = getEssayBySlug(slug)
   if (!essay) return {}
+
+  const url = `/writing/${essay.slug}`
   return {
     title: essay.title,
     description: essay.description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      title: essay.title,
+      description: essay.description,
+      url,
+      publishedTime: new Date(essay.date).toISOString(),
+      authors: [siteConfig.author.name],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: essay.title,
+      description: essay.description,
+    },
   }
 }
 
@@ -31,8 +49,33 @@ export default async function EssayPage({ params }: Props) {
   const essay = getEssayBySlug(slug)
   if (!essay) notFound()
 
+  const url = absoluteUrl(`/writing/${essay.slug}`)
+  const publishedIso = new Date(essay.date).toISOString()
+  const blogPosting = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: essay.title,
+    description: essay.description,
+    datePublished: publishedIso,
+    dateModified: publishedIso,
+    image: absoluteUrl(`/writing/${essay.slug}/opengraph-image`),
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    author: {
+      "@type": "Person",
+      name: siteConfig.author.name,
+      url: siteConfig.url,
+    },
+    publisher: {
+      "@type": "Person",
+      name: siteConfig.author.name,
+      url: siteConfig.url,
+    },
+  }
+
   return (
     <article className="animate-in">
+      <JsonLd data={blogPosting} />
       <div className="mb-8">
         <Link
           href="/writing"
@@ -46,13 +89,16 @@ export default async function EssayPage({ params }: Props) {
         <h1 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight">
           {essay.title}
         </h1>
-        <div className="mt-3 flex items-center gap-3 text-sm text-(--color-foreground-muted)">
-          <time className="font-mono tabular-nums">
-            {format(new Date(essay.date), "MMMM d, yyyy")}
+        <div className="mt-4 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.12em] text-(--color-foreground-muted)">
+          <time className="tabular-nums">
+            {format(new Date(essay.date), "MMM d, yyyy")}
           </time>
           {essay.metadata.readingTime && (
             <>
-              <span>·</span>
+              <span
+                aria-hidden
+                className="size-1 rounded-full bg-(--color-accent)"
+              />
               <span>{Math.ceil(essay.metadata.readingTime)} min read</span>
             </>
           )}

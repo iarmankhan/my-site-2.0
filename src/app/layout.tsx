@@ -4,6 +4,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Nav } from "@/components/nav"
 import { Footer } from "@/components/footer"
+import { siteConfig } from "@/lib/seo"
 import "./globals.css"
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -14,12 +15,56 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Arman Khan",
-    template: "%s — Arman Khan",
+    default: siteConfig.title,
+    template: `%s — ${siteConfig.name}`,
   },
-  description:
-    "Software engineer building things for the web, mobile, and AI. Writing about tech, ideas, and whatever else comes to mind.",
-  metadataBase: new URL("https://armankhan.dev"),
+  description: siteConfig.description,
+  metadataBase: new URL(siteConfig.url),
+  applicationName: siteConfig.name,
+  authors: [{ name: siteConfig.author.name, url: siteConfig.url }],
+  creator: siteConfig.author.name,
+  publisher: siteConfig.author.name,
+  keywords: [
+    "Arman Khan",
+    "software engineer",
+    "web development",
+    "mobile development",
+    "AI",
+    "TypeScript",
+    "React",
+    "Next.js",
+  ],
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: `${siteConfig.name} — Writing` }],
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    creator: siteConfig.author.twitter,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 }
 
 export default function RootLayout({
