@@ -40,3 +40,27 @@ export const projects: Project[] = [
     url: "https://livlyt.com",
   },
 ]
+
+export const openSource: Project[] = [
+  {
+    name: "git-tidy",
+    description:
+      "An interactive CLI for cleaning up stale and merged git branches — dry-run by default, with a non-interactive mode for CI and agents.",
+    tech: ["TypeScript", "Ink", "Node.js"],
+    url: "https://www.npmjs.com/package/git-tidy-cli",
+  },
+  {
+    name: "agentic-debugger",
+    description:
+      "An MCP server that gives AI coding assistants live code instrumentation and runtime variable capture across JavaScript, TypeScript, and Python.",
+    tech: ["TypeScript", "MCP", "Node.js"],
+    url: "https://github.com/iarmankhan/agentic-debugger",
+  },
+  {
+    name: "pdf-unlocker",
+    description:
+      "A tool to remove passwords from PDFs entirely in the browser — nothing ever leaves your device.",
+    tech: ["TypeScript", "WebAssembly", "Cloudflare Workers"],
+    url: "https://pdf-thingy.work-armankhan.workers.dev/",
+  },
+]
