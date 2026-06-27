@@ -1,25 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  --color-accent: #e8a04a;
-  --color-accent-hover: #d4922f;
+  --color-accent: #c2410c;
+  --color-accent-hover: #9a3412;
 
-  --color-foreground: #1a1a1a;
-  --color-foreground-muted: #666666;
-  --color-background: #fafafa;
-  --color-background-alt: #f0f0f0;
-  --color-border: #e5e5e5;
+  --color-foreground: #1c1c1c;
+  --color-foreground-muted: #6b6b6b;
+  --color-background: #fdfdfc;
+  --color-background-alt: #f3f2f0;
+  --color-border: #e6e4e0;
 }
 
 /* Dark mode overrides */
 .dark {
-  --color-foreground: #e5e5e5;
-  --color-foreground-muted: #999999;
+  --color-accent: #e8a04a;
+  --color-accent-hover: #f0b56b;
+
+  --color-foreground: #ededed;
+  --color-foreground-muted: #9a9a9a;
   --color-background: #0a0a0a;
-  --color-background-alt: #161616;
+  --color-background-alt: #171717;
   --color-border: #262626;
 }
 
@@ -34,13 +37,14 @@ body {
   font-family: var(--font-sans);
   color: var(--color-foreground);
   background-color: var(--color-background);
-  line-height: 1.7;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
 }
 
 /* Selection */
 ::selection {
   background-color: var(--color-accent);
-  color: var(--color-foreground);
+  color: #fafafa;
 }
 
 .dark ::selection {
@@ -51,7 +55,9 @@ body {
 /* Prose styles for article content */
 .prose {
   max-width: none;
-  line-height: 1.8;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-foreground);
 }
 
 .prose h1,
@@ -59,25 +65,25 @@ body {
 .prose h3,
 .prose h4 {
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: 650;
   letter-spacing: -0.02em;
-  line-height: 1.25;
+  line-height: 1.3;
   color: var(--color-foreground);
-  margin-top: 2.5em;
-  margin-bottom: 0.75em;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
   scroll-margin-top: 2rem;
 }
 
 .prose h1 {
-  font-size: 1.875rem;
+  font-size: 1.75rem;
 }
 
 .prose h2 {
-  font-size: 1.375rem;
+  font-size: 1.3rem;
 }
 
 .prose h3 {
-  font-size: 1.125rem;
+  font-size: 1.1rem;
 }
 
 /* Autolinked headings (rehype-autolink-headings, behavior: "wrap") should
@@ -112,15 +118,26 @@ body {
   color: var(--color-accent-hover);
 }
 
+.prose a.external-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.12em;
+}
+
+.external-link-icon {
+  width: 0.72em;
+  height: 0.72em;
+  flex: none;
+  transform: translateY(0.04em);
+}
+
 .prose code {
   font-family: var(--font-mono);
-  font-size: 0.85em;
+  font-size: 0.875em;
   background-color: var(--color-background-alt);
-  border: 1px solid var(--color-border);
-  color: var(--color-accent);
+  color: var(--color-foreground);
   padding: 0.1em 0.35em;
   border-radius: 4px;
-  white-space: nowrap;
 }
 
 .prose pre {
@@ -156,6 +173,18 @@ body {
   margin-bottom: 1.25em;
 }
 
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li::marker {
+  color: var(--color-foreground-muted);
+}
+
 .prose li {
   margin-bottom: 0.375em;
 }
@@ -182,6 +211,46 @@ body {
 [data-rehype-pretty-code-figure] pre {
   background-color: #0d1117 !important;
   border: 1px solid var(--color-border);
+}
+
+.code-block-with-copy {
+  position: relative;
+  margin: 1.5em 0;
+}
+
+.code-block-with-copy pre {
+  margin: 0;
+  padding-right: 3.25rem;
+}
+
+.code-copy-button {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #c9d1d9;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.code-copy-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.code-copy-button:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
 }
 
 .dark [data-rehype-pretty-code-figure] pre {

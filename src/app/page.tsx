@@ -1,8 +1,8 @@
-import Link from "next/link"
-import { format } from "date-fns"
-import { getRecentWriting } from "@/lib/content"
-import { JsonLd } from "@/components/json-ld"
-import { siteConfig } from "@/lib/seo"
+import Link from "next/link";
+import { format } from "date-fns";
+import { getRecentWriting } from "@/lib/content";
+import { JsonLd } from "@/components/json-ld";
+import { siteConfig } from "@/lib/seo";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -16,7 +16,7 @@ const personJsonLd = {
     siteConfig.author.github,
     siteConfig.author.linkedin,
   ],
-}
+};
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
@@ -25,7 +25,7 @@ const websiteJsonLd = {
   url: siteConfig.url,
   description: siteConfig.description,
   author: { "@type": "Person", name: siteConfig.author.name },
-}
+};
 
 const now = [
   "Building mental health tech at Somethings",
@@ -33,10 +33,10 @@ const now = [
   "Trying to be more active on X (failing)",
   "Reading about system design and distributed systems",
   "Maintaining this site (sometimes)",
-]
+];
 
 export default function Home() {
-  const recentWriting = getRecentWriting(3)
+  const recentWriting = getRecentWriting(3);
 
   return (
     <div className="animate-in space-y-16">
@@ -101,7 +101,7 @@ export default function Home() {
               View all →
             </Link>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-7">
             {recentWriting.map((item) => (
               <div key={item.data.slug}>
                 {item.type === "essay" ? (
@@ -109,33 +109,33 @@ export default function Home() {
                     href={`/writing/${item.data.slug}`}
                     className="group block"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-medium group-hover:text-(--color-accent) transition-colors">
-                          {item.data.title}
-                        </p>
-                        {"description" in item.data && item.data.description && (
-                          <p className="text-sm text-(--color-foreground-muted) mt-0.5">
-                            {item.data.description}
-                          </p>
-                        )}
-                      </div>
-                      <time className="shrink-0 text-sm font-mono text-(--color-foreground-muted) tabular-nums">
-                        {format(new Date(item.data.date), "MMM yyyy")}
+                    <p className="font-medium leading-snug text-balance transition-colors group-hover:text-(--color-accent)">
+                      {item.data.title}
+                    </p>
+                    <div className="mt-1 text-sm text-(--color-foreground-muted)">
+                      <time className="tabular-nums">
+                        {format(new Date(item.data.date), "MMM d, yyyy")}
                       </time>
                     </div>
+                    {"description" in item.data && item.data.description && (
+                      <p className="mt-2 max-w-[60ch] text-sm leading-relaxed text-(--color-foreground-muted)">
+                        {item.data.description}
+                      </p>
+                    )}
                   </Link>
                 ) : (
                   <div>
-                    <div className="flex items-start justify-between gap-4">
-                      <p className="font-medium">{item.data.title}</p>
-                      <time className="shrink-0 text-sm font-mono text-(--color-foreground-muted) tabular-nums">
-                        {format(new Date(item.data.date), "MMM yyyy")}
+                    <p className="font-medium leading-snug text-balance">
+                      {item.data.title}
+                    </p>
+                    <div className="mt-1 text-sm text-(--color-foreground-muted)">
+                      <time className="tabular-nums">
+                        {format(new Date(item.data.date), "MMM d, yyyy")}
                       </time>
                     </div>
                     {"content" in item.data && (
                       <div
-                        className="text-sm text-(--color-foreground-muted) mt-1 leading-relaxed"
+                        className="mt-2 max-w-[60ch] text-sm leading-relaxed text-(--color-foreground-muted)"
                         dangerouslySetInnerHTML={{
                           __html: item.data.content,
                         }}
@@ -149,5 +149,5 @@ export default function Home() {
         </section>
       )}
     </div>
-  )
+  );
 }

@@ -84,10 +84,10 @@ export default async function EssayPage({ params }: Props) {
       </div>
 
       <header className="mb-10">
-        <h1 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight">
+        <h1 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight text-balance">
           {essay.title}
         </h1>
-        <div className="mt-4 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.12em] text-(--color-foreground-muted)">
+        <div className="mt-4 flex items-center gap-2 text-sm text-(--color-foreground-muted)">
           <time className="tabular-nums">
             {format(new Date(essay.date), "MMM d, yyyy")}
           </time>
@@ -95,7 +95,7 @@ export default async function EssayPage({ params }: Props) {
             <>
               <span
                 aria-hidden
-                className="size-1 rounded-full bg-(--color-accent)"
+                className="size-1 rounded-full bg-(--color-foreground-muted)/50"
               />
               <span>{Math.ceil(essay.metadata.readingTime)} min read</span>
             </>
