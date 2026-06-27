@@ -1,0 +1,170 @@
+---
+title: "Read the plan before you add an index"
+slug: reading-postgres-query-plans
+date: 2026-06-27
+description: "A slow Postgres query is rarely a wrong query. Before adding indexes, read what Postgres is actually doing — EXPLAIN tells you, and one number points straight at the real problem."
+featured: true
+draft: false
+---
+
+Slow queries don't get fixed by rereading the SQL. The query is usually correct — it returns the right rows, it's just getting them the expensive way. And you can't see "expensive" in the SQL text. You have to ask Postgres what it actually did to run the thing. That's `EXPLAIN`, and it's the first thing to reach for, before indexes, before rewriting anything.
+
+Everything here is reproducible. There's a setup script at the end that builds a small shop database — 100k customers, 2 million orders — and the queries run against it. The plans are real output from one run, so your timings and even some of the plan choices will come out different on your machine, but the shapes will be close. If you'd rather use a ready-made schema, [Pagila](https://github.com/devrimgunduz/pagila) is the usual one, just know it's small enough (~16k rows) that Postgres scans everything and every plan looks the same.
+
+There are three versions of EXPLAIN and they're not the same thing. Plain `EXPLAIN` shows the plan Postgres intends to use with its cost estimates, but it doesn't run anything, so it's all prediction. `EXPLAIN ANALYZE` actually runs the query and reports what happened: real timing, real row counts per step. That's the one you want most of the time, with one catch — it really runs the query, so don't ANALYZE an UPDATE or DELETE you didn't mean to run. Wrap it in a transaction and roll back if you need to:
+
+```sql
+BEGIN;
+EXPLAIN ANALYZE DELETE FROM orders WHERE created_at < '2020-01-01';
+ROLLBACK;
+```
+
+And `EXPLAIN (ANALYZE, BUFFERS)` adds where the time went: how many pages each step touched and whether they came from memory or disk. Postgres 18 turns BUFFERS on by default; until then, just type it.
+
+Here's a query with no index to help it:
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM orders WHERE customer_id = 42;
+```
+
+```
+Gather  (cost=1000.00..28085.77 rows=21 width=38) (actual time=0.890..55.408 rows=32 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=14412 read=2255
+  ->  Parallel Seq Scan on orders  (cost=0.00..27083.67 rows=9 width=38) (actual time=1.184..19.962 rows=11 loops=3)
+        Filter: (customer_id = 42)
+        Rows Removed by Filter: 666656
+        Buffers: shared hit=14412 read=2255
+Planning:
+  Buffers: shared hit=14
+Planning Time: 0.120 ms
+Execution Time: 55.444 ms
+```
+
+This plan is two nodes because Postgres ran the scan in parallel. You read it inside-out: the `Parallel Seq Scan` at the bottom does the work and the `Gather` at the top collects the results. `Workers Planned: 2` / `Workers Launched: 2` means it split the table across two worker processes, and with the leader that's three processes scanning, which is why the inner node says `loops=3`. There's no index on `customer_id`, so every row has to be read; parallelism is just how Postgres speeds that up.
+
+A few fields carry most of the meaning. `cost=1000.00..28085.77` on the Gather is the planner's estimate in arbitrary units — startup cost, then total — and the numbers only mean anything next to another plan's, not as milliseconds. `rows=21` is what it estimated the query would return and `actual ... rows=32` is what came back, close, which is the good case. `width=38` is the estimated row size in bytes.
+
+The line that actually tells you something is `Rows Removed by Filter: 666656`, and that count is per worker. Each of the three processes threw away about 667k rows, so between them they read all 2 million to keep 32. That's the wasted work, and it's the clearest sign here that an index would help. `Buffers: shared hit=14412 read=2255` backs it up: about 16,700 pages touched, 2,255 of them off disk, which is most of the 55ms.
+
+Add the index and run the same query:
+
+```sql
+CREATE INDEX orders_customer_id_idx ON orders (customer_id);
+```
+
+```
+Bitmap Heap Scan on orders  (cost=4.59..86.62 rows=21 width=38) (actual time=0.096..0.525 rows=32 loops=1)
+  Recheck Cond: (customer_id = 42)
+  Heap Blocks: exact=32
+  Buffers: shared hit=29 read=9
+  ->  Bitmap Index Scan on orders_customer_id_idx  (cost=0.00..4.58 rows=21 width=0) (actual time=0.080..0.080 rows=32 loops=1)
+        Index Cond: (customer_id = 42)
+        Buffers: shared hit=3 read=3
+Planning:
+  Buffers: shared hit=16 read=1
+Planning Time: 0.413 ms
+Execution Time: 0.586 ms
+```
+
+55ms down to 0.6ms. Same 32 rows, almost none of the work — about 44 pages instead of 16,700. The plan is a bitmap scan, which is two steps: the `Bitmap Index Scan` walks the index and builds a bitmap of every spot matching `customer_id = 42`, then the `Bitmap Heap Scan` reads those pages in physical order. Postgres goes this way instead of a plain index scan when the matching rows are spread out across the table, which ours are because customers got assigned to orders at random — reading the pages it needs in order is cheaper than chasing them one at a time. `Heap Blocks: exact=32` says 32 pages held the rows, and `Rows Removed by Filter` is gone.
+
+That parallel scan was already a small tree. Bigger plans are just deeper, and you read them the same way, inside-out. Here's a join:
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT c.name, o.amount_cents
+FROM customers c
+JOIN orders o ON o.customer_id = c.id
+WHERE c.country = 'BR';
+```
+
+```
+Hash Join  (cost=2264.46..44181.68 rows=290340 width=18) (actual time=11.764..194.220 rows=289764 loops=1)
+  Hash Cond: (o.customer_id = c.id)
+  Buffers: shared hit=15277 read=2223
+  ->  Seq Scan on orders o  (cost=0.00..36667.00 rows=2000000 width=12) (actual time=0.012..85.300 rows=2000000 loops=1)
+        Buffers: shared hit=14444 read=2223
+  ->  Hash  (cost=2083.00..2083.00 rows=14517 width=22) (actual time=11.688..11.689 rows=14522 loops=1)
+        Buckets: 16384  Batches: 1  Memory Usage: 923kB
+        Buffers: shared hit=833
+        ->  Seq Scan on customers c  (cost=0.00..2083.00 rows=14517 width=22) (actual time=0.014..10.004 rows=14522 loops=1)
+              Filter: (country = 'BR'::text)
+              Rows Removed by Filter: 85478
+              Buffers: shared hit=833
+```
+
+Reading bottom-up: Postgres scanned `customers`, kept the ~14k from Brazil, built a hash table out of them, then scanned `orders` and checked each row against that hash table for matches. That's a hash join, which works when one side is small enough to hash and the other is large. The estimate was almost exact here, 290,340 against 289,764 actual, which is why it could confidently pick this join. The other two joins you'll run into are the nested loop, good when the outer side is tiny and the inner side is indexed, and the merge join, used when both inputs already come sorted on the join key. Which one Postgres picks comes down to its row estimates.
+
+Which is the whole thing, so it's worth slowing down on. The most useful number in any plan is the gap between `rows=` (the estimate) and the actual rows. Close together means the planner understands your data and is choosing well. Off by 100x or 1000x and every decision built on that estimate is suspect.
+
+Here's how it goes wrong. Say the planner estimates one side of a join returns a single row:
+
+```
+Nested Loop  (cost=... rows=1 ...) (actual time=... rows=48211 loops=1)
+  ->  Index Scan ...  (rows=1) (actual rows=48211 loops=1)
+  ->  Index Scan ...  (loops=48211)
+```
+
+It picked a nested loop because looping once over a single row is cheap. But the outer side actually had 48,211 rows, so the inner scan ran 48,211 times. The query crawls, and nothing in the SQL looks off. The plan is wrong because the estimate was wrong.
+
+`loops=` is the part people misread. When a node runs in a loop, its actual rows is the average per loop, so you multiply by loops to get the real total. A node showing `rows=3 loops=48211` didn't return 3 rows, it returned around 144,000.
+
+So the move is to find the deepest node where the estimate and the actual split apart, and start there. That's usually the root cause, and it tells you what to fix instead of guessing.
+
+And the fix is often not an index. A bad estimate usually means the stats are stale or too coarse, so the first thing to try is refreshing them:
+
+```sql
+ANALYZE orders;
+```
+
+If one column is skewed — our `status` is 90% `completed` — and the estimates are still off, tell Postgres to keep more detail on it:
+
+```sql
+ALTER TABLE orders ALTER COLUMN status SET STATISTICS 1000;
+ANALYZE orders;
+```
+
+People skip this and jump to indexes, and sometimes the index they add never gets used, because the planner still believes a seq scan is cheaper based on a wrong row count. You can't out-index a bad estimate.
+
+One more thing on BUFFERS, since most people run `EXPLAIN ANALYZE` and stop there. `shared hit` is pages that were already in memory, basically free. `shared read` is pages fetched from disk, which is usually where slow comes from. And `temp read` / `temp written`, which is easy to miss, means a sort or hash spilled to disk because it didn't fit in `work_mem` — if you see temp buffers, bumping `work_mem` for that one query often fixes it on its own. This matters because timing alone lies to you: a query is slow on a cold cache and fast once everything's cached, same plan both times. Buffers show the real I/O, which is the thing you're actually trying to bring down, and two queries with nearly identical plans can move wildly different numbers of buffers — the one that looks cheap might be the disk hog.
+
+For anything past a few nodes, don't read it by hand. Paste it into a visualizer: [explain.dalibo.com](https://explain.dalibo.com/) (the PEV2 one) is my default, and [explain.depesz.com](https://explain.depesz.com/) is older but still good at pointing out the expensive row.
+
+It all comes back to one line. Before touching indexes or rewriting anything, run `EXPLAIN (ANALYZE, BUFFERS)` on the query, compare the estimate to the actual, follow the buffers to where the I/O is, and fix that. It finds more real problems than any indexing trick.
+
+## Try it yourself
+
+Build the dataset (the script is [here](https://gist.github.com/iarmankhan/f4ac90772ab2b8485730bd8e708d60f5)):
+
+```bash
+createdb shop_demo
+psql shop_demo -f sample-shop.sql
+```
+
+```sql
+-- 1. Watch Postgres read all 2M rows to find a handful
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM orders WHERE customer_id = 42;
+
+-- 2. Add the index and run it again — compare buffers and time
+CREATE INDEX orders_customer_id_idx ON orders (customer_id);
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM orders WHERE customer_id = 42;
+
+-- 3. Read a join tree inside-out
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT c.name, o.amount_cents
+FROM customers c JOIN orders o ON o.customer_id = c.id
+WHERE c.country = 'BR';
+```
+
+## Further reading
+
+- [Using EXPLAIN — PostgreSQL docs](https://www.postgresql.org/docs/current/using-explain.html)
+- [pgMustard's EXPLAIN glossary](https://www.pgmustard.com/docs/explain) — plain-English reference for every plan node
+- [depesz — Explaining the unexplainable](https://www.depesz.com/2013/04/16/explaining-the-unexplainable/) (the [buffers part](https://www.depesz.com/2021/06/20/explaining-the-unexplainable-part-6-buffers/))
+- [Postgres.ai — why EXPLAIN ANALYZE needs BUFFERS](https://postgres.ai/blog/20220106-explain-analyze-needs-buffers-to-improve-the-postgres-query-optimization-process)
+```

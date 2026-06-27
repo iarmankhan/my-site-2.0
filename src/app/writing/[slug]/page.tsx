@@ -1,23 +1,23 @@
-import { notFound } from "next/navigation"
-import Link from "next/link"
-import { format } from "date-fns"
-import { essays } from "#velite"
-import { getEssayBySlug } from "@/lib/content"
-import { MDXContent } from "@/components/mdx-content"
-import { JsonLd } from "@/components/json-ld"
-import { absoluteUrl, siteConfig } from "@/lib/seo"
-import type { Metadata } from "next"
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { format } from "date-fns";
+import { essays } from "#velite";
+import { getEssayBySlug } from "@/lib/content";
+import { MDXContent } from "@/components/mdx-content";
+import { JsonLd } from "@/components/json-ld";
+import { absoluteUrl, siteConfig } from "@/lib/seo";
+import type { Metadata } from "next";
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const essay = getEssayBySlug(slug)
-  if (!essay) return {}
+  const { slug } = await params;
+  const essay = getEssayBySlug(slug);
+  if (!essay) return {};
 
-  const url = `/writing/${essay.slug}`
+  const url = `/writing/${essay.slug}`;
   return {
     title: essay.title,
     description: essay.description,
@@ -35,22 +35,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: essay.title,
       description: essay.description,
     },
-  }
+  };
 }
 
 export function generateStaticParams() {
-  return essays
-    .filter((e) => !e.draft)
-    .map((e) => ({ slug: e.slug }))
+  return essays.filter((e) => !e.draft).map((e) => ({ slug: e.slug }));
 }
 
 export default async function EssayPage({ params }: Props) {
-  const { slug } = await params
-  const essay = getEssayBySlug(slug)
-  if (!essay) notFound()
+  const { slug } = await params;
+  const essay = getEssayBySlug(slug);
+  if (!essay) notFound();
 
-  const url = absoluteUrl(`/writing/${essay.slug}`)
-  const publishedIso = new Date(essay.date).toISOString()
+  const url = absoluteUrl(`/writing/${essay.slug}`);
+  const publishedIso = new Date(essay.date).toISOString();
   const blogPosting = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -71,7 +69,7 @@ export default async function EssayPage({ params }: Props) {
       name: siteConfig.author.name,
       url: siteConfig.url,
     },
-  }
+  };
 
   return (
     <article className="animate-in">
@@ -109,5 +107,5 @@ export default async function EssayPage({ params }: Props) {
         <MDXContent code={essay.body} />
       </div>
     </article>
-  )
+  );
 }
