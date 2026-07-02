@@ -1,0 +1,284 @@
+---
+title: "Wrap the column, lose the index"
+slug: why-your-index-isnt-used
+date: 2026-07-02
+description: "A normal index stores column values. If your WHERE clause wraps the column in a cast, function, or bit of math, Postgres may have to compute that expression for every row instead of using the index."
+featured: true
+draft: false
+---
+
+You added the index. The query filters on that exact column. Somehow it still scans the whole table.
+
+This is more annoying than a missing index because it looks like it should work. The column is indexed. The `WHERE` clause mentions the column. Then the plan comes back with a `Seq Scan` and a `Filter`, and the index is just sitting there doing nothing.
+
+The usual reason: you didn't really filter on the column. You filtered on something derived from it.
+
+I used a small fake analytics dataset for this: 500k users and 3 million events. The setup script is at the end. The plans are from one run, so your timings will differ, but the shape should be the same. If you want the longer version of reading plans first, that's in the [previous post](/writing/reading-postgres-query-plans). For this one, just keep `EXPLAIN (ANALYZE, BUFFERS)` in front of every query.
+
+## The index stores the column
+
+When you write this:
+
+```sql
+CREATE INDEX events_created_at_idx ON events (created_at);
+```
+
+Postgres builds an index over the values in `created_at`. Raw timestamps. That's it.
+
+So this looks reasonable:
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM events WHERE created_at::date = '2025-06-01';
+```
+
+It asks for all events on one day, and there is an index on `created_at`. Easy win, right?
+
+Not quite. `created_at::date` is not `created_at`. It is a cast applied to the column. The index stores raw timestamps, not the date you get after truncating each timestamp. So Postgres can't just jump into the index and find `2025-06-01`. It has to read rows, cast each timestamp, then compare.
+
+```
+Finalize Aggregate  (cost=41824.84..41824.85 rows=1 width=8) (actual time=91.952..94.056 rows=1 loops=1)
+  Buffers: shared hit=12201 read=9858
+  ->  Gather  (cost=41824.62..41824.83 rows=2 width=8) (actual time=91.905..94.052 rows=3 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=12201 read=9858
+        ->  Partial Aggregate  (cost=40824.62..40824.64 rows=1 width=8) (actual time=78.764..78.765 rows=1 loops=3)
+              Buffers: shared hit=12201 read=9858
+              ->  Parallel Seq Scan on events  (cost=0.00..40809.00 rows=6250 width=0) (actual time=0.077..78.678 rows=1096 loops=3)
+                    Filter: ((created_at)::date = '2025-06-01'::date)
+                    Rows Removed by Filter: 998904
+                    Buffers: shared hit=12201 read=9858
+Planning:
+  Buffers: shared hit=18 read=1 dirtied=2
+Planning Time: 0.189 ms
+Execution Time: 94.082 ms
+```
+
+The `Filter` line is the tell. If the indexed column shows up wrapped in a cast, a function, or math, the plain index probably isn't helping. Postgres is computing an expression for each row, and your index does not contain that expression.
+
+## Keep the column bare
+
+The best fix is usually not another index. Rewrite the query so the column stays alone, then move the work to the constant side.
+
+"All events on 2025-06-01" means "all events from midnight on June 1st up to midnight on June 2nd." That's a range over the raw timestamp:
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM events
+WHERE created_at >= '2025-06-01' AND created_at < '2025-06-02';
+```
+
+```
+Aggregate  (cost=127.97..127.98 rows=1 width=8) (actual time=0.405..0.405 rows=1 loops=1)
+  Buffers: shared hit=13
+  ->  Index Only Scan using events_created_at_idx on events  (cost=0.43..118.69 rows=3713 width=0) (actual time=0.020..0.271 rows=3287 loops=1)
+        Index Cond: ((created_at >= '2025-06-01 00:00:00+00'::timestamp with time zone) AND (created_at < '2025-06-02 00:00:00+00'::timestamp with time zone))
+        Heap Fetches: 0
+        Buffers: shared hit=13
+Planning Time: 0.064 ms
+Execution Time: 0.421 ms
+```
+
+Same rows. Same answer. Now `created_at` is bare, so the index can do its job.
+
+This is the move behind most "sargability" advice. Ugly word, useful idea: don't hide the indexed column inside work Postgres has to do row by row.
+
+For dates:
+
+```sql
+-- Avoid
+WHERE created_at::date = $1
+
+-- Prefer
+WHERE created_at >= $1 AND created_at < $1 + interval '1 day'
+```
+
+For simple math:
+
+```sql
+-- Avoid
+WHERE amount_cents / 100 > 50
+
+-- Prefer
+WHERE amount_cents > 5000
+```
+
+For timestamp arithmetic:
+
+```sql
+-- Avoid
+WHERE created_at + interval '1 day' > now()
+
+-- Prefer
+WHERE created_at > now() - interval '1 day'
+```
+
+The constant side gets computed once. The column side can be compared against the index.
+
+## Casts are where this gets sneaky
+
+You might expect this to break a `bigint` index:
+
+```sql
+CREATE INDEX events_user_id_idx ON events (user_id);
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM events WHERE user_id = '42';
+```
+
+```
+Bitmap Heap Scan on events  (cost=4.48..32.20 rows=7 width=28) (actual time=0.119..0.152 rows=4 loops=1)
+  Recheck Cond: (user_id = '42'::bigint)
+  Heap Blocks: exact=4
+  Buffers: shared hit=2 read=5
+  ->  Bitmap Index Scan on events_user_id_idx  (cost=0.00..4.48 rows=7 width=0) (actual time=0.099..0.100 rows=4 loops=1)
+        Index Cond: (user_id = '42'::bigint)
+        Buffers: shared read=3
+Planning:
+  Buffers: shared hit=15 read=1
+Planning Time: 0.336 ms
+Execution Time: 0.207 ms
+```
+
+It doesn't. A bare string literal like `'42'` starts as `unknown`, and Postgres resolves it to the type the other side needs. In this case, `bigint`. The cast lands on the constant, the column stays bare, and the index can still be used.
+
+The trap is a value whose type forces Postgres to cast the column instead:
+
+```sql
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM events WHERE user_id = 42.0;
+```
+
+```
+Gather  (cost=1000.00..43309.00 rows=15000 width=28) (actual time=3.910..76.333 rows=4 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=13163 read=8896
+  ->  Parallel Seq Scan on events  (cost=0.00..40809.00 rows=6250 width=28) (actual time=30.186..60.640 rows=1 loops=3)
+        Filter: ((user_id)::numeric = 42.0)
+        Rows Removed by Filter: 999999
+        Buffers: shared hit=13163 read=8896
+Planning Time: 0.073 ms
+Execution Time: 76.350 ms
+```
+
+`42.0` is `numeric`, not unknown. To compare a `bigint` column to a `numeric` value, Postgres may promote the column to `numeric`. Now the work is on the column, row by row, and the index can drop out.
+
+This is also how you get burned by ORMs and drivers. The SQL looks fine, but the bound parameter comes in as `numeric` or `double precision` against a `bigint` column. You don't see the mismatch unless you look at the plan.
+
+The rule is simple: match the types so the cast lands on the value, not the column.
+
+## Sometimes the expression is the point
+
+Sometimes the function is not a mistake. You actually query by the transformed value.
+
+Case-insensitive email lookup is the usual example. Users type emails however they want, so the table has values like `User42@Example.com`, and you want this to work:
+
+```sql
+CREATE INDEX users_email_idx ON users (email);
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM users WHERE lower(email) = 'user42@example.com';
+```
+
+```
+Gather  (cost=1000.00..8542.00 rows=2500 width=38) (actual time=0.509..52.840 rows=1 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=320 read=3847
+  ->  Parallel Seq Scan on users  (cost=0.00..7292.00 rows=1042 width=38) (actual time=22.122..39.000 rows=0 loops=3)
+        Filter: (lower(email) = 'user42@example.com'::text)
+        Rows Removed by Filter: 166666
+        Buffers: shared hit=320 read=3847
+Planning:
+  Buffers: shared hit=39 read=1 dirtied=1
+Planning Time: 0.207 ms
+Execution Time: 52.855 ms
+```
+
+There is no clean range rewrite here. `lower()` is the thing you are searching by. A plain `WHERE email = 'user42@example.com'` would miss `User42@Example.com`.
+
+So index the expression:
+
+```sql
+CREATE INDEX users_lower_email_idx ON users (lower(email));
+
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM users WHERE lower(email) = 'user42@example.com';
+```
+
+```
+Bitmap Heap Scan on users  (cost=71.80..3883.21 rows=2500 width=38) (actual time=0.043..0.044 rows=1 loops=1)
+  Recheck Cond: (lower(email) = 'user42@example.com'::text)
+  Heap Blocks: exact=1
+  Buffers: shared read=4
+  ->  Bitmap Index Scan on users_lower_email_idx  (cost=0.00..71.17 rows=2500 width=0) (actual time=0.030..0.030 rows=1 loops=1)
+        Index Cond: (lower(email) = 'user42@example.com'::text)
+        Buffers: shared read=3
+Planning:
+  Buffers: shared hit=17 read=1
+Planning Time: 0.246 ms
+Execution Time: 0.062 ms
+```
+
+Now the index stores lowercased emails, and the query asks for a lowercased email. They line up.
+
+This is an expression index. Postgres also calls it an index on expression. It's the right tool when the expression is genuinely what you query by: `date_trunc('month', created_at)` for monthly buckets, `(data->>'user_id')` for a JSON field, `EXTRACT(year FROM created_at)` for year filters.
+
+Two catches.
+
+First, the expression has to match. An index on `lower(email)` does nothing for `upper(email)`. An index on `created_at::date` does nothing for `date_trunc('day', created_at)`, even if those feel like the same idea. Postgres matches the structure of the expression, not your intent.
+
+Second, an expression index is still an index. It takes space, it slows writes, and Postgres keeps separate stats for it. So I try the bare-column rewrite first. I reach for an expression index when there is no rewrite, or when the expression is the thing the product actually queries.
+
+## The ten-second check
+
+Before you add another index because the first one "isn't working," read the plan and look at the `Filter`.
+
+If your indexed column shows up wrapped in anything — `lower(...)`, `::date`, `+ interval`, `/ 100` — the plain index was never going to help. The query hid the column inside an expression.
+
+Either strip the expression off the column, or index the expression itself. Those are the two moves.
+
+## Try it yourself
+
+Build the dataset. The script is [here](https://gist.github.com/iarmankhan/f50057560db2028ec8773b0730e31e7e).
+
+```bash
+createdb sargable_demo
+psql sargable_demo -f sample-sargable.sql
+```
+
+```sql
+CREATE INDEX events_created_at_idx ON events (created_at);
+CREATE INDEX events_user_id_idx ON events (user_id);
+
+-- 1. Cast on the column: the index sits idle
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM events WHERE created_at::date = '2025-06-01';
+
+-- 2. Same question as a range: the index does the work
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT count(*) FROM events
+WHERE created_at >= '2025-06-01' AND created_at < '2025-06-02';
+
+-- 3. Quoting the number is fine (cast lands on the constant)
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM events WHERE user_id = '42';
+
+-- 4. A numeric value forces a cast on the column — index drops out
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM events WHERE user_id = 42.0;
+
+-- 5. A function you actually need: index the expression
+CREATE INDEX users_lower_email_idx ON users (lower(email));
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM users WHERE lower(email) = 'user42@example.com';
+```
+
+## Further reading
+
+- [Indexes — PostgreSQL docs](https://www.postgresql.org/docs/current/indexes.html)
+- [Indexes on expressions — PostgreSQL docs](https://www.postgresql.org/docs/current/indexes-expressional.html)
+- [Use The Index, Luke — the WHERE clause](https://use-the-index-luke.com/sql/where-clause)
+- [Use The Index, Luke — functions](https://use-the-index-luke.com/sql/where-clause/functions)
