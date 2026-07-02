@@ -1,13 +1,17 @@
 ---
 title: "I built a thing to delete dead git branches"
+seoTitle: "git-tidy: A Safe CLI for Cleaning Up Stale Git Branches"
 slug: git-tidy
 date: 2026-06-17
 description: "git-tidy: a small CLI for cleaning up stale branches. I used it to clear 449 dead ones across three repos."
+seoDescription: "git-tidy is a small CLI for safely cleaning up stale Git branches with dry-run output, protected branches, remote branch support, and JSON output for agents."
 featured: true
 draft: false
 ---
 
 One of my repos had 485 branches. Maybe 50 were alive. The rest were merged-and-forgotten features, dead spikes, and a few hundred `sync-main-to-dev-*` branches some automation kept spitting out and never cleaning up.
+
+> `git-tidy` is a small CLI that finds stale Git branches, previews what it would delete, protects important branches, and only deletes after you explicitly run it.
 
 Deleting them by hand is the kind of chore I'll avoid for months, partly because it's boring and partly because I'm scared of nuking a branch that had work I forgot about. So I made [git-tidy](https://www.npmjs.com/package/git-tidy-cli).
 

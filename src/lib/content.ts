@@ -1,42 +1,47 @@
-import { essays, notes } from "#velite"
-import type { Essay, Note } from "#velite"
+import { essays, notes } from "#velite";
+import type { Essay, Note } from "#velite";
 
-export type { Essay, Note }
+export type { Essay, Note };
 
 export type WritingItem =
   | { type: "essay"; data: Essay }
-  | { type: "note"; data: Note }
+  | { type: "note"; data: Note };
 
 export function getRecentWriting(count: number): WritingItem[] {
-  const published = essays.filter((e) => !e.draft)
+  const published = essays.filter((e) => !e.draft);
 
   const items: WritingItem[] = [
     ...published.map((e) => ({ type: "essay" as const, data: e })),
     ...notes.map((n) => ({ type: "note" as const, data: n })),
-  ]
+  ];
 
   return items
     .sort(
       (a, b) =>
-        new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+        new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
     )
-    .slice(0, count)
+    .slice(0, count);
 }
 
 export function getAllWriting(): WritingItem[] {
-  const published = essays.filter((e) => !e.draft)
+  const published = essays.filter((e) => !e.draft);
 
   const items: WritingItem[] = [
     ...published.map((e) => ({ type: "essay" as const, data: e })),
     ...notes.map((n) => ({ type: "note" as const, data: n })),
-  ]
+  ];
 
   return items.sort(
-    (a, b) =>
-      new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-  )
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+  );
 }
 
 export function getEssayBySlug(slug: string): Essay | undefined {
-  return essays.find((e) => e.slug === slug && !e.draft)
+  return essays.find((e) => e.slug === slug && !e.draft);
+}
+
+export function getEssaysBySeries(series: string): Essay[] {
+  return essays
+    .filter((e) => !e.draft && e.series === series)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }

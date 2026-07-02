@@ -1,13 +1,18 @@
 ---
 title: "Read the plan before you add an index"
+seoTitle: "How to Read Postgres EXPLAIN ANALYZE Before Adding an Index"
 slug: reading-postgres-query-plans
 date: 2026-06-27
 description: "Before adding an index, make Postgres show you what it actually did. The row estimate and buffer counts usually point at the fix faster than staring at the SQL."
+seoDescription: "Learn how to read Postgres EXPLAIN ANALYZE output before adding an index: row estimates, actual rows, loops, buffer hits, disk reads, and query plan shape."
+series: "Postgres index series"
 featured: true
 draft: false
 ---
 
 Slow queries usually don't look wrong. That's the trap.
+
+> Before adding an index, run `EXPLAIN (ANALYZE, BUFFERS)` and read the plan from the deepest scan upward. Compare estimated rows to actual rows, then follow buffer reads to find where Postgres is doing wasted work.
 
 The SQL returns the right rows. It's just getting them the expensive way. You can't see that by staring at the query, so you have to ask Postgres what it actually did. That's `EXPLAIN`, and it's the first thing I reach for before adding an index or rewriting anything.
 

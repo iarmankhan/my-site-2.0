@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
 import { essays } from "#velite";
-import { getEssayBySlug } from "@/lib/content";
+import { getEssayBySlug, getEssaysBySeries } from "@/lib/content";
 import { MDXContent } from "@/components/mdx-content";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
@@ -17,10 +17,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const essay = getEssayBySlug(slug);
   if (!essay) return {};
 
+  const title = essay.seoTitle ?? essay.title;
+  const description = essay.seoDescription ?? essay.description;
   const url = `/writing/${essay.slug}`;
   return {
-    title: essay.title,
-    description: essay.description,
+    title,
+    description,
     alternates: { canonical: url },
     openGraph: {
       type: "article",
@@ -49,11 +51,23 @@ export default async function EssayPage({ params }: Props) {
 
   const url = absoluteUrl(`/writing/${essay.slug}`);
   const publishedIso = new Date(essay.date).toISOString();
+  const headline = essay.seoTitle ?? essay.title;
+  const seriesEssays = essay.series ? getEssaysBySeries(essay.series) : [];
+  const seriesIndex = seriesEssays.findIndex(
+    (seriesEssay) => seriesEssay.slug === essay.slug,
+  );
+  const previousSeriesEssay =
+    seriesIndex > 0 ? seriesEssays[seriesIndex - 1] : undefined;
+  const nextSeriesEssay =
+    seriesIndex >= 0 && seriesIndex < seriesEssays.length - 1
+      ? seriesEssays[seriesIndex + 1]
+      : undefined;
   const blogPosting = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: essay.title,
-    description: essay.description,
+    headline,
+    alternativeHeadline: headline === essay.title ? undefined : essay.title,
+    description: essay.seoDescription ?? essay.description,
     datePublished: publishedIso,
     dateModified: publishedIso,
     image: absoluteUrl(`/writing/${essay.slug}/opengraph-image`),
@@ -102,6 +116,37 @@ export default async function EssayPage({ params }: Props) {
           )}
         </div>
       </header>
+
+      {essay.series && seriesEssays.length > 1 && (
+        <section className="mb-10 border-l border-(--color-border) pl-4">
+          <h2 className="text-xs font-medium uppercase tracking-[0.14em] text-(--color-foreground-muted)">
+            Part of {essay.series}
+          </h2>
+          <p className="mt-1 text-sm text-(--color-foreground-muted)">
+            {seriesIndex + 1} of {seriesEssays.length}
+          </p>
+          {(previousSeriesEssay || nextSeriesEssay) && (
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+              {previousSeriesEssay && (
+                <Link
+                  href={`/writing/${previousSeriesEssay.slug}`}
+                  className="text-(--color-foreground-muted) hover:text-(--color-accent) transition-colors"
+                >
+                  ← {previousSeriesEssay.title}
+                </Link>
+              )}
+              {nextSeriesEssay && (
+                <Link
+                  href={`/writing/${nextSeriesEssay.slug}`}
+                  className="text-(--color-foreground-muted) hover:text-(--color-accent) transition-colors"
+                >
+                  {nextSeriesEssay.title} →
+                </Link>
+              )}
+            </div>
+          )}
+        </section>
+      )}
 
       <div className="prose">
         <MDXContent code={essay.body} />

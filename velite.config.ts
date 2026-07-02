@@ -1,8 +1,8 @@
-import rehypePrettyCode from "rehype-pretty-code"
-import rehypeSlug from "rehype-slug"
-import rehypeAutolinkHeadings from "rehype-autolink-headings"
-import remarkGfm from "remark-gfm"
-import { defineCollection, defineConfig, s } from "velite"
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import remarkGfm from "remark-gfm";
+import { defineCollection, defineConfig, s } from "velite";
 
 const essays = defineCollection({
   name: "Essay",
@@ -10,9 +10,12 @@ const essays = defineCollection({
   schema: s
     .object({
       title: s.string().max(200),
+      seoTitle: s.string().max(200).optional(),
       slug: s.slug("essays"),
       date: s.isodate(),
       description: s.string().max(500).optional(),
+      seoDescription: s.string().max(500).optional(),
+      series: s.string().max(100).optional(),
       featured: s.boolean().default(false),
       draft: s.boolean().default(false),
       metadata: s.metadata(),
@@ -22,7 +25,7 @@ const essays = defineCollection({
       ...data,
       permalink: `/writing/${data.slug}`,
     })),
-})
+});
 
 const notes = defineCollection({
   name: "Note",
@@ -38,7 +41,7 @@ const notes = defineCollection({
       ...data,
       permalink: `/writing#${data.slug}`,
     })),
-})
+});
 
 export default defineConfig({
   root: "content",
@@ -62,4 +65,4 @@ export default defineConfig({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeSlug],
   },
-})
+});

@@ -1,13 +1,18 @@
 ---
 title: "Wrap the column, lose the index"
+seoTitle: "Why Postgres Stops Using an Index When You Cast or Wrap a Column"
 slug: why-your-index-isnt-used
 date: 2026-07-02
 description: "A normal index stores column values. If your WHERE clause wraps the column in a cast, function, or bit of math, Postgres may have to compute that expression for every row instead of using the index."
+seoDescription: "Postgres may ignore an index when a WHERE clause casts, wraps, or transforms the indexed column. Keep the column bare, use range predicates, or create an expression index."
+series: "Postgres index series"
 featured: true
 draft: false
 ---
 
 You added the index. The query filters on that exact column. Somehow it still scans the whole table.
+
+> Postgres may ignore a normal index when your `WHERE` clause casts, wraps, or does math on the indexed column. Keep the column bare and move the work to the constant side, or create an expression index when the expression is the thing you actually query.
 
 This is more annoying than a missing index because it looks like it should work. The column is indexed. The `WHERE` clause mentions the column. Then the plan comes back with a `Seq Scan` and a `Filter`, and the index is just sitting there doing nothing.
 
