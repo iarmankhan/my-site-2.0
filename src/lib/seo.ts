@@ -8,7 +8,7 @@
 export const siteConfig = {
   name: "Arman Khan",
   url: "https://arman.wtf",
-  title: "Arman Khan",
+  title: "Arman Khan — Software Engineer",
   description:
     "Software engineer building things for the web, mobile, and AI. Writing about tech, ideas, and whatever else comes to mind.",
   locale: "en_US",
