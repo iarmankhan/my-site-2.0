@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { format } from "date-fns";
-import { getRecentWriting } from "@/lib/content";
+import Image from "next/image";
 import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/lib/seo";
 import { caseStudies } from "@/data/case-studies";
-import { openSource } from "@/data/projects";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -29,172 +27,66 @@ const websiteJsonLd = {
   author: { "@type": "Person", name: siteConfig.author.name },
 };
 
-const now = [
-  "Building Plixy.tech",
-  "Maintaining open source developer tools",
-  "Building products and backend systems at Somethings",
-];
-
 export default function Home() {
-  const recentWriting = getRecentWriting(3);
-
   return (
-    <div className="animate-in space-y-14">
+    <div className="home-page">
       <JsonLd data={personJsonLd} />
       <JsonLd data={websiteJsonLd} />
-      {/* Intro */}
-      <section>
-        <h1 className="font-bold text-4xl sm:text-5xl tracking-tight leading-[1.1]">
-          Hey, I'm <span className="signature-underline">Arman</span>.
-        </h1>
-        <div className="mt-6 space-y-4 text-(--color-foreground-muted) leading-relaxed">
-          <p>
-            I build products and developer tools across mobile, backend and AI.
-            I run{" "}
-            <a href="https://plixy.tech" target="_blank" rel="noopener noreferrer" className="text-(--color-foreground) underline underline-offset-3 decoration-(--color-border) hover:text-(--color-accent)">
-              Plixy.tech
-            </a>
-            {" "}and publish open source software, from Git tooling to AI workflows.
-          </p>
-          <p>
-            At{" "}
-            <a
-              href="https://somethings.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-(--color-foreground) hover:text-(--color-accent) transition-colors underline underline-offset-3 decoration-(--color-border) hover:decoration-(--color-accent)"
-            >
-              Somethings
-            </a>
-            , I am a principal and founding engineer. I have worked across its
-            mobile app, backend, staff dashboards and production AI. Earlier, I
-            led full stack engineering work in legal tech and built products for
-            commerce and business operations.
-          </p>
+      <div className="home-hero">
+        <div>
+          <h1 className="home-title">Hi, I&apos;m Arman.</h1>
+          <div className="home-bio">
+            <p>
+              I run{" "}
+              <a
+                className="text-link"
+                href="https://plixy.tech"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <strong>Plixy.tech</strong>
+              </a>{" "}
+              and publish open source developer tools. I work across mobile
+              apps, backend platforms, and AI.
+            </p>
+            <p>
+              At <strong>Somethings</strong>, I&apos;m a founding engineer who
+              has built across the app, backend, staff dashboards, and
+              production AI. My earlier work spans legal tech and commerce.
+            </p>
+          </div>
+          <div className="home-links">
+            <Link href="/projects">Explore my work ↗</Link>
+            <Link href="/writing">Read my writing ↗</Link>
+          </div>
         </div>
-      </section>
-
-      <section aria-labelledby="open-source">
-        <div className="flex items-center justify-between gap-4">
-          <h2 id="open-source" className="text-2xl font-bold tracking-tight">Open source</h2>
-          <Link href="/projects" className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent)">
-            All projects →
+        <figure className="hero-art">
+          <Image
+            src="/assets/arman-city.webp"
+            alt="An original painting of an imagined city filled with gardens and connecting paths"
+            width={768}
+            height={1152}
+            priority
+          />
+        </figure>
+      </div>
+      <section className="home-selected" aria-labelledby="selected-work-title">
+        <h2 id="selected-work-title">Selected work</h2>
+        <div className="home-selected-list">
+          <a
+            href="https://www.npmjs.com/package/git-tidy-cli"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>git-tidy, a safer way to clean Git branches</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <Link href={`/work/${caseStudies[0].slug}`}>
+            <span>{caseStudies[0].title}</span>
+            <span aria-hidden="true">↗</span>
           </Link>
         </div>
-        <div className="mt-5 space-y-6 border-t border-(--color-border) pt-5">
-          {openSource.slice(0, 4).map((project) => (
-            <a key={project.name} href={project.url} target="_blank" rel="noopener noreferrer" className="group block">
-              <h3 className="font-semibold leading-snug group-hover:text-(--color-accent)">{project.name} ↗</h3>
-              <p className="mt-1 text-sm leading-relaxed text-(--color-foreground-muted)">{project.description}</p>
-            </a>
-          ))}
-        </div>
       </section>
-
-      <section aria-labelledby="engineering-work">
-        <div className="flex items-center justify-between gap-4">
-          <h2 id="engineering-work" className="text-2xl font-bold tracking-tight">Selected engineering work</h2>
-          <Link href="/experience" className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent)">
-            Experience →
-          </Link>
-        </div>
-        <p className="mt-3 text-sm leading-relaxed text-(--color-foreground-muted)">
-          Two closer looks at work from a broader career across products and teams.
-        </p>
-        <div className="mt-5 space-y-6 border-t border-(--color-border) pt-5">
-          {caseStudies.map((study) => (
-            <Link key={study.slug} href={`/work/${study.slug}`} className="group block">
-              <p className="text-xs font-medium text-(--color-accent)">{study.eyebrow}</p>
-              <h3 className="mt-1 font-semibold leading-snug group-hover:text-(--color-accent)">
-                {study.title} ↗
-              </h3>
-              <p className="mt-1 text-sm leading-relaxed text-(--color-foreground-muted)">
-                {study.summary}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Now */}
-      <section>
-        <h2 className="font-bold text-2xl tracking-tight mb-4">Now</h2>
-        <ul className="space-y-2">
-          {now.map((item) => (
-            <li
-              key={item}
-              className="flex gap-3 text-(--color-foreground-muted)"
-            >
-              <span className="flex h-[1.7em] shrink-0 items-center">
-                <span className="block h-1.5 w-1.5 rounded-full bg-(--color-accent)" />
-              </span>
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Recent Writing */}
-      {recentWriting.length > 0 && (
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-2xl tracking-tight">
-              Recent Writing
-            </h2>
-            <Link
-              href="/writing"
-              className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent) transition-colors"
-            >
-              View all →
-            </Link>
-          </div>
-          <div className="space-y-7">
-            {recentWriting.map((item) => (
-              <div key={item.data.slug}>
-                {item.type === "essay" ? (
-                  <Link
-                    href={`/writing/${item.data.slug}`}
-                    className="group block"
-                  >
-                    <p className="font-medium leading-snug text-balance transition-colors group-hover:text-(--color-accent)">
-                      {item.data.title}
-                    </p>
-                    <div className="mt-1 text-sm text-(--color-foreground-muted)">
-                      <time className="tabular-nums">
-                        {format(new Date(item.data.date), "MMM d, yyyy")}
-                      </time>
-                    </div>
-                    {"description" in item.data && item.data.description && (
-                      <p className="mt-2 max-w-[60ch] text-sm leading-relaxed text-(--color-foreground-muted)">
-                        {item.data.description}
-                      </p>
-                    )}
-                  </Link>
-                ) : (
-                  <div>
-                    <p className="font-medium leading-snug text-balance">
-                      {item.data.title}
-                    </p>
-                    <div className="mt-1 text-sm text-(--color-foreground-muted)">
-                      <time className="tabular-nums">
-                        {format(new Date(item.data.date), "MMM d, yyyy")}
-                      </time>
-                    </div>
-                    {"content" in item.data && (
-                      <div
-                        className="mt-2 max-w-[60ch] text-sm leading-relaxed text-(--color-foreground-muted)"
-                        dangerouslySetInnerHTML={{
-                          __html: item.data.content,
-                        }}
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }

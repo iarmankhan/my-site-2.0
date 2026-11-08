@@ -86,22 +86,17 @@ export default async function EssayPage({ params }: Props) {
   };
 
   return (
-    <article className="animate-in">
+    <article className="interior-page article-page">
       <JsonLd data={blogPosting} />
-      <div className="mb-8">
-        <Link
-          href="/writing"
-          className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent) transition-colors"
-        >
-          ← Back to writing
+      <div>
+        <Link href="/writing" className="article-back">
+          ← Writing
         </Link>
       </div>
 
-      <header className="mb-10">
-        <h1 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight text-balance">
-          {essay.title}
-        </h1>
-        <div className="mt-4 flex items-center gap-2 text-sm text-(--color-foreground-muted)">
+      <header>
+        <h1 className="page-title">{essay.title}</h1>
+        <div className="article-meta flex items-center gap-2">
           <time className="tabular-nums">
             {format(new Date(essay.date), "MMM d, yyyy")}
           </time>
@@ -118,19 +113,16 @@ export default async function EssayPage({ params }: Props) {
       </header>
 
       {essay.series && seriesEssays.length > 1 && (
-        <section className="mb-10 border-l border-(--color-border) pl-4">
-          <h2 className="text-xs font-medium uppercase tracking-[0.14em] text-(--color-foreground-muted)">
-            Part of {essay.series}
-          </h2>
-          <p className="mt-1 text-sm text-(--color-foreground-muted)">
-            {seriesIndex + 1} of {seriesEssays.length}
+        <nav className="series-nav" aria-label={`${essay.series} series`}>
+          <p>
+            {essay.series} · {seriesIndex + 1} of {seriesEssays.length}
           </p>
           {(previousSeriesEssay || nextSeriesEssay) && (
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+            <div className="series-links">
               {previousSeriesEssay && (
                 <Link
                   href={`/writing/${previousSeriesEssay.slug}`}
-                  className="text-(--color-foreground-muted) hover:text-(--color-accent) transition-colors"
+                  className="text-link"
                 >
                   ← {previousSeriesEssay.title}
                 </Link>
@@ -138,17 +130,17 @@ export default async function EssayPage({ params }: Props) {
               {nextSeriesEssay && (
                 <Link
                   href={`/writing/${nextSeriesEssay.slug}`}
-                  className="text-(--color-foreground-muted) hover:text-(--color-accent) transition-colors"
+                  className="text-link"
                 >
                   {nextSeriesEssay.title} →
                 </Link>
               )}
             </div>
           )}
-        </section>
+        </nav>
       )}
 
-      <div className="prose">
+      <div className="prose article-body">
         <MDXContent code={essay.body} />
       </div>
     </article>
