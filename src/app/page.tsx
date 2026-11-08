@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { JsonLd } from "@/components/json-ld";
+import { ShuffledHeroArt } from "@/components/shuffled-hero-art";
 import { siteConfig } from "@/lib/seo";
 import { caseStudies } from "@/data/case-studies";
 import { getAllWriting } from "@/lib/content";
@@ -31,7 +31,7 @@ const websiteJsonLd = {
 export default function Home() {
   const essays = getAllWriting()
     .filter((item) => item.type === "essay")
-    .slice(0, 4);
+    .slice(0, 2);
 
   return (
     <div className="home-page">
@@ -67,15 +67,7 @@ export default function Home() {
             <Link href="/writing">Read my writing ↗</Link>
           </div>
         </div>
-        <figure className="hero-art">
-          <Image
-            src="/assets/arman-city.webp"
-            alt="An original painting of an imagined city filled with gardens and connecting paths"
-            width={768}
-            height={1152}
-            priority
-          />
-        </figure>
+        <ShuffledHeroArt />
         <section className="home-selected" aria-labelledby="selected-work-title">
           <h2 id="selected-work-title">Selected work</h2>
           <div className="home-selected-list">
