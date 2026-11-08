@@ -5,13 +5,13 @@ import { caseStudies } from "@/data/case-studies"
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Selected platform, AI and open source work by Arman Khan.",
+  description: "Open source tools, products and engineering work by Arman Khan.",
   alternates: { canonical: "/projects" },
   openGraph: {
     type: "website",
     url: "/projects",
     title: "Projects",
-    description: "Selected platform, AI and open source work by Arman Khan.",
+    description: "Open source tools, products and engineering work by Arman Khan.",
   },
 }
 
@@ -58,9 +58,20 @@ export default function ProjectsPage() {
   return (
     <div className="animate-in">
       <h1 className="font-bold text-3xl tracking-tight">Projects</h1>
-      <p className="mt-2 text-(--color-foreground-muted)">A selection of professional work and open source tools.</p>
+      <p className="mt-2 text-(--color-foreground-muted)">Open source tools, products and selected engineering work.</p>
 
-      <h2 className="mt-10 text-xl font-bold tracking-tight">Case studies</h2>
+      <h2 className="mt-10 font-bold text-xl tracking-tight">Open source &amp; tools</h2>
+      <p className="mt-2 text-(--color-foreground-muted)">
+        Developer tools and workflows I build and maintain.
+      </p>
+
+      <div className="mt-8 space-y-8">
+        {openSource.map((project) => (
+          <ProjectCard key={project.name} project={project} />
+        ))}
+      </div>
+
+      <h2 className="mt-14 text-xl font-bold tracking-tight">Engineering case studies</h2>
       <div className="mt-5 space-y-7">
         {caseStudies.map((study) => (
           <Link key={study.slug} href={`/work/${study.slug}`} className="group block">
@@ -78,16 +89,6 @@ export default function ProjectsPage() {
         ))}
       </div>
 
-      <h2 className="mt-16 font-bold text-xl tracking-tight">Open source &amp; tools</h2>
-      <p className="mt-2 text-(--color-foreground-muted)">
-        Smaller utilities I've shipped for myself and others.
-      </p>
-
-      <div className="mt-8 space-y-8">
-        {openSource.map((project) => (
-          <ProjectCard key={project.name} project={project} />
-        ))}
-      </div>
     </div>
   )
 }

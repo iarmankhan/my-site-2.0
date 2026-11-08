@@ -57,6 +57,20 @@ export const openSource: Project[] = [
     url: "https://github.com/iarmankhan/agentic-debugger",
   },
   {
+    name: "aitrainingplan-workflow",
+    description:
+      "An AI training-plan workflow with separate Coach, Critic and Reconcile steps, deterministic validation and an offline demo.",
+    tech: ["TypeScript", "AI workflows", "Node.js"],
+    url: "https://github.com/iarmankhan/aitrainingplan-workflow",
+  },
+  {
+    name: "paseo-chat-titles",
+    description:
+      "A configurable plugin that names Paseo chats using an existing Codex or Claude CLI login.",
+    tech: ["TypeScript", "Paseo", "CLI"],
+    url: "https://github.com/iarmankhan/paseo-chat-titles",
+  },
+  {
     name: "pdf-unlocker",
     description:
       "A tool to remove passwords from PDFs entirely in the browser — nothing ever leaves your device.",
