@@ -1,8 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { JsonLd } from "@/components/json-ld";
+import { ShuffledHeroArt } from "@/components/shuffled-hero-art";
 import { siteConfig } from "@/lib/seo";
 import { caseStudies } from "@/data/case-studies";
+import { getAllWriting } from "@/lib/content";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -28,13 +29,19 @@ const websiteJsonLd = {
 };
 
 export default function Home() {
+  const essays = getAllWriting()
+    .filter((item) => item.type === "essay")
+    .slice(0, 2);
+
   return (
     <div className="home-page">
       <JsonLd data={personJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <div className="home-hero">
-        <div>
-          <h1 className="home-title">Hi, I&apos;m Arman.</h1>
+        <div className="home-intro">
+          <h1 className="home-title">
+            Hi, I&apos;m <span className="signature-underline">Arman</span>.
+          </h1>
           <div className="home-bio">
             <p>
               I run{" "}
@@ -60,33 +67,36 @@ export default function Home() {
             <Link href="/writing">Read my writing ↗</Link>
           </div>
         </div>
-        <figure className="hero-art">
-          <Image
-            src="/assets/arman-city.webp"
-            alt="An original painting of an imagined city filled with gardens and connecting paths"
-            width={768}
-            height={1152}
-            priority
-          />
-        </figure>
+        <ShuffledHeroArt />
+        <section className="home-selected" aria-labelledby="selected-work-title">
+          <h2 id="selected-work-title">Selected work</h2>
+          <div className="home-selected-list">
+            <a
+              href="https://www.npmjs.com/package/git-tidy-cli"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>git-tidy, a safer way to clean Git branches</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <Link href={`/work/${caseStudies[0].slug}`}>
+              <span>{caseStudies[0].title}</span>
+              <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+        </section>
+        <section className="home-writing" aria-labelledby="home-writing-title">
+          <h2 id="home-writing-title">Writing</h2>
+          <div className="home-selected-list">
+            {essays.map(({ data }) => (
+              <Link href={`/writing/${data.slug}`} key={data.slug}>
+                <span>{data.title}</span>
+                <span aria-hidden="true">↗</span>
+              </Link>
+            ))}
+          </div>
+        </section>
       </div>
-      <section className="home-selected" aria-labelledby="selected-work-title">
-        <h2 id="selected-work-title">Selected work</h2>
-        <div className="home-selected-list">
-          <a
-            href="https://www.npmjs.com/package/git-tidy-cli"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>git-tidy, a safer way to clean Git branches</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-          <Link href={`/work/${caseStudies[0].slug}`}>
-            <span>{caseStudies[0].title}</span>
-            <span aria-hidden="true">↗</span>
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }

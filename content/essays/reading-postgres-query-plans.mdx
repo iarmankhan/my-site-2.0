@@ -62,6 +62,8 @@ The useful line is `Rows Removed by Filter: 666656`, and that count is per worke
 
 `Buffers: shared hit=14412 read=2255` says the same thing another way: about 16,700 pages touched, 2,255 read from disk. Most of the 55ms is Postgres walking through pages it did not need.
 
+<Note>Don't add `Gather`'s buffer counts to the scan's. They're already included.</Note>
+
 Add the index and run the same query:
 
 ```sql

@@ -16,7 +16,8 @@ export function Nav() {
   return (
     <header className="site-header">
       <Link href="/" className="site-name" aria-label="Arman Khan, home">
-        Arman Khan
+        <span className="site-name-full">Arman Khan</span>
+        <span className="site-name-short" aria-hidden="true">AK</span>
       </Link>
       <nav className="site-nav" aria-label="Main navigation">
         {links.map((link) => (
