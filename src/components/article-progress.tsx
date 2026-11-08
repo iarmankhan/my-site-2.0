@@ -15,7 +15,10 @@ export function ArticleProgress() {
           document.documentElement.scrollHeight - window.innerHeight;
         const progress =
           distance > 0 ? Math.min(1, window.scrollY / distance) : 0;
-        if (bar.current) bar.current.style.transform = `scaleX(${progress})`;
+        if (bar.current) {
+          bar.current.style.width = `${progress * 100}%`;
+          bar.current.classList.toggle("has-progress", progress > 0.01);
+        }
       });
     };
 
@@ -29,5 +32,9 @@ export function ArticleProgress() {
     };
   }, []);
 
-  return <div ref={bar} className="article-progress" aria-hidden="true" />;
+  return (
+    <div className="article-progress-track" aria-hidden="true">
+      <div ref={bar} className="article-progress" />
+    </div>
+  );
 }

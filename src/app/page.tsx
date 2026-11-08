@@ -34,7 +34,9 @@ export default function Home() {
       <JsonLd data={websiteJsonLd} />
       <div className="home-hero">
         <div>
-          <h1 className="home-title">Hi, I&apos;m Arman.</h1>
+          <h1 className="home-title">
+            Hi, I&apos;m <span className="signature-underline">Arman</span>.
+          </h1>
           <div className="home-bio">
             <p>
               I run{" "}
