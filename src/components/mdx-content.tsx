@@ -132,6 +132,14 @@ function CopyablePre({ children, ...props }: PreProps) {
   )
 }
 
+function Note({ children }: { children: ReactNode }) {
+  return <aside className="article-note">{children}</aside>
+}
+
+function Highlight({ children }: { children: ReactNode }) {
+  return <mark className="article-highlight">{children}</mark>
+}
+
 const useMDXComponent = (code: string) => {
   const fn = new Function(code)
   return fn({ ...runtime }).default
@@ -144,5 +152,5 @@ interface MDXProps {
 
 export function MDXContent({ code, components }: MDXProps) {
   const Component = useMDXComponent(code)
-  return <Component components={{ a: MdxLink, pre: CopyablePre, ...components }} />
+  return <Component components={{ a: MdxLink, pre: CopyablePre, Note, Highlight, ...components }} />
 }

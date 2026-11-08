@@ -670,6 +670,36 @@ body {
   max-width: 690px;
   margin-top: 48px;
 }
+.article-note {
+  margin: 30px 0;
+  padding: 15px 0 0;
+  border-top: 1px solid var(--color-accent);
+  color: var(--color-foreground-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.article-note > :last-child {
+  margin-bottom: 0;
+}
+.article-highlight {
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 0.08em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+@media (min-width: 1200px) {
+  .article-body {
+    position: relative;
+  }
+  .article-note {
+    position: absolute;
+    left: calc(100% + 48px);
+    width: 220px;
+    margin: 0;
+  }
+}
 .article-body h2 {
   margin: 38px 0 11px;
   font-size: 22px;

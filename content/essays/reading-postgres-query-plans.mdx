@@ -58,7 +58,9 @@ This plan has two nodes because Postgres ran the scan in parallel. Read it insid
 
 A few fields carry most of the meaning. `cost=1000.00..28085.77` is the planner's guess in arbitrary units: startup cost, then total cost. It is not milliseconds. The number only matters next to another plan. `rows=21` is what Postgres expected back, and `actual ... rows=32` is what came back. Close enough. `width=38` is the estimated row size in bytes.
 
-The useful line is `Rows Removed by Filter: 666656`, and that count is per worker. Each process threw away about 667k rows. Between the three of them, Postgres read all 2 million rows to keep 32. That is the wasted work, and it's why this is one of the rare times an index is the obvious fix.
+The useful line is `Rows Removed by Filter: 666656`, and that count is per worker. Each process threw away about 667k rows. Between the three of them, Postgres read all 2 million rows to keep 32. <Highlight>That is the wasted work</Highlight>, and it's why this is one of the rare times an index is the obvious fix.
+
+<Note>2 million rows in, 32 out. That ratio tells the story faster than the 55 ms timing.</Note>
 
 `Buffers: shared hit=14412 read=2255` says the same thing another way: about 16,700 pages touched, 2,255 read from disk. Most of the 55ms is Postgres walking through pages it did not need.
 
