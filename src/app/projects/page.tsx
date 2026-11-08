@@ -1,15 +1,17 @@
 import type { Metadata } from "next"
 import { openSource, projects, type Project } from "@/data/projects"
+import Link from "next/link"
+import { caseStudies } from "@/data/case-studies"
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Things I've built — from hospital management systems to e-commerce platforms.",
+  description: "Selected platform, AI and open source work by Arman Khan.",
   alternates: { canonical: "/projects" },
   openGraph: {
     type: "website",
     url: "/projects",
     title: "Projects",
-    description: "Things I've built — from hospital management systems to e-commerce platforms.",
+    description: "Selected platform, AI and open source work by Arman Khan.",
   },
 }
 
@@ -56,11 +58,21 @@ export default function ProjectsPage() {
   return (
     <div className="animate-in">
       <h1 className="font-bold text-3xl tracking-tight">Projects</h1>
-      <p className="mt-2 text-(--color-foreground-muted)">
-        A selection of things I've built or am building.
-      </p>
+      <p className="mt-2 text-(--color-foreground-muted)">A selection of professional work and open source tools.</p>
 
-      <div className="mt-10 space-y-8">
+      <h2 className="mt-10 text-xl font-bold tracking-tight">Case studies</h2>
+      <div className="mt-5 space-y-7">
+        {caseStudies.map((study) => (
+          <Link key={study.slug} href={`/work/${study.slug}`} className="group block">
+            <p className="text-xs font-medium text-(--color-accent)">{study.eyebrow}</p>
+            <h3 className="mt-1 font-medium group-hover:text-(--color-accent)">{study.title} ↗</h3>
+            <p className="mt-1 text-sm text-(--color-foreground-muted)">{study.summary}</p>
+          </Link>
+        ))}
+      </div>
+
+      <h2 className="mt-14 text-xl font-bold tracking-tight">Other projects</h2>
+      <div className="mt-6 space-y-8">
         {projects.map((project) => (
           <ProjectCard key={project.name} project={project} />
         ))}

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { essays } from "#velite";
 import { absoluteUrl } from "@/lib/seo";
+import { caseStudies } from "@/data/case-studies";
 
 export const dynamic = "force-static";
 
@@ -47,5 +48,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...essayRoutes];
+  const workRoutes: MetadataRoute.Sitemap = caseStudies.map(({ slug }) => ({
+    url: absoluteUrl(`/work/${slug}`),
+    changeFrequency: "yearly",
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...workRoutes, ...essayRoutes];
 }
