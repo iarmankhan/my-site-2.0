@@ -1,10 +1,10 @@
 ---
 title: "I built a thing to delete dead git branches"
-seoTitle: "git-tidy: A Safe CLI for Cleaning Up Stale Git Branches"
+seoTitle: "git-tidy: A CLI for Cleaning Up Stale Git Branches"
 slug: git-tidy
 date: 2026-06-17
 description: "git-tidy: a small CLI for cleaning up stale branches. I used it to clear 449 dead ones across three repos."
-seoDescription: "git-tidy is a small CLI for safely cleaning up stale Git branches with dry-run output, protected branches, remote branch support, and JSON output for agents."
+seoDescription: "git-tidy is a small CLI for cleaning up stale Git branches with dry-run output, protected branch names, remote branch support, and JSON output for agents."
 featured: true
 draft: false
 ---
@@ -17,7 +17,7 @@ Deleting them by hand is the kind of chore I'll avoid for months, partly because
 npx git-tidy-cli
 ```
 
-It is dry-run by default, so a first run shows candidates without deleting anything. It protects the default branch, `main`, `develop`, `staging`, `production`, and the branch I'm on. Age and pattern filters can also select unmerged branches, so I still read the list before deleting anything.
+It is dry-run by default, so a first run shows candidates without deleting anything. It excludes several protected branch names and the branch I'm on. Age and pattern filters can also select unmerged branches, so I still read the list before deleting anything.
 
 It also has a `--json` mode, which means I can point an agent at it: "tidy the merged branches older than 90 days on origin" and it shows me the list before touching anything.
 
@@ -27,6 +27,6 @@ The first time I used it for real I nearly made a mess. I wanted to clear out ol
 git-tidy --match all --pattern 'sync-*' --age 7 --scope remote
 ```
 
-Then I pointed it at three of my repos. I read each dry-run, hit execute, and watched 449 branches disappear — 884 down to 435. Didn't lose anything that wasn't already in `main`. The funny part was how little of that was real work. Almost all of it was one sync bot that had been quietly littering for a year because nobody wired up the cleanup.
+Then I pointed it at three of my repos. I read each dry-run, hit execute, and watched 449 branches disappear: 884 down to 435. The funny part was how little of that was real work. Almost all of it was one sync bot that had been quietly littering for a year because nobody wired up the cleanup.
 
 That's the whole tool. It's on [npm](https://www.npmjs.com/package/git-tidy-cli) and [GitHub](https://github.com/iarmankhan/git-tidy). Go run it on your worst repo and see what falls out.
