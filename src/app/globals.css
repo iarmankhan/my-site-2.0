@@ -39,6 +39,9 @@ body {
   background-color: var(--color-background);
   line-height: 1.6;
   text-rendering: optimizeLegibility;
+  transition:
+    color 200ms ease,
+    background-color 200ms ease;
 }
 
 /* Selection */
@@ -263,11 +266,11 @@ body {
   border-radius: 0 !important;
 }
 
-/* Page transition */
+/* A short entrance when the route changes. */
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -275,8 +278,8 @@ body {
   }
 }
 
-.animate-in {
-  animation: fade-in 0.5s ease-out;
+.page-enter {
+  animation: fade-in 260ms ease-out both;
 }
 
 /* Signature interaction: amber underline draw on the hero name */
@@ -360,6 +363,7 @@ body {
 }
 .site-nav a {
   text-decoration: none;
+  transition: color 160ms ease;
 }
 .site-nav a:hover,
 .site-nav a[aria-current="page"] {
@@ -467,6 +471,12 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: center 45%;
+  transition: transform 420ms ease;
+}
+@media (hover: hover) {
+  .hero-art:hover img {
+    transform: scale(1.018);
+  }
 }
 .home-selected {
   max-width: 780px;
@@ -489,6 +499,7 @@ body {
   border-bottom: 1px solid var(--color-border);
   font-size: 15px;
   text-decoration: none;
+  transition: color 160ms ease;
 }
 .home-selected-list a:hover {
   color: var(--color-accent);
@@ -564,7 +575,9 @@ body {
   color: var(--color-accent);
 }
 .entry-arrow {
+  display: inline-block;
   font-size: 0.85em;
+  transition: transform 180ms ease;
 }
 .entry-description {
   max-width: 610px;
@@ -619,6 +632,13 @@ body {
   grid-column: 1;
   grid-row: 1;
   display: block;
+  transition: color 160ms ease;
+}
+@media (hover: hover) {
+  .writing-entry-content:hover .entry-arrow,
+  .work-entry:hover .entry-arrow {
+    transform: translate(2px, -2px);
+  }
 }
 .writing-entry .entry-description {
   margin-top: 8px;
@@ -669,6 +689,31 @@ body {
 .article-body {
   max-width: 690px;
   margin-top: 48px;
+}
+.article-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 50;
+  width: 100%;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+.article-endnote {
+  max-width: 690px;
+  margin-top: 60px;
+  padding-top: 23px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-foreground-muted);
+  font-size: 14px;
+}
+.article-endnote a {
+  display: inline-block;
+  margin-top: 5px;
+  color: var(--color-foreground);
+  font-weight: 550;
 }
 .article-note {
   margin: 30px 0;
@@ -832,5 +877,20 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .page-enter {
+    animation: none;
+  }
+  .signature-underline::after {
+    animation: none;
+    width: 100%;
+  }
+  .hero-art img,
+  body,
+  .entry-arrow,
+  .site-nav a,
+  .writing-entry-content,
+  .home-selected-list a {
+    transition: none;
   }
 }
