@@ -57,15 +57,17 @@ export default function Home() {
             >
               Somethings
             </a>
-            . I work across backend systems, full stack product delivery and
-            production AI.
+            . I helped build its mobile app, backend and staff dashboards from
+            inception. I proposed and built the NestJS foundation our engineering
+            team now uses for all new backend development, and I ship production AI.
           </p>
           <p>
+            The product had about 3,700 teen monthly active users in October 2026.
             I also run{" "}
             <a href="https://plixy.tech" target="_blank" rel="noopener noreferrer" className="text-(--color-foreground) underline underline-offset-3 decoration-(--color-border) hover:text-(--color-accent)">
               Plixy.tech
             </a>
-            . Here are two examples of the systems I have built.
+            . Here is the work behind those headlines.
           </p>
         </div>
       </section>

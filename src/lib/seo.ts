@@ -10,7 +10,7 @@ export const siteConfig = {
   url: "https://arman.wtf",
   title: "Arman Khan — Principal Engineer",
   description:
-    "Principal and founding engineer at Somethings, building backend systems, full stack products and production AI workflows.",
+    "Principal and founding engineer at Somethings. Built its mobile app, backend platform and production AI workflows.",
   locale: "en_US",
   author: {
     name: "Arman Khan",
