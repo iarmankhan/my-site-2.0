@@ -881,7 +881,7 @@ body {
     max-width: 360px;
     max-height: none;
     aspect-ratio: 2 / 3;
-    margin: 46px 0 0 auto;
+    margin: 46px auto 0;
   }
 }
 @media (max-width: 760px) {
@@ -941,7 +941,7 @@ body {
     max-width: min(72vw, 320px);
     max-height: none;
     aspect-ratio: 2 / 3;
-    margin: 46px 0 0 auto;
+    margin: 46px auto 0;
   }
   .hero-art img {
     object-position: center 48%;
