@@ -1,6 +1,4 @@
 import { ImageResponse } from "next/og";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { siteConfig } from "@/lib/seo";
 
 /** Open Graph / Twitter recommended size. */
@@ -197,10 +195,12 @@ export async function renderOgImage({
 }
 
 /** The home share card mirrors the portrait and typography on the home page. */
-export async function renderHomeOgImage(): Promise<ImageResponse> {
-  const artwork = await readFile(
-    join(process.cwd(), "public/assets/arman-og-flower-stairs.jpg"),
-  );
+export async function renderHomeOgImage(artworkUrl: string): Promise<ImageResponse> {
+  const response = await fetch(artworkUrl, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`Could not load OG artwork: ${response.status}`);
+  }
+  const artwork = Buffer.from(await response.arrayBuffer());
   const font = await loadGoogleFont(
     "Plus Jakarta Sans",
     700,
@@ -297,6 +297,7 @@ export async function renderHomeOgImage(): Promise<ImageResponse> {
     </div>,
     {
       ...OG_SIZE,
+      headers: { "Cache-Control": "no-store" },
       fonts: font ? [{ name: "Jakarta", data: font, weight: 700 }] : undefined,
     },
   );

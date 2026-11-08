@@ -2,61 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-const artwork = [
-  {
-    src: "/assets/arman-city.webp",
-    alt: "A painted city with gardens and connecting paths",
-  },
-  {
-    src: "/assets/arman-city-garden.webp",
-    alt: "A painted garden city with stone arches and flowering trees",
-  },
-  {
-    src: "/assets/arman-city-coast.webp",
-    alt: "A painted coastal town with stone arches and flowering trees",
-  },
-  {
-    src: "/assets/arman-city-hill-lane.webp",
-    alt: "A painted stone lane leading toward a hillside bell tower",
-  },
-  {
-    src: "/assets/arman-city-dome-stairs.webp",
-    alt: "Flower-lined stone steps rising toward a domed hill town",
-  },
-  {
-    src: "/assets/arman-city-fountain-court.webp",
-    alt: "A sunlit stone courtyard with a fountain and lemon trees",
-  },
-  {
-    src: "/assets/arman-city-cliff-terrace.webp",
-    alt: "A flowering terrace overlooking a blue Mediterranean sea",
-  },
-  {
-    src: "/assets/arman-city-flower-bridges.webp",
-    alt: "A flower-lined lane passing beneath stone bridges",
-  },
-  {
-    src: "/assets/arman-city-garden-arcade.webp",
-    alt: "A garden walkway beneath stone arches overlooking a hill town",
-  },
-  {
-    src: "/assets/arman-city-cove.webp",
-    alt: "A hillside village and stone arch above a blue coastal cove",
-  },
-  {
-    src: "/assets/arman-city-viaduct.webp",
-    alt: "A high stone viaduct above a flowering village street",
-  },
-  {
-    src: "/assets/arman-city-flower-stairs.webp",
-    alt: "Flowering branches frame stone steps and open archways",
-  },
-  {
-    src: "/assets/arman-city-colonnade.webp",
-    alt: "A sunlit colonnade overlooking a coastal hill town",
-  },
-];
+import { heroArtwork } from "@/data/hero-artwork";
 
 export function ShuffledHeroArt() {
   const [selected, setSelected] = useState<number | null>(null);
@@ -71,7 +17,7 @@ export function ShuffledHeroArt() {
       // The artwork still rotates when browser storage is unavailable.
     }
 
-    const choices = artwork.map((_, index) => index).filter((index) => index !== previous);
+    const choices = heroArtwork.map((_, index) => index).filter((index) => index !== previous);
     const next = choices[Math.floor(Math.random() * choices.length)];
 
     try {
@@ -83,7 +29,7 @@ export function ShuffledHeroArt() {
     setSelected(next);
   }, []);
 
-  const image = selected === null ? null : artwork[selected];
+  const image = selected === null ? null : heroArtwork[selected];
 
   return (
     <figure className="hero-art">
@@ -98,8 +44,8 @@ export function ShuffledHeroArt() {
       )}
       <noscript>
         <img
-          src={artwork[0].src}
-          alt={artwork[0].alt}
+          src={heroArtwork[0].src}
+          alt={heroArtwork[0].alt}
           width={768}
           height={1152}
         />
