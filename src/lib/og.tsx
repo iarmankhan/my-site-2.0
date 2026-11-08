@@ -193,3 +193,112 @@ export async function renderOgImage({
     { ...OG_SIZE, fonts: fonts.length ? fonts : undefined },
   );
 }
+
+/** The home share card mirrors the portrait and typography on the home page. */
+export async function renderHomeOgImage(artworkUrl: string): Promise<ImageResponse> {
+  const response = await fetch(artworkUrl, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`Could not load OG artwork: ${response.status}`);
+  }
+  const artwork = Buffer.from(await response.arrayBuffer());
+  const font = await loadGoogleFont(
+    "Plus Jakarta Sans",
+    700,
+    "Hi, I'm Arman. Engineer, founder, open source developer. arman.wtf",
+  );
+
+  return new ImageResponse(
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        background: "#ffffff",
+        color: "#1d2421",
+        fontFamily: "Jakarta, Arial, sans-serif",
+        padding: 48,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          width: 685,
+          padding: "22px 54px 18px 18px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            fontSize: 25,
+            fontWeight: 700,
+            letterSpacing: -0.6,
+          }}
+        >
+          Arman Khan
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              fontSize: 80,
+              fontWeight: 700,
+              lineHeight: 1.06,
+              letterSpacing: -4,
+            }}
+          >
+            Hi, I&apos;m
+          </div>
+          <div
+            style={{
+              display: "flex",
+              width: 330,
+              fontSize: 100,
+              fontWeight: 700,
+              lineHeight: 1.08,
+              letterSpacing: -5,
+              borderBottom: "7px solid #315f59",
+              paddingBottom: 2,
+            }}
+          >
+            Arman.
+          </div>
+          <div
+            style={{
+              display: "flex",
+              maxWidth: 520,
+              marginTop: 38,
+              fontSize: 29,
+              lineHeight: 1.34,
+              color: "#59635e",
+            }}
+          >
+            Engineer, founder, open source developer.
+          </div>
+        </div>
+
+        <div style={{ display: "flex", fontSize: 24, color: "#315f59" }}>
+          arman.wtf
+        </div>
+      </div>
+      <img
+        src={`data:image/jpeg;base64,${artwork.toString("base64")}`}
+        alt="Painted sunlit town with flowering stairs"
+        style={{
+          display: "flex",
+          width: 419,
+          height: 534,
+          objectFit: "cover",
+          objectPosition: "center 48%",
+        }}
+      />
+    </div>,
+    {
+      ...OG_SIZE,
+      headers: { "Cache-Control": "no-store" },
+      fonts: font ? [{ name: "Jakarta", data: font, weight: 700 }] : undefined,
+    },
+  );
+}
