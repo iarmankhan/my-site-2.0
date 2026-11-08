@@ -32,46 +32,40 @@ export default async function WorkPage({
   if (!study) notFound();
 
   return (
-    <article className="animate-in space-y-10">
-      <div>
-        <Link href="/projects" className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent)">
-          ← Projects
-        </Link>
-        <p className="mt-8 text-sm font-medium text-(--color-accent)">{study.eyebrow}</p>
-        <h1 className="mt-2 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
-          {study.title}
-        </h1>
-        <p className="mt-5 text-lg leading-relaxed text-(--color-foreground-muted)">
-          {study.summary}
-        </p>
+    <article className="editorial-page">
+      <Link href="/projects" className="article-back">
+        ← Back to work
+      </Link>
+      <p className="page-kicker">{study.eyebrow}</p>
+      <h1 className="page-title">{study.title}</h1>
+      <p className="page-intro">{study.summary}</p>
+      <div className="article-body">
+        <section>
+          <h2>The problem</h2>
+          <p>{study.problem}</p>
+        </section>
+        <section>
+          <h2>What I built</h2>
+          <ul>
+            {study.contribution.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+        <section>
+          <h2>Architecture decisions</h2>
+          <ul>
+            {study.decisions.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </section>
+        <section>
+          <h2>Outcome</h2>
+          <p>{study.outcome}</p>
+          <p className="mt-4 text-sm">{study.limits}</p>
+        </section>
       </div>
-
-      <section>
-        <h2 className="text-xl font-bold tracking-tight">The problem</h2>
-        <p className="mt-3 leading-relaxed text-(--color-foreground-muted)">{study.problem}</p>
-      </section>
-
-      <section>
-        <h2 className="text-xl font-bold tracking-tight">What I built</h2>
-        <ul className="mt-3 list-disc space-y-2 pl-5 text-(--color-foreground-muted)">
-          {study.contribution.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-      </section>
-
-      <section>
-        <h2 className="text-xl font-bold tracking-tight">Architecture decisions</h2>
-        <ul className="mt-3 list-disc space-y-2 pl-5 text-(--color-foreground-muted)">
-          {study.decisions.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-      </section>
-
-      <section>
-        <h2 className="text-xl font-bold tracking-tight">Outcome</h2>
-        <p className="mt-3 leading-relaxed text-(--color-foreground-muted)">{study.outcome}</p>
-        <p className="mt-4 border-l-2 border-(--color-border) pl-4 text-sm leading-relaxed text-(--color-foreground-muted)">
-          {study.limits}
-        </p>
-      </section>
     </article>
   );
 }

@@ -1,11 +1,11 @@
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Analytics } from "@vercel/analytics/next"
-import { Nav } from "@/components/nav"
-import { Footer } from "@/components/footer"
-import { siteConfig } from "@/lib/seo"
-import "./globals.css"
+import type { Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
+import { Analytics } from "@vercel/analytics/next";
+import { Nav } from "@/components/nav";
+import { Footer } from "@/components/footer";
+import { siteConfig } from "@/lib/seo";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +31,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
     types: {
-      "application/rss+xml": [{ url: "/feed.xml", title: `${siteConfig.name} — Writing` }],
+      "application/rss+xml": [
+        { url: "/feed.xml", title: `${siteConfig.name} — Writing` },
+      ],
     },
   },
   openGraph: {
@@ -59,12 +61,12 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html
@@ -92,13 +94,15 @@ export default function RootLayout({
         <a href="#main" className="skip-to-content">
           Skip to content
         </a>
-        <div className="relative mx-auto w-full max-w-2xl px-6">
-          <main id="main" className="pt-16 pb-16">{children}</main>
+        <div className="site-shell">
+          <Nav />
+          <main id="main" className="site-main">
+            {children}
+          </main>
           <Footer />
         </div>
-        <Nav />
         <Analytics />
       </body>
     </html>
-  )
+  );
 }

@@ -5,15 +5,13 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Writing",
-  description:
-    "Essays, notes, and thoughts on building software and other things.",
+  description: "Essays and notes on building software and other things.",
   alternates: { canonical: "/writing" },
   openGraph: {
     type: "website",
     url: "/writing",
     title: "Writing",
-    description:
-      "Essays, notes, and thoughts on building software and other things.",
+    description: "Essays and notes on building software and other things.",
   },
 };
 
@@ -21,45 +19,39 @@ export default function WritingPage() {
   const items = getAllWriting();
 
   return (
-    <div className="animate-in">
-      <h1 className="font-bold text-3xl tracking-tight">Writing</h1>
-      <p className="mt-2 text-(--color-foreground-muted)">
-        Posts and notes on building software, ideas, and whatever else comes to
-        mind.
+    <div className="editorial-page">
+      <p className="page-kicker">Ideas and notes</p>
+      <h1 className="page-title">Writing</h1>
+      <p className="page-intro">
+        Posts on software, the things I build, and whatever else I&apos;m
+        thinking through.
       </p>
-
-      <div className="mt-10 space-y-8">
+      <div className="editorial-list editorial-section">
         {items.map((item) => (
-          <article key={item.data.slug}>
+          <article key={item.data.slug} className="editorial-item">
             {item.type === "essay" ? (
-              <Link href={`/writing/${item.data.slug}`} className="group block">
-                <h2 className="font-medium leading-snug text-balance transition-colors group-hover:text-(--color-accent)">
-                  {item.data.title}
-                </h2>
-                <div className="mt-1 text-sm text-(--color-foreground-muted)">
+              <Link href={`/writing/${item.data.slug}`} className="block">
+                <h2 className="editorial-item-title">{item.data.title} ↗</h2>
+                <p className="editorial-item-meta">
                   <time className="tabular-nums">
                     {format(new Date(item.data.date), "MMM d, yyyy")}
                   </time>
-                </div>
+                </p>
                 {"description" in item.data && item.data.description && (
-                  <p className="mt-2 max-w-[60ch] text-sm leading-relaxed text-(--color-foreground-muted)">
-                    {item.data.description}
-                  </p>
+                  <p className="editorial-item-desc">{item.data.description}</p>
                 )}
               </Link>
             ) : (
               <div>
-                <h2 className="font-medium leading-snug text-balance">
-                  {item.data.title}
-                </h2>
-                <div className="mt-1 text-sm text-(--color-foreground-muted)">
+                <h2 className="editorial-item-title">{item.data.title}</h2>
+                <p className="editorial-item-meta">
                   <time className="tabular-nums">
                     {format(new Date(item.data.date), "MMM d, yyyy")}
                   </time>
-                </div>
+                </p>
                 {"content" in item.data && (
                   <div
-                    className="prose mt-2 max-w-[60ch] text-sm leading-relaxed text-(--color-foreground-muted)"
+                    className="editorial-item-desc prose"
                     dangerouslySetInnerHTML={{ __html: item.data.content }}
                   />
                 )}
@@ -67,11 +59,8 @@ export default function WritingPage() {
             )}
           </article>
         ))}
-
         {items.length === 0 && (
-          <p className="text-(--color-foreground-muted)">
-            Nothing here yet. Check back soon.
-          </p>
+          <p className="editorial-item">Nothing here yet.</p>
         )}
       </div>
     </div>

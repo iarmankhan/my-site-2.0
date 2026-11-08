@@ -86,22 +86,18 @@ export default async function EssayPage({ params }: Props) {
   };
 
   return (
-    <article className="animate-in">
+    <article className="editorial-page">
       <JsonLd data={blogPosting} />
-      <div className="mb-8">
-        <Link
-          href="/writing"
-          className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent) transition-colors"
-        >
+      <div>
+        <Link href="/writing" className="article-back">
           ← Back to writing
         </Link>
       </div>
 
-      <header className="mb-10">
-        <h1 className="font-bold text-3xl sm:text-4xl tracking-tight leading-tight text-balance">
-          {essay.title}
-        </h1>
-        <div className="mt-4 flex items-center gap-2 text-sm text-(--color-foreground-muted)">
+      <header>
+        <p className="page-kicker">Writing</p>
+        <h1 className="page-title">{essay.title}</h1>
+        <div className="article-meta flex items-center gap-2">
           <time className="tabular-nums">
             {format(new Date(essay.date), "MMM d, yyyy")}
           </time>
@@ -148,7 +144,7 @@ export default async function EssayPage({ params }: Props) {
         </section>
       )}
 
-      <div className="prose">
+      <div className="prose article-body">
         <MDXContent code={essay.body} />
       </div>
     </article>
