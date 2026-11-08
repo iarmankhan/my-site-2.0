@@ -21,7 +21,7 @@ It is dry-run by default, so a first run shows candidates without deleting anyth
 
 It also has a `--json` mode, which means I can point an agent at it: "tidy the merged branches older than 90 days on origin" and it shows me the list before touching anything.
 
-The first time I used it for real I nearly made a mess. I wanted to clear out old sync branches, so I ran `--pattern 'sync-*' --age 7`. <Highlight>The dry-run came back with about half the repo.</Highlight> Took me a second to realise the filters were OR'd: it read that as "sync branches, or anything older than a week." Not what I meant. So I added a `--match all` flag for when you want every condition to hold:
+The first time I used it for real I nearly made a mess. I wanted to clear out old sync branches, so I ran `--pattern 'sync-*' --age 7`. The dry-run came back with about half the repo. Took me a second to realise the filters were OR'd: it read that as "sync branches, or anything older than a week." Not what I meant. So I added a `--match all` flag for when you want every condition to hold:
 
 ```bash
 git-tidy --match all --pattern 'sync-*' --age 7 --scope remote

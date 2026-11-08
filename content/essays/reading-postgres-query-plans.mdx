@@ -10,9 +10,9 @@ featured: true
 draft: false
 ---
 
-In the sample shop database below, a query returns 32 orders after scanning two million rows. The SQL gives the right answer, but it doesn't show the work. `EXPLAIN (ANALYZE, BUFFERS)` does, so I read the plan before changing the query or adding an index.
+I used a fake shop database with 100k customers and 2 million orders. A query for one customer returns 32 orders, but without an index Postgres scans the whole orders table. The plan shows where that work went.
 
-The dataset has 100k customers and 2 million orders. The setup script is at the end. These plans are output from one run, so your timings and even some plan choices will differ, but the shapes should be close. You can use [Pagila](https://github.com/devrimgunduz/pagila) if you want something ready-made, but it is small enough that Postgres scans everything and most plans look boring.
+The setup script is at the end. These plans are output from one run, so your timings and even some plan choices will differ, but the shapes should be close. You can use [Pagila](https://github.com/devrimgunduz/pagila) if you want something ready-made, but it is small enough that Postgres scans everything and most plans look boring.
 
 There are three versions of EXPLAIN people mix together.
 
@@ -54,9 +54,12 @@ This plan has two nodes because Postgres ran the scan in parallel. Read it insid
 
 A few fields carry most of the meaning. `cost=1000.00..28085.77` is the planner's guess in arbitrary units: startup cost, then total cost. It is not milliseconds. The number only matters next to another plan. `rows=21` is what Postgres expected back, and `actual ... rows=32` is what came back. Close enough. `width=38` is the estimated row size in bytes.
 
-The useful line is `Rows Removed by Filter: 666656`, and that count is per worker. Each process threw away about 667k rows. Between the three of them, Postgres read all 2 million rows to keep 32. <Highlight>That is the wasted work</Highlight>, and it's why this is one of the rare times an index is the obvious fix.
+`Rows Removed by Filter: 666656` is per process. Across three processes, nearly two million rows were rejected to return 32. That makes an index on `customer_id` worth trying here.
 
-<Note>Don't add the buffer counts from `Gather` and `Parallel Seq Scan`. A parent node's count already includes its children.</Note>
+<Note>
+  Don't add the buffer counts from `Gather` and `Parallel Seq Scan`. A parent
+  node's count already includes its children.
+</Note>
 
 `Buffers: shared hit=14412 read=2255` says the same thing another way: about 16,700 buffer accesses, including 2,255 reads into PostgreSQL's shared cache. A `read` may still be served by the operating system cache; it does not prove a physical disk read. The query touched far more pages than it needed for 32 rows.
 
@@ -155,8 +158,6 @@ One more thing on BUFFERS: `shared hit` means PostgreSQL found a page in its sha
 That matters because timing lies. A query can be slow on a cold cache and fast once everything is warm. Same plan, different timing. Buffers show the I/O, which is usually the thing you are trying to reduce. Two plans can look nearly identical and touch wildly different numbers of pages.
 
 For anything bigger than a few nodes, don't pretend you're going to read it nicely in the terminal. Paste it into a visualizer. [explain.dalibo.com](https://explain.dalibo.com/) is my default. [explain.depesz.com](https://explain.depesz.com/) is older, but still good at pointing at the expensive row.
-
-My check is the same each time: run `EXPLAIN (ANALYZE, BUFFERS)`, compare estimates with actual rows, and follow the buffer counts to the expensive work. Then decide what to change.
 
 ## Try it yourself
 

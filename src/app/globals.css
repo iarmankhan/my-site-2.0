@@ -726,14 +726,6 @@ body {
 .article-note > :last-child {
   margin-bottom: 0;
 }
-.article-highlight {
-  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
-  color: inherit;
-  border-radius: 2px;
-  padding: 0 0.08em;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
 @media (min-width: 1200px) {
   .article-body {
     position: relative;
