@@ -94,7 +94,7 @@ export default function ProjectsPage() {
             >
               <div>
                 <h3 className="entry-title">
-                  {study.title} <span className="entry-arrow">↗</span>
+                  {study.title}{"\u00a0"}<span className="entry-arrow">↗</span>
                 </h3>
                 <p className="entry-description">{study.summary}</p>
               </div>

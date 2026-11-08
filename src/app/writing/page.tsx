@@ -47,7 +47,7 @@ export default function WritingPage() {
                 className="writing-entry-content"
               >
                 <h2 className="entry-title">
-                  {item.data.title} <span className="entry-arrow">↗</span>
+                  {item.data.title}{"\u00a0"}<span className="entry-arrow">↗</span>
                 </h2>
                 <p className="writing-entry-summary">{item.data.description}</p>
               </Link>
