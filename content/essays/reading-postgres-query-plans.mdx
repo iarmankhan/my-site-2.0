@@ -12,7 +12,7 @@ draft: false
 
 I used a fake shop database with 100k customers and 2 million orders. A query for one customer returns 32 orders, but without an index Postgres scans the whole orders table. The plan shows where that work went.
 
-The setup script is at the end. These plans are output from one run, so your timings and even some plan choices will differ, but the shapes should be close. You can use [Pagila](https://github.com/devrimgunduz/pagila) if you want something ready-made, but it is small enough that Postgres scans everything and most plans look boring.
+The setup script is at the end. These plans are output from one run, so your timings and even some plan choices will differ, but the shapes should be close.
 
 There are three versions of EXPLAIN people mix together.
 
@@ -85,11 +85,11 @@ Execution Time: 0.586 ms
 
 55ms down to 0.6ms. Same 32 rows, almost none of the work: 38 buffer accesses instead of about 16,700.
 
-The plan is a bitmap scan, which is two steps. The `Bitmap Index Scan` walks the index and builds a bitmap of every place matching `customer_id = 42`. Then the `Bitmap Heap Scan` reads those pages from the table in physical order. Postgres picked this instead of a plain index scan because the rows are spread across the table. In this sample data, customers were assigned to orders at random, so reading the pages in order is cheaper than jumping around one row at a time.
+The plan is a bitmap scan, which is two steps. The `Bitmap Index Scan` finds the matching locations. Then the `Bitmap Heap Scan` visits the table pages that hold those rows. The plan shows that Postgres used this path rather than a plain index scan; it does not show which cost tipped that choice.
 
 `Heap Blocks: exact=32` says 32 table pages held the rows. `Rows Removed by Filter` is gone. That's the part you want.
 
-That first plan was already a small tree. Bigger plans are just deeper trees. Same rule: read inside-out.
+The same inside-out reading works for a join:
 
 ```sql
 EXPLAIN (ANALYZE, BUFFERS)
@@ -116,13 +116,13 @@ Hash Join  (cost=2264.46..44181.68 rows=290340 width=18) (actual time=11.764..19
 
 Bottom-up, Postgres scanned `customers`, kept the ~14k from Brazil, built a hash table from them, then scanned `orders` and checked each order against that hash table. That's a hash join. It works well when one side is small enough to hash and the other side is large.
 
-The estimate was almost exact here: 290,340 expected rows against 289,764 actual rows. That's why Postgres could pick the join confidently.
+The estimate was close here: 290,340 expected rows against 289,764 actual rows.
 
 The other joins you'll run into are nested loops and merge joins. A nested loop is good when the outer side is tiny and the inner side is indexed. A merge join works when both inputs are already sorted on the join key. Postgres chooses between them based on row estimates, which is why estimates matter more than almost anything else in the plan.
 
 When the estimate is close, Postgres has a decent chance of choosing well. When it is off by 100x or 1000x, every decision built on top of it is suspect.
 
-This is the classic failure mode:
+Here is a schematic example, not a plan from this dataset:
 
 ```
 Nested Loop  (cost=... rows=1 ...) (actual time=... rows=48211 loops=1)
@@ -130,7 +130,7 @@ Nested Loop  (cost=... rows=1 ...) (actual time=... rows=48211 loops=1)
   ->  Index Scan ...  (loops=48211)
 ```
 
-Postgres picked a nested loop because looping once over a single row is cheap. But the outer side actually had 48,211 rows, so the inner scan ran 48,211 times. The query crawls, and nothing in the SQL looks suspicious. The plan is bad because the estimate was bad.
+With an estimate of one outer row, a nested loop can look cheap. If the outer scan actually returns 48,211 rows, the inner scan runs 48,211 times. That mismatch is what I would investigate before changing the query.
 
 `loops=` is easy to misread. When a node runs in a loop, `actual rows` is the average per loop. Multiply it by loops to get the real total. A node showing `rows=3 loops=48211` did not return 3 rows. It returned about 144,000.
 
@@ -142,16 +142,14 @@ The fix is often not an index. A bad estimate usually means the stats are stale 
 ANALYZE orders;
 ```
 
-If one column is skewed, tell Postgres to keep more detail on it. In this sample data, `status` is 90% `completed`:
+If a column's values are unevenly distributed, you can ask Postgres to keep more detail. For example:
 
 ```sql
 ALTER TABLE orders ALTER COLUMN status SET STATISTICS 1000;
 ANALYZE orders;
 ```
 
-People skip this and jump to indexes. Sometimes the index never gets used because the planner still believes a seq scan is cheaper. The row count is wrong, so the choice is wrong.
-
-When estimated and actual rows are far apart, I check the statistics before adding another index.
+After `ANALYZE`, I would run the plan again and check whether the estimate moved closer to the actual row count.
 
 One more thing on BUFFERS: `shared hit` means PostgreSQL found a page in its shared cache. `shared read` means it had to read the page into that cache, possibly from the operating system cache rather than physical storage. `temp read` / `temp written` can indicate a sort or hash spilled to temporary files because it did not fit in `work_mem`.
 
