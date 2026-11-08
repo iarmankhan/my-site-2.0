@@ -114,6 +114,9 @@ export default async function EssayPage({ params }: Props) {
         </div>
       </header>
 
+      <div className="prose article-body">
+        <MDXContent code={essay.body} />
+      </div>
       {essay.series && seriesEssays.length > 1 && (
         <nav className="series-nav" aria-label={`${essay.series} series`}>
           <p>
@@ -141,10 +144,6 @@ export default async function EssayPage({ params }: Props) {
           )}
         </nav>
       )}
-
-      <div className="prose article-body">
-        <MDXContent code={essay.body} />
-      </div>
       <footer className="article-endnote">
         <p>Something useful, or something I got wrong?</p>
         <a
