@@ -66,10 +66,10 @@ export default function Home() {
             >
               Somethings
             </a>
-            , I am a principal and founding engineer. I helped build its mobile app,
-            backend and staff dashboards from inception, proposed the NestJS
-            foundation now used for new backend development, and shipped production
-            AI features.
+            , I am a principal and founding engineer. I have worked across its
+            mobile app, backend, staff dashboards and production AI. Earlier, I
+            led full stack engineering work in legal tech and built products for
+            commerce and business operations.
           </p>
         </div>
       </section>
@@ -92,7 +92,15 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="engineering-work">
-        <h2 id="engineering-work" className="text-2xl font-bold tracking-tight">Engineering work</h2>
+        <div className="flex items-center justify-between gap-4">
+          <h2 id="engineering-work" className="text-2xl font-bold tracking-tight">Selected engineering work</h2>
+          <Link href="/experience" className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent)">
+            Experience →
+          </Link>
+        </div>
+        <p className="mt-3 text-sm leading-relaxed text-(--color-foreground-muted)">
+          Two closer looks at work from a broader career across products and teams.
+        </p>
         <div className="mt-5 space-y-6 border-t border-(--color-border) pt-5">
           {caseStudies.map((study) => (
             <Link key={study.slug} href={`/work/${study.slug}`} className="group block">

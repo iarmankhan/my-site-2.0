@@ -12,7 +12,7 @@ export const experience: Experience[] = [
     role: "Principal Engineer",
     dates: "May 2024 — Present",
     description:
-      "Founding engineer for a teen mental health product. Built backend foundations and production AI features as the platform grew; app-open teen monthly active users were approximately 3,700 in October 2026.",
+      "Founding engineer for a teen mental health product. Built the React Native app, backend and staff dashboards from inception, then worked across platform architecture and production AI as the product grew.",
     url: "https://www.somethings.com/",
   },
   {
