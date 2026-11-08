@@ -13,10 +13,10 @@ export interface CaseStudy {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "backend-platform",
-    title: "The backend foundation adopted across Somethings engineering",
+    title: "Building a shared backend foundation",
     eyebrow: "Somethings · Backend and platform",
     summary:
-      "I proposed the NestJS migration and built the platform foundation now used for all new backend development.",
+      "I proposed and built a NestJS foundation for new backend development at Somethings.",
     problem:
       "The team needed a maintainable place for new backend work without requiring an all-at-once migration of the existing APIs.",
     contribution: [

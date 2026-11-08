@@ -72,6 +72,9 @@ export default function ProjectsPage() {
       </div>
 
       <h2 className="mt-14 text-xl font-bold tracking-tight">Engineering case studies</h2>
+      <p className="mt-2 text-(--color-foreground-muted)">
+        Two examples from my work at Somethings. My <Link href="/experience" className="underline underline-offset-3 hover:text-(--color-accent)">experience</Link> spans more products and teams.
+      </p>
       <div className="mt-5 space-y-7">
         {caseStudies.map((study) => (
           <Link key={study.slug} href={`/work/${study.slug}`} className="group block">
