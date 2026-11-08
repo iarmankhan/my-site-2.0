@@ -10,15 +10,9 @@ featured: true
 draft: false
 ---
 
-You added the index. The query filters on that exact column. Somehow it still scans the whole table.
+In the sample analytics database below, `created_at` has an index, but a query for one day still scans the events table. The plan shows `created_at::date` in the filter. The index stores timestamps; the query compares dates derived from those timestamps.
 
-> Postgres may ignore a normal index when your `WHERE` clause casts, wraps, or does math on the indexed column. Keep the column bare and move the work to the constant side, or create an expression index when the expression is the thing you actually query.
-
-This is more annoying than a missing index because it looks like it should work. The column is indexed. The `WHERE` clause mentions the column. Then the plan comes back with a `Seq Scan` and a `Filter`, and the index is just sitting there doing nothing.
-
-The usual reason: you didn't really filter on the column. You filtered on something derived from it.
-
-I used a small fake analytics dataset for this: 500k users and 3 million events. The setup script is at the end. The plans are from one run, so your timings will differ, but the shape should be the same. If you want the longer version of reading plans first, that's in the [previous post](/writing/reading-postgres-query-plans). For this one, just keep `EXPLAIN (ANALYZE, BUFFERS)` in front of every query.
+The fake dataset has 500k users and 3 million events. The setup script is at the end. The plans are from one run, so your timings will differ, but the shape should be similar. If you want the longer version of reading plans first, that's in the [previous post](/writing/reading-postgres-query-plans).
 
 ## The index stores the column
 
@@ -39,7 +33,7 @@ SELECT count(*) FROM events WHERE created_at::date = '2025-06-01';
 
 It asks for all events on one day, and there is an index on `created_at`. Easy win, right?
 
-Not quite. `created_at::date` is not `created_at`. It is a cast applied to the column. The index stores raw timestamps, not the date you get after truncating each timestamp. So Postgres can't just jump into the index and find `2025-06-01`. It has to read rows, cast each timestamp, then compare.
+Not quite. <Highlight>`created_at::date` is not `created_at`.</Highlight> It is a cast applied to the column. The index stores raw timestamps, not the date you get after truncating each timestamp. So Postgres can't just jump into the index and find `2025-06-01`. It has to read rows, cast each timestamp, then compare.
 
 ```
 Finalize Aggregate  (cost=41824.84..41824.85 rows=1 width=8) (actual time=91.952..94.056 rows=1 loops=1)
@@ -229,11 +223,11 @@ Execution Time: 0.062 ms
 
 Now the index stores lowercased emails, and the query asks for a lowercased email. They line up.
 
-This is an expression index. Postgres also calls it an index on expression. It's the right tool when the expression is genuinely what you query by: `date_trunc('month', created_at)` for monthly buckets, `(data->>'user_id')` for a JSON field, `EXTRACT(year FROM created_at)` for year filters.
+This is an expression index. Postgres also calls it an index on expression. It is useful when the expression itself is what you query, such as `lower(email)` for case-insensitive lookup or `(data->>'user_id')` for a JSON field.
 
 Two catches.
 
-First, the expression has to match. An index on `lower(email)` does nothing for `upper(email)`. An index on `created_at::date` does nothing for `date_trunc('day', created_at)`, even if those feel like the same idea. Postgres matches the structure of the expression, not your intent.
+First, the expression has to match. An index on `lower(email)` does nothing for `upper(email)`. Postgres matches the structure of the expression, not your intent.
 
 Second, an expression index is still an index. It takes space, it slows writes, and Postgres keeps separate stats for it. So I try the bare-column rewrite first. I reach for an expression index when there is no rewrite, or when the expression is the thing the product actually queries.
 
@@ -241,7 +235,7 @@ Second, an expression index is still an index. It takes space, it slows writes, 
 
 Before you add another index because the first one "isn't working," read the plan and look at the `Filter`.
 
-If your indexed column shows up wrapped in anything — `lower(...)`, `::date`, `+ interval`, `/ 100` — the plain index was never going to help. The query hid the column inside an expression.
+If your indexed column shows up wrapped in anything — `lower(...)`, `::date`, `+ interval`, `/ 100` — check whether that expression is preventing this query from using the plain index.
 
 Either strip the expression off the column, or index the expression itself. Those are the two moves.
 

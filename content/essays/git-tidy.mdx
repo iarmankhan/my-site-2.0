@@ -11,21 +11,17 @@ draft: false
 
 One of my repos had 485 branches. Maybe 50 were alive. The rest were merged-and-forgotten features, dead spikes, and a few hundred `sync-main-to-dev-*` branches some automation kept spitting out and never cleaning up.
 
-> `git-tidy` is a small CLI that finds stale Git branches, previews what it would delete, protects important branches, and only deletes after you explicitly run it.
-
 Deleting them by hand is the kind of chore I'll avoid for months, partly because it's boring and partly because I'm scared of nuking a branch that had work I forgot about. So I made [git-tidy](https://www.npmjs.com/package/git-tidy-cli).
 
 ```bash
 npx git-tidy-cli
 ```
 
-It only ever offers to delete stuff that's safe: branches already merged into your default branch (the commits live on in `main`, so you lose nothing), and never `main`/`develop`/`staging`/`production` or whatever you're sitting on. And it's dry-run by default, so a first run just prints a list.
+It is dry-run by default, so a first run shows candidates without deleting anything. It protects the default branch, `main`, `develop`, `staging`, `production`, and the branch I'm on. Age and pattern filters can also select unmerged branches, so I still read the list before deleting anything.
 
 It also has a `--json` mode, which means I can point an agent at it: "tidy the merged branches older than 90 days on origin" and it shows me the list before touching anything.
 
 The first time I used it for real I nearly made a mess. I wanted to clear out old sync branches, so I ran `--pattern 'sync-*' --age 7`. <Highlight>The dry-run came back with about half the repo.</Highlight> Took me a second to realise the filters were OR'd: it read that as "sync branches, or anything older than a week." Not what I meant. So I added a `--match all` flag for when you want every condition to hold:
-
-<Note>The preview caught my filter mistake before a single branch was deleted. That is why dry-run stays the default.</Note>
 
 ```bash
 git-tidy --match all --pattern 'sync-*' --age 7 --scope remote
@@ -33,4 +29,4 @@ git-tidy --match all --pattern 'sync-*' --age 7 --scope remote
 
 Then I pointed it at three of my repos. I read each dry-run, hit execute, and watched 449 branches disappear — 884 down to 435. Didn't lose anything that wasn't already in `main`. The funny part was how little of that was real work. Almost all of it was one sync bot that had been quietly littering for a year because nobody wired up the cleanup.
 
-That's the whole tool. It's on [npm](https://www.npmjs.com/package/git-tidy-cli) and [GitHub](https://github.com/ArmandBrworworworx/git-tidy). Go run it on your worst repo and see what falls out.
+That's the whole tool. It's on [npm](https://www.npmjs.com/package/git-tidy-cli) and [GitHub](https://github.com/iarmankhan/git-tidy). Go run it on your worst repo and see what falls out.
