@@ -12,7 +12,7 @@ draft: false
 
 In the sample analytics database below, `created_at` has an index, but a query for one day still scans the events table. The plan shows `created_at::date` in the filter. The index stores timestamps; the query compares dates derived from those timestamps.
 
-The fake dataset has 500k users and 3 million events. The setup script is at the end. The plans are from one run, so your timings will differ, but the shape should be similar. If you want the longer version of reading plans first, that's in the [previous post](/writing/reading-postgres-query-plans).
+There are 500k users and 3 million events in the dataset. The setup script is at the end. The plans are from one run, so your timings will differ, but the shape should be similar. If you want the longer version of reading plans first, that's in the [previous post](/writing/reading-postgres-query-plans).
 
 ## The index stores the column
 

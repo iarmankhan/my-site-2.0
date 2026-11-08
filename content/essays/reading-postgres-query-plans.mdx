@@ -12,7 +12,7 @@ draft: false
 
 In the sample shop database below, a query returns 32 orders after scanning two million rows. The SQL gives the right answer, but it doesn't show the work. `EXPLAIN (ANALYZE, BUFFERS)` does, so I read the plan before changing the query or adding an index.
 
-I used a fake shop database for the examples: 100k customers and 2 million orders. The setup script is at the end. These plans are real output from one run, so your timings and even some plan choices will differ, but the shapes should be close. You can use [Pagila](https://github.com/devrimgunduz/pagila) if you want something ready-made, but it is small enough that Postgres scans everything and most plans look boring.
+The dataset has 100k customers and 2 million orders. The setup script is at the end. These plans are output from one run, so your timings and even some plan choices will differ, but the shapes should be close. You can use [Pagila](https://github.com/devrimgunduz/pagila) if you want something ready-made, but it is small enough that Postgres scans everything and most plans look boring.
 
 There are three versions of EXPLAIN people mix together.
 
