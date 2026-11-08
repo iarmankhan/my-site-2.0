@@ -33,7 +33,7 @@ export default function Home() {
       <JsonLd data={personJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <div className="home-hero">
-        <div>
+        <div className="home-intro">
           <h1 className="home-title">
             Hi, I&apos;m <span className="signature-underline">Arman</span>.
           </h1>
@@ -71,24 +71,24 @@ export default function Home() {
             priority
           />
         </figure>
+        <section className="home-selected" aria-labelledby="selected-work-title">
+          <h2 id="selected-work-title">Selected work</h2>
+          <div className="home-selected-list">
+            <a
+              href="https://www.npmjs.com/package/git-tidy-cli"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>git-tidy, a safer way to clean Git branches</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <Link href={`/work/${caseStudies[0].slug}`}>
+              <span>{caseStudies[0].title}</span>
+              <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+        </section>
       </div>
-      <section className="home-selected" aria-labelledby="selected-work-title">
-        <h2 id="selected-work-title">Selected work</h2>
-        <div className="home-selected-list">
-          <a
-            href="https://www.npmjs.com/package/git-tidy-cli"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>git-tidy, a safer way to clean Git branches</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-          <Link href={`/work/${caseStudies[0].slug}`}>
-            <span>{caseStudies[0].title}</span>
-            <span aria-hidden="true">↗</span>
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }
