@@ -790,11 +790,11 @@ body {
 }
 .article-note-arrow {
   position: absolute;
-  top: 2px;
-  left: -14px;
+  bottom: -21px;
+  left: 5px;
   width: 30px;
   height: 23px;
-  transform: rotate(145deg);
+  transform: rotate(-90deg);
 }
 .article-note > :last-child {
   margin-bottom: 0;
