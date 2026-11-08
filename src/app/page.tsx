@@ -32,10 +32,10 @@ export default function Home() {
       <JsonLd data={personJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <div>
-        <h1 className="home-title">I build products, systems, and tools.</h1>
+        <h1 className="home-title">Hi, I&apos;m Arman.</h1>
         <div className="home-bio">
           <p>
-            I&apos;m Arman. I run{" "}
+            I run{" "}
             <a
               className="text-link"
               href="https://plixy.tech"
