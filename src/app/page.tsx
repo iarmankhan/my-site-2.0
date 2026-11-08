@@ -4,6 +4,7 @@ import { getRecentWriting } from "@/lib/content";
 import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/lib/seo";
 import { caseStudies } from "@/data/case-studies";
+import { openSource } from "@/data/projects";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -29,9 +30,9 @@ const websiteJsonLd = {
 };
 
 const now = [
-  "Building the product and backend platform at Somethings",
-  "Working on production AI features for staff workflows",
-  "Building Plixy.tech alongside my engineering role",
+  "Building Plixy.tech",
+  "Maintaining open source developer tools",
+  "Building products and backend systems at Somethings",
 ];
 
 export default function Home() {
@@ -48,7 +49,15 @@ export default function Home() {
         </h1>
         <div className="mt-6 space-y-4 text-(--color-foreground-muted) leading-relaxed">
           <p>
-            I am a principal and founding engineer at{" "}
+            I build products and developer tools across mobile, backend and AI.
+            I run{" "}
+            <a href="https://plixy.tech" target="_blank" rel="noopener noreferrer" className="text-(--color-foreground) underline underline-offset-3 decoration-(--color-border) hover:text-(--color-accent)">
+              Plixy.tech
+            </a>
+            {" "}and publish open source software, from Git tooling to AI workflows.
+          </p>
+          <p>
+            At{" "}
             <a
               href="https://somethings.com"
               target="_blank"
@@ -57,28 +66,33 @@ export default function Home() {
             >
               Somethings
             </a>
-            . I helped build its mobile app, backend and staff dashboards from
-            inception. I proposed and built the NestJS foundation our engineering
-            team now uses for all new backend development, and I ship production AI.
-          </p>
-          <p>
-            The product had about 3,700 teen monthly active users in October 2026.
-            I also run{" "}
-            <a href="https://plixy.tech" target="_blank" rel="noopener noreferrer" className="text-(--color-foreground) underline underline-offset-3 decoration-(--color-border) hover:text-(--color-accent)">
-              Plixy.tech
-            </a>
-            . Here is the work behind those headlines.
+            , I am a principal and founding engineer. I helped build its mobile app,
+            backend and staff dashboards from inception, proposed the NestJS
+            foundation now used for new backend development, and shipped production
+            AI features.
           </p>
         </div>
       </section>
 
-      <section aria-labelledby="featured-work">
+      <section aria-labelledby="open-source">
         <div className="flex items-center justify-between gap-4">
-          <h2 id="featured-work" className="text-2xl font-bold tracking-tight">Featured work</h2>
+          <h2 id="open-source" className="text-2xl font-bold tracking-tight">Open source</h2>
           <Link href="/projects" className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent)">
             All projects →
           </Link>
         </div>
+        <div className="mt-5 space-y-6 border-t border-(--color-border) pt-5">
+          {openSource.slice(0, 4).map((project) => (
+            <a key={project.name} href={project.url} target="_blank" rel="noopener noreferrer" className="group block">
+              <h3 className="font-semibold leading-snug group-hover:text-(--color-accent)">{project.name} ↗</h3>
+              <p className="mt-1 text-sm leading-relaxed text-(--color-foreground-muted)">{project.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="engineering-work">
+        <h2 id="engineering-work" className="text-2xl font-bold tracking-tight">Engineering work</h2>
         <div className="mt-5 space-y-6 border-t border-(--color-border) pt-5">
           {caseStudies.map((study) => (
             <Link key={study.slug} href={`/work/${study.slug}`} className="group block">
