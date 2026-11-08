@@ -790,14 +790,21 @@ body {
 }
 .article-note-arrow {
   position: absolute;
-  bottom: -21px;
-  left: 5px;
+  top: -10px;
+  left: -14px;
   width: 30px;
   height: 23px;
-  transform: rotate(-90deg);
+  transform: rotate(145deg);
 }
 .article-note > :last-child {
   margin-bottom: 0;
+}
+.article-note code {
+  padding: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
 }
 @media (min-width: 1200px) {
   .article-body {
@@ -810,6 +817,7 @@ body {
     margin: 0;
     padding: 0;
     border: 0;
+    transform: translateY(-100%) rotate(-1deg);
   }
   .article-note-arrow {
     top: 5px;

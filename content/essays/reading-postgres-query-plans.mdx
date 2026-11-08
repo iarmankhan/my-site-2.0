@@ -60,9 +60,9 @@ A few fields carry most of the meaning. `cost=1000.00..28085.77` is the planner'
 
 The useful line is `Rows Removed by Filter: 666656`, and that count is per worker. Each process threw away about 667k rows. Between the three of them, Postgres read all 2 million rows to keep 32. That is the wasted work, and it's why this is one of the rare times an index is the obvious fix.
 
-<Note>Don't count these twice. Gather already includes the scan.</Note>
-
 `Buffers: shared hit=14412 read=2255` says the same thing another way: about 16,700 pages touched, 2,255 read from disk. Most of the 55ms is Postgres walking through pages it did not need.
+
+<Note>Don't add `Gather`'s buffer counts to the scan's. They're already included.</Note>
 
 Add the index and run the same query:
 

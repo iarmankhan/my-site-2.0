@@ -25,7 +25,7 @@ It also has a `--json` mode, which means I can point an agent at it: "tidy the m
 
 The first time I used it for real I nearly made a mess. I wanted to clear out old sync branches, so I ran `--pattern 'sync-*' --age 7`. The dry-run came back with about half the repo. Took me a second to realise the filters were OR'd: it read that as "sync branches, or anything older than a week." Not what I meant. So I added a `--match all` flag for when you want every condition to hold:
 
-<Note>The dry run caught this mistake. That's why I keep it as the default.</Note>
+<Note>The preview let me catch the filter mistake before deleting anything.</Note>
 
 ```bash
 git-tidy --match all --pattern 'sync-*' --age 7 --scope remote
