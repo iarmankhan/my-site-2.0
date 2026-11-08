@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
 import { essays } from "#velite";
-import { getEssayBySlug, getEssaysBySeries } from "@/lib/content";
+import { getEssayBySlug } from "@/lib/content";
 import { MDXContent } from "@/components/mdx-content";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
@@ -52,16 +52,6 @@ export default async function EssayPage({ params }: Props) {
   const url = absoluteUrl(`/writing/${essay.slug}`);
   const publishedIso = new Date(essay.date).toISOString();
   const headline = essay.seoTitle ?? essay.title;
-  const seriesEssays = essay.series ? getEssaysBySeries(essay.series) : [];
-  const seriesIndex = seriesEssays.findIndex(
-    (seriesEssay) => seriesEssay.slug === essay.slug,
-  );
-  const previousSeriesEssay =
-    seriesIndex > 0 ? seriesEssays[seriesIndex - 1] : undefined;
-  const nextSeriesEssay =
-    seriesIndex >= 0 && seriesIndex < seriesEssays.length - 1
-      ? seriesEssays[seriesIndex + 1]
-      : undefined;
   const blogPosting = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -115,41 +105,16 @@ export default async function EssayPage({ params }: Props) {
       <div className="prose article-body">
         <MDXContent code={essay.body} />
       </div>
-      {essay.series && seriesEssays.length > 1 && (
-        <nav className="series-nav" aria-label={`${essay.series} series`}>
-          <p>
-            {essay.series} · {seriesIndex + 1} of {seriesEssays.length}
-          </p>
-          {(previousSeriesEssay || nextSeriesEssay) && (
-            <div className="series-links">
-              {previousSeriesEssay && (
-                <Link
-                  href={`/writing/${previousSeriesEssay.slug}`}
-                  className="text-link"
-                >
-                  ← {previousSeriesEssay.title}
-                </Link>
-              )}
-              {nextSeriesEssay && (
-                <Link
-                  href={`/writing/${nextSeriesEssay.slug}`}
-                  className="text-link"
-                >
-                  {nextSeriesEssay.title} →
-                </Link>
-              )}
-            </div>
-          )}
-        </nav>
-      )}
       <footer className="article-endnote">
-        <p>Something useful, or something I got wrong?</p>
-        <a
-          href={`mailto:${siteConfig.author.email}?subject=${encodeURIComponent(`About: ${essay.title}`)}`}
-          className="text-link"
-        >
-          Tell me ↗
-        </a>
+        <p>
+          Something useful, or something I got wrong?{" "}
+          <a
+            href={`mailto:${siteConfig.author.email}?subject=${encodeURIComponent(`About: ${essay.title}`)}`}
+            className="text-link"
+          >
+            Tell me ↗
+          </a>
+        </p>
       </footer>
     </article>
   );

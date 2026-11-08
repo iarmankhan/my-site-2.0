@@ -444,7 +444,6 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  border-top: 1px solid var(--color-border);
   padding: 25px 0 36px;
   color: var(--color-foreground-muted);
   font-size: 13px;
@@ -540,22 +539,19 @@ body {
   letter-spacing: -0.035em;
 }
 .home-selected-list {
-  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: 12px;
 }
 .home-selected-list a {
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  padding: 17px 12px;
-  border-bottom: 1px solid var(--color-border);
+  padding: 6px 0;
   font-size: 15px;
   text-decoration: none;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease;
+  transition: color 160ms ease;
 }
 .home-selected-list a:is(:hover, :focus-visible, :active) {
-  background-color: var(--color-background-alt);
   color: var(--color-accent);
 }
 .interior-page {
@@ -626,12 +622,11 @@ body {
   font-weight: 550;
 }
 .entry-list {
-  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: 31px;
 }
 .work-entry {
   display: block;
-  padding: 19px 0 20px;
-  border-bottom: 1px solid var(--color-border);
 }
 .entry-title {
   font-size: 16px;
@@ -665,8 +660,6 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px 20px;
-  padding: 22px 0 24px;
-  border-bottom: 1px solid var(--color-border);
 }
 .experience-entry > div {
   grid-column: 1;
@@ -692,8 +685,6 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px 20px;
-  padding: 19px 0;
-  border-bottom: 1px solid var(--color-border);
   animation: fade-in 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 .writing-entry:nth-child(2) {
@@ -771,47 +762,23 @@ body {
   color: var(--color-foreground-muted);
   font-size: 13px;
 }
-.series-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 20px;
-  margin-top: 48px;
-  padding-top: 14px;
-  border-top: 1px solid var(--color-border);
-  color: var(--color-foreground-muted);
-  font-size: 13px;
-}
-.series-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-}
-.series-links a {
-  text-decoration: none;
-}
 .article-body {
   max-width: 690px;
   margin-top: 48px;
 }
 .article-endnote {
   max-width: 690px;
-  margin-top: 60px;
-  padding-top: 23px;
-  border-top: 1px solid var(--color-border);
+  margin-top: 64px;
   color: var(--color-foreground-muted);
   font-size: 14px;
 }
 .article-endnote a {
-  display: inline-block;
-  margin-top: 5px;
   color: var(--color-foreground);
   font-weight: 550;
 }
 .article-note {
   margin: 28px 0;
   padding: 4px 0 4px 18px;
-  border-left: 1px solid var(--color-warm);
   color: var(--color-warm);
   font-family: "Caveat", cursive;
   font-size: 23px;
@@ -874,7 +841,6 @@ body {
     z-index: 40;
     background-color: var(--color-background);
     padding: 14px 0;
-    border-bottom: 1px solid var(--color-border);
     gap: 16px;
   }
   .site-name {
