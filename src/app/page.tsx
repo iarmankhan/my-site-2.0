@@ -3,6 +3,7 @@ import Image from "next/image";
 import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/lib/seo";
 import { caseStudies } from "@/data/case-studies";
+import { getAllWriting } from "@/lib/content";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -28,6 +29,10 @@ const websiteJsonLd = {
 };
 
 export default function Home() {
+  const essays = getAllWriting()
+    .filter((item) => item.type === "essay")
+    .slice(0, 4);
+
   return (
     <div className="home-page">
       <JsonLd data={personJsonLd} />
@@ -86,6 +91,17 @@ export default function Home() {
               <span>{caseStudies[0].title}</span>
               <span aria-hidden="true">↗</span>
             </Link>
+          </div>
+        </section>
+        <section className="home-writing" aria-labelledby="home-writing-title">
+          <h2 id="home-writing-title">Writing</h2>
+          <div className="home-selected-list">
+            {essays.map(({ data }) => (
+              <Link href={`/writing/${data.slug}`} key={data.slug}>
+                <span>{data.title}</span>
+                <span aria-hidden="true">↗</span>
+              </Link>
+            ))}
           </div>
         </section>
       </div>
