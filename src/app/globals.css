@@ -332,7 +332,7 @@ body {
 
 /* Portfolio layout */
 .site-shell {
-  width: min(calc(100% - 64px), 1060px);
+  width: min(calc(100% - 64px), 1220px);
   margin-inline: auto;
 }
 .site-header {
@@ -405,9 +405,9 @@ body {
 }
 .home-hero {
   display: grid;
-  grid-template-columns: minmax(0, 600px) minmax(220px, 310px);
+  grid-template-columns: minmax(0, 600px) minmax(300px, 450px);
   justify-content: space-between;
-  align-items: start;
+  align-items: center;
   gap: clamp(40px, 7vw, 100px);
 }
 .home-title {
@@ -456,7 +456,7 @@ body {
 }
 .hero-art {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   border-radius: 3px;
   background: #163c74;
@@ -467,6 +467,31 @@ body {
   height: 100%;
   object-fit: cover;
   object-position: center 45%;
+}
+.home-selected {
+  max-width: 780px;
+  margin-top: 70px;
+}
+.home-selected h2 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+.home-selected-list {
+  border-top: 1px solid var(--color-border);
+}
+.home-selected-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 15px;
+  text-decoration: none;
+}
+.home-selected-list a:hover {
+  color: var(--color-accent);
 }
 .interior-page {
   max-width: 740px;
@@ -727,6 +752,9 @@ body {
   }
   .hero-art img {
     object-position: center 48%;
+  }
+  .home-selected {
+    margin-top: 50px;
   }
   .page-title {
     font-size: 39px;
