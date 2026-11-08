@@ -15,17 +15,25 @@ export const metadata: Metadata = {
 
 export default function ExperiencePage() {
   return (
-    <div className="editorial-page">
-      <p className="page-kicker">Background</p>
-      <h1 className="page-title">Experience</h1>
-      <p className="page-intro">
-        The teams and products I&apos;ve helped build.
-      </p>
-      <div className="editorial-list editorial-section">
+    <div className="interior-page">
+      <header className="interior-header">
+        <h1 className="page-title">
+          Experience<span className="title-period">.</span>
+        </h1>
+        <p className="page-intro">
+          I have spent my career building products from their first version
+          through the systems that keep them running.
+        </p>
+      </header>
+      <div className="entry-list experience-list">
         {experience.map((exp) => (
-          <div key={`${exp.company}-${exp.dates}`} className="editorial-item">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-              <h2 className="editorial-item-title">
+          <section
+            key={`${exp.company}-${exp.dates}`}
+            className="experience-entry"
+          >
+            <p className="experience-date">{exp.dates}</p>
+            <div>
+              <h2 className="entry-title">
                 {exp.url ? (
                   <a
                     href={exp.url}
@@ -39,16 +47,13 @@ export default function ExperiencePage() {
                   exp.company
                 )}
               </h2>
-              <span className="editorial-item-meta tabular-nums">
-                {exp.dates}
-              </span>
+              <p className="experience-role">{exp.role}</p>
+              <p className="entry-description">{exp.description}</p>
             </div>
-            <p className="editorial-item-meta">{exp.role}</p>
-            <p className="editorial-item-desc">{exp.description}</p>
-          </div>
+          </section>
         ))}
       </div>
-      <p className="mt-10 text-sm text-(--color-foreground-muted)">
+      <p className="page-afterword">
         <a
           href="/assets/Amaan_Resume.pdf"
           target="_blank"

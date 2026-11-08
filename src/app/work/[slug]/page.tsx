@@ -32,13 +32,17 @@ export default async function WorkPage({
   if (!study) notFound();
 
   return (
-    <article className="editorial-page">
+    <article className="interior-page article-page">
       <Link href="/projects" className="article-back">
-        ← Back to work
+        ← Work
       </Link>
-      <p className="page-kicker">{study.eyebrow}</p>
-      <h1 className="page-title">{study.title}</h1>
-      <p className="page-intro">{study.summary}</p>
+      <header className="article-header">
+        <h1 className="page-title">
+          {study.title}
+          <span className="title-period">.</span>
+        </h1>
+        <p className="page-intro">{study.summary}</p>
+      </header>
       <div className="article-body">
         <section>
           <h2>The problem</h2>

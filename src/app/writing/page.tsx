@@ -19,39 +19,43 @@ export default function WritingPage() {
   const items = getAllWriting();
 
   return (
-    <div className="editorial-page">
-      <p className="page-kicker">Ideas and notes</p>
-      <h1 className="page-title">Writing</h1>
-      <p className="page-intro">
-        Posts on software, the things I build, and whatever else I&apos;m
-        thinking through.
-      </p>
-      <div className="editorial-list editorial-section">
+    <div className="interior-page">
+      <header className="interior-header">
+        <h1 className="page-title">
+          Writing<span className="title-period">.</span>
+        </h1>
+        <p className="page-intro">
+          Notes on building software, the decisions behind it, and ideas still
+          in progress.
+        </p>
+      </header>
+      <div className="entry-list writing-list">
         {items.map((item) => (
-          <article key={item.data.slug} className="editorial-item">
+          <article key={item.data.slug} className="writing-entry">
+            <time
+              className="writing-date tabular-nums"
+              dateTime={item.data.date}
+            >
+              {format(new Date(item.data.date), "MMM d, yyyy")}
+            </time>
             {item.type === "essay" ? (
-              <Link href={`/writing/${item.data.slug}`} className="block">
-                <h2 className="editorial-item-title">{item.data.title} ↗</h2>
-                <p className="editorial-item-meta">
-                  <time className="tabular-nums">
-                    {format(new Date(item.data.date), "MMM d, yyyy")}
-                  </time>
-                </p>
+              <Link
+                href={`/writing/${item.data.slug}`}
+                className="writing-entry-content"
+              >
+                <h2 className="entry-title">
+                  {item.data.title} <span className="entry-arrow">↗</span>
+                </h2>
                 {"description" in item.data && item.data.description && (
-                  <p className="editorial-item-desc">{item.data.description}</p>
+                  <p className="entry-description">{item.data.description}</p>
                 )}
               </Link>
             ) : (
-              <div>
-                <h2 className="editorial-item-title">{item.data.title}</h2>
-                <p className="editorial-item-meta">
-                  <time className="tabular-nums">
-                    {format(new Date(item.data.date), "MMM d, yyyy")}
-                  </time>
-                </p>
+              <div className="writing-entry-content">
+                <h2 className="entry-title">{item.data.title}</h2>
                 {"content" in item.data && (
                   <div
-                    className="editorial-item-desc prose"
+                    className="entry-description prose"
                     dangerouslySetInnerHTML={{ __html: item.data.content }}
                   />
                 )}
@@ -60,7 +64,7 @@ export default function WritingPage() {
           </article>
         ))}
         {items.length === 0 && (
-          <p className="editorial-item">Nothing here yet.</p>
+          <p className="empty-writing">Nothing here yet.</p>
         )}
       </div>
     </div>

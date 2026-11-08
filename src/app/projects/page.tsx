@@ -17,30 +17,29 @@ export const metadata: Metadata = {
   },
 };
 
-function ProjectRow({ project }: { project: Project }) {
+function ProjectRow({ project, number }: { project: Project; number: string }) {
   return (
-    <div className="editorial-item">
-      <h3 className="editorial-item-title">
-        {project.url ? (
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-link"
-          >
-            {project.name} ↗
-          </a>
-        ) : (
-          project.name
-        )}
-      </h3>
-      <p className="editorial-item-desc">{project.description}</p>
-      <div className="editorial-tags">
-        {project.tech.map((tech) => (
-          <span key={tech} className="editorial-tag">
-            {tech}
-          </span>
-        ))}
+    <div className="work-entry">
+      <span className="entry-number" aria-hidden="true">
+        {number}
+      </span>
+      <div>
+        <h3 className="entry-title">
+          {project.url ? (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link"
+            >
+              {project.name} ↗
+            </a>
+          ) : (
+            project.name
+          )}
+        </h3>
+        <p className="entry-description">{project.description}</p>
+        <p className="entry-detail">{project.tech.join(" · ")}</p>
       </div>
     </div>
   );
@@ -48,55 +47,94 @@ function ProjectRow({ project }: { project: Project }) {
 
 export default function ProjectsPage() {
   return (
-    <div className="editorial-page">
-      <p className="page-kicker">Selected work</p>
-      <h1 className="page-title">Work</h1>
-      <p className="page-intro">
-        Open source tools, products, and a few closer looks at my engineering
-        work.
-      </p>
-
-      <section className="editorial-section">
-        <h2 className="section-heading">Open source &amp; tools</h2>
-        <p className="section-intro">
-          Developer tools and workflows I build and maintain.
+    <div className="interior-page">
+      <header className="interior-header">
+        <h1 className="page-title">
+          Work<span className="title-period">.</span>
+        </h1>
+        <p className="page-intro">
+          A selection of products, developer tools, and systems I have helped
+          bring into the world.
         </p>
-        <div className="editorial-list">
-          {openSource.map((project) => (
-            <ProjectRow key={project.name} project={project} />
+      </header>
+
+      <section className="featured-work" aria-labelledby="plixy-title">
+        <div className="featured-work-copy">
+          <h2 id="plixy-title">Plixy.tech</h2>
+          <p>
+            My own company, where I build software products and developer tools
+            alongside my engineering work.
+          </p>
+          <a
+            href="https://plixy.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-link"
+          >
+            Visit Plixy.tech ↗
+          </a>
+        </div>
+        <div className="featured-work-art" aria-hidden="true" />
+      </section>
+
+      <section className="interior-section">
+        <div className="section-head">
+          <h2>Open source &amp; tools</h2>
+          <p>Things I build and maintain</p>
+        </div>
+        <div className="entry-list">
+          {openSource.map((project, index) => (
+            <ProjectRow
+              key={project.name}
+              project={project}
+              number={String(index + 1).padStart(2, "0")}
+            />
           ))}
         </div>
       </section>
 
-      <section className="editorial-section">
-        <h2 className="section-heading">Engineering case studies</h2>
-        <p className="section-intro">
-          Two examples from a broader career across products and teams.
-        </p>
-        <div className="editorial-list">
-          {caseStudies.map((study) => (
+      <section className="interior-section">
+        <div className="section-head">
+          <h2>In practice</h2>
+          <p>Selected engineering stories</p>
+        </div>
+        <div className="entry-list">
+          {caseStudies.map((study, index) => (
             <Link
               key={study.slug}
               href={`/work/${study.slug}`}
-              className="editorial-item"
+              className="work-entry"
             >
-              <p className="editorial-item-meta">{study.eyebrow}</p>
-              <h3 className="editorial-item-title mt-2">{study.title} ↗</h3>
-              <p className="editorial-item-desc">{study.summary}</p>
+              <span className="entry-number" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 className="entry-title">
+                  {study.title} <span className="entry-arrow">↗</span>
+                </h3>
+                <p className="entry-description">{study.summary}</p>
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="editorial-section">
-        <h2 className="section-heading">Other projects</h2>
-        <div className="editorial-list">
-          {projects.map((project) => (
-            <ProjectRow key={project.name} project={project} />
+      <section className="interior-section">
+        <div className="section-head">
+          <h2>More projects</h2>
+          <p>Across different teams and domains</p>
+        </div>
+        <div className="entry-list">
+          {projects.map((project, index) => (
+            <ProjectRow
+              key={project.name}
+              project={project}
+              number={String(index + 1).padStart(2, "0")}
+            />
           ))}
         </div>
       </section>
-      <p className="mt-10 text-sm text-(--color-foreground-muted)">
+      <p className="page-afterword">
         <Link href="/experience" className="text-link">
           More about my experience ↗
         </Link>

@@ -1,7 +1,6 @@
 export interface CaseStudy {
   slug: string;
   title: string;
-  eyebrow: string;
   summary: string;
   problem: string;
   contribution: string[];
@@ -14,7 +13,6 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "backend-platform",
     title: "Building a shared backend foundation",
-    eyebrow: "Somethings · Backend and platform",
     summary:
       "I proposed and built a NestJS foundation for new backend development at Somethings.",
     problem:
@@ -36,7 +34,6 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "production-ai",
     title: "Production AI inside Somethings' staff workflows",
-    eyebrow: "Somethings · Production AI",
     summary:
       "I shipped natural-language data queries and personalized reply suggestions inside a teen mental health product.",
     problem:

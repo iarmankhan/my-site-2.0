@@ -32,7 +32,6 @@ export default function Home() {
       <JsonLd data={personJsonLd} />
       <JsonLd data={websiteJsonLd} />
       <div>
-        <p className="home-eyebrow">Engineer · Founder · Open source</p>
         <h1 className="home-title">I build products, systems, and tools.</h1>
         <div className="home-bio">
           <p>
