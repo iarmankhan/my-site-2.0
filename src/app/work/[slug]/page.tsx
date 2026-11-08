@@ -37,10 +37,7 @@ export default async function WorkPage({
         ← Work
       </Link>
       <header className="article-header">
-        <h1 className="page-title">
-          {study.title}
-          <span className="title-period">.</span>
-        </h1>
+        <h1 className="page-title">{study.title}</h1>
         <p className="page-intro">{study.summary}</p>
       </header>
       <div className="article-body">

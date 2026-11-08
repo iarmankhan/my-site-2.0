@@ -17,9 +17,7 @@ export default function ExperiencePage() {
   return (
     <div className="interior-page">
       <header className="interior-header">
-        <h1 className="page-title">
-          Experience<span className="title-period">.</span>
-        </h1>
+        <h1 className="page-title">Experience</h1>
         <p className="page-intro">
           I have spent my career building products from their first version
           through the systems that keep them running.

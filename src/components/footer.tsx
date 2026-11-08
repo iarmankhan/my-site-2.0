@@ -8,7 +8,13 @@ export function Footer() {
         © {new Date().getFullYear()} {siteConfig.name}
       </span>
       <div className="footer-links">
-        <Link href="/experience">Experience</Link>
+        <a
+          href={siteConfig.author.github}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub
+        </a>
         <a
           href={siteConfig.author.linkedin}
           target="_blank"

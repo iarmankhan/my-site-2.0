@@ -17,12 +17,9 @@ export const metadata: Metadata = {
   },
 };
 
-function ProjectRow({ project, number }: { project: Project; number: string }) {
+function ProjectRow({ project }: { project: Project }) {
   return (
     <div className="work-entry">
-      <span className="entry-number" aria-hidden="true">
-        {number}
-      </span>
       <div>
         <h3 className="entry-title">
           {project.url ? (
@@ -39,7 +36,6 @@ function ProjectRow({ project, number }: { project: Project; number: string }) {
           )}
         </h3>
         <p className="entry-description">{project.description}</p>
-        <p className="entry-detail">{project.tech.join(" · ")}</p>
       </div>
     </div>
   );
@@ -49,9 +45,7 @@ export default function ProjectsPage() {
   return (
     <div className="interior-page">
       <header className="interior-header">
-        <h1 className="page-title">
-          Work<span className="title-period">.</span>
-        </h1>
+        <h1 className="page-title">Work</h1>
         <p className="page-intro">
           A selection of products, developer tools, and systems I have helped
           bring into the world.
@@ -74,21 +68,15 @@ export default function ProjectsPage() {
             Visit Plixy.tech ↗
           </a>
         </div>
-        <div className="featured-work-art" aria-hidden="true" />
       </section>
 
       <section className="interior-section">
         <div className="section-head">
           <h2>Open source &amp; tools</h2>
-          <p>Things I build and maintain</p>
         </div>
         <div className="entry-list">
-          {openSource.map((project, index) => (
-            <ProjectRow
-              key={project.name}
-              project={project}
-              number={String(index + 1).padStart(2, "0")}
-            />
+          {openSource.map((project) => (
+            <ProjectRow key={project.name} project={project} />
           ))}
         </div>
       </section>
@@ -96,18 +84,14 @@ export default function ProjectsPage() {
       <section className="interior-section">
         <div className="section-head">
           <h2>In practice</h2>
-          <p>Selected engineering stories</p>
         </div>
         <div className="entry-list">
-          {caseStudies.map((study, index) => (
+          {caseStudies.map((study) => (
             <Link
               key={study.slug}
               href={`/work/${study.slug}`}
               className="work-entry"
             >
-              <span className="entry-number" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
               <div>
                 <h3 className="entry-title">
                   {study.title} <span className="entry-arrow">↗</span>
@@ -122,15 +106,10 @@ export default function ProjectsPage() {
       <section className="interior-section">
         <div className="section-head">
           <h2>More projects</h2>
-          <p>Across different teams and domains</p>
         </div>
         <div className="entry-list">
-          {projects.map((project, index) => (
-            <ProjectRow
-              key={project.name}
-              project={project}
-              number={String(index + 1).padStart(2, "0")}
-            />
+          {projects.map((project) => (
+            <ProjectRow key={project.name} project={project} />
           ))}
         </div>
       </section>

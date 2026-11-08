@@ -21,9 +21,7 @@ export default function WritingPage() {
   return (
     <div className="interior-page">
       <header className="interior-header">
-        <h1 className="page-title">
-          Writing<span className="title-period">.</span>
-        </h1>
+        <h1 className="page-title">Writing</h1>
         <p className="page-intro">
           Notes on building software, the decisions behind it, and ideas still
           in progress.
@@ -46,9 +44,6 @@ export default function WritingPage() {
                 <h2 className="entry-title">
                   {item.data.title} <span className="entry-arrow">↗</span>
                 </h2>
-                {"description" in item.data && item.data.description && (
-                  <p className="entry-description">{item.data.description}</p>
-                )}
               </Link>
             ) : (
               <div className="writing-entry-content">

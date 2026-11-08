@@ -95,10 +95,7 @@ export default async function EssayPage({ params }: Props) {
       </div>
 
       <header>
-        <h1 className="page-title">
-          {essay.title}
-          <span className="title-period">.</span>
-        </h1>
+        <h1 className="page-title">{essay.title}</h1>
         <div className="article-meta flex items-center gap-2">
           <time className="tabular-nums">
             {format(new Date(essay.date), "MMM d, yyyy")}

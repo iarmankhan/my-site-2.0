@@ -6,6 +6,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 const links = [
   { href: "/projects", label: "Work" },
+  { href: "/experience", label: "Experience" },
   { href: "/writing", label: "Writing" },
 ];
 
@@ -27,13 +28,6 @@ export function Nav() {
             {link.label}
           </Link>
         ))}
-        <a
-          href="https://github.com/iarmankhan"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          GitHub
-        </a>
         <ThemeToggle />
       </nav>
     </header>
