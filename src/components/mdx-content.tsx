@@ -133,7 +133,20 @@ function CopyablePre({ children, ...props }: PreProps) {
 }
 
 function Note({ children }: { children: ReactNode }) {
-  return <aside className="article-note">{children}</aside>
+  return (
+    <aside className="article-note">
+      <svg className="article-note-arrow" aria-hidden="true" viewBox="0 0 38 28" fill="none">
+        <path
+          d="M36 3C22 2 21 19 3 19m0 0 8-6m-8 6 9 5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      {children}
+    </aside>
+  )
 }
 
 const useMDXComponent = (code: string) => {

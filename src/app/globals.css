@@ -777,14 +777,24 @@ body {
   font-weight: 550;
 }
 .article-note {
-  margin: 28px 0;
-  padding: 4px 0 4px 18px;
+  position: relative;
+  max-width: 300px;
+  margin: 22px 0;
+  padding: 4px 0 4px 22px;
   color: var(--color-warm);
   font-family: "Caveat", cursive;
-  font-size: 23px;
+  font-size: 19px;
   font-weight: 500;
-  line-height: 1.2;
+  line-height: 1.25;
   transform: rotate(-1deg);
+}
+.article-note-arrow {
+  position: absolute;
+  top: 2px;
+  left: -14px;
+  width: 30px;
+  height: 23px;
+  transform: rotate(145deg);
 }
 .article-note > :last-child {
   margin-bottom: 0;
@@ -795,11 +805,18 @@ body {
   }
   .article-note {
     position: absolute;
-    left: calc(100% + 42px);
-    width: 210px;
+    left: calc(100% + 50px);
+    width: 170px;
     margin: 0;
     padding: 0;
     border: 0;
+  }
+  .article-note-arrow {
+    top: 5px;
+    left: -43px;
+    width: 38px;
+    height: 28px;
+    transform: none;
   }
 }
 .article-body h2 {
