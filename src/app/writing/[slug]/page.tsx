@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import { essays } from "#velite";
 import { getEssayBySlug, getEssaysBySeries } from "@/lib/content";
 import { MDXContent } from "@/components/mdx-content";
-import { ArticleProgress } from "@/components/article-progress";
 import { JsonLd } from "@/components/json-ld";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -89,7 +88,6 @@ export default async function EssayPage({ params }: Props) {
   return (
     <article className="interior-page article-page">
       <JsonLd data={blogPosting} />
-      <ArticleProgress />
       <div>
         <Link href="/writing" className="article-back">
           ← Writing

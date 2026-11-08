@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Caveat";
+  src: url("/fonts/caveat-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
@@ -786,36 +794,6 @@ body {
   max-width: 690px;
   margin-top: 48px;
 }
-.article-progress-track {
-  position: fixed;
-  inset: 0 auto auto 0;
-  z-index: 50;
-  width: 100%;
-  height: 4px;
-  background: var(--color-border);
-  pointer-events: none;
-}
-.article-progress {
-  position: relative;
-  width: 0;
-  height: 100%;
-  background: var(--color-accent);
-}
-.article-progress::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  transform: translateY(-50%);
-  opacity: 0;
-}
-.article-progress.has-progress::after {
-  opacity: 1;
-}
 .article-endnote {
   max-width: 690px;
   margin-top: 60px;
@@ -831,12 +809,15 @@ body {
   font-weight: 550;
 }
 .article-note {
-  margin: 30px 0;
-  padding: 15px 0 0;
-  border-top: 1px solid var(--color-accent);
-  color: var(--color-foreground-muted);
-  font-size: 14px;
-  line-height: 1.55;
+  margin: 28px 0;
+  padding: 4px 0 4px 18px;
+  border-left: 1px solid var(--color-warm);
+  color: var(--color-warm);
+  font-family: "Caveat", cursive;
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.2;
+  transform: rotate(-1deg);
 }
 .article-note > :last-child {
   margin-bottom: 0;
@@ -847,9 +828,11 @@ body {
   }
   .article-note {
     position: absolute;
-    left: calc(100% + 48px);
-    width: 220px;
+    left: calc(100% + 42px);
+    width: 210px;
     margin: 0;
+    padding: 0;
+    border: 0;
   }
 }
 .article-body h2 {
@@ -988,16 +971,6 @@ body {
   }
   .article-body {
     margin-top: 27px;
-  }
-  .article-progress-track {
-    top: 65px;
-    left: 20px;
-    width: calc(100% - 40px);
-    height: 5px;
-    border-radius: 3px;
-  }
-  .article-progress {
-    border-radius: inherit;
   }
 }
 @media (max-width: 370px) {
