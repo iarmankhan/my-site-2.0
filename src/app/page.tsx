@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { getRecentWriting } from "@/lib/content";
 import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/lib/seo";
+import { caseStudies } from "@/data/case-studies";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -10,7 +11,7 @@ const personJsonLd = {
   name: siteConfig.author.name,
   url: siteConfig.url,
   email: siteConfig.author.email,
-  jobTitle: "Software Engineer",
+  jobTitle: "Principal Engineer",
   sameAs: [
     siteConfig.author.twitterUrl,
     siteConfig.author.github,
@@ -28,18 +29,16 @@ const websiteJsonLd = {
 };
 
 const now = [
-  "Building mental health tech at Somethings",
-  "Messing around with AI agents and LLMs",
-  "Trying to be more active on X (failing)",
-  "Reading about system design and distributed systems",
-  "Maintaining this site (sometimes)",
+  "Building the product and backend platform at Somethings",
+  "Working on production AI features for staff workflows",
+  "Building Plixy.tech alongside my engineering role",
 ];
 
 export default function Home() {
   const recentWriting = getRecentWriting(3);
 
   return (
-    <div className="animate-in space-y-16">
+    <div className="animate-in space-y-14">
       <JsonLd data={personJsonLd} />
       <JsonLd data={websiteJsonLd} />
       {/* Intro */}
@@ -49,9 +48,7 @@ export default function Home() {
         </h1>
         <div className="mt-6 space-y-4 text-(--color-foreground-muted) leading-relaxed">
           <p>
-            I build things for the web and mobile, mess around with AI, and
-            occasionally write about it. Currently working on mental health tech
-            at{" "}
+            I am a principal and founding engineer at{" "}
             <a
               href="https://somethings.com"
               target="_blank"
@@ -60,12 +57,40 @@ export default function Home() {
             >
               Somethings
             </a>
-            .
+            . I helped build its mobile app, backend and staff dashboards from
+            inception. I proposed and built the NestJS foundation our engineering
+            team now uses for all new backend development, and I ship production AI.
           </p>
           <p>
-            I like building useful products, learning how things work under the
-            hood, and shipping fast. Say hi — I'm usually around.
+            The product had about 3,700 teen monthly active users in October 2026.
+            I also run{" "}
+            <a href="https://plixy.tech" target="_blank" rel="noopener noreferrer" className="text-(--color-foreground) underline underline-offset-3 decoration-(--color-border) hover:text-(--color-accent)">
+              Plixy.tech
+            </a>
+            . Here is the work behind those headlines.
           </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="featured-work">
+        <div className="flex items-center justify-between gap-4">
+          <h2 id="featured-work" className="text-2xl font-bold tracking-tight">Featured work</h2>
+          <Link href="/projects" className="text-sm text-(--color-foreground-muted) hover:text-(--color-accent)">
+            All projects →
+          </Link>
+        </div>
+        <div className="mt-5 space-y-6 border-t border-(--color-border) pt-5">
+          {caseStudies.map((study) => (
+            <Link key={study.slug} href={`/work/${study.slug}`} className="group block">
+              <p className="text-xs font-medium text-(--color-accent)">{study.eyebrow}</p>
+              <h3 className="mt-1 font-semibold leading-snug group-hover:text-(--color-accent)">
+                {study.title} ↗
+              </h3>
+              <p className="mt-1 text-sm leading-relaxed text-(--color-foreground-muted)">
+                {study.summary}
+              </p>
+            </Link>
+          ))}
         </div>
       </section>
 
