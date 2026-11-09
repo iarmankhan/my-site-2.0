@@ -833,6 +833,9 @@ body {
     border: 0;
     transform: translateY(calc(-100% - 42px)) rotate(-1deg);
   }
+  .article-note-code {
+    transform: translateY(calc(-100% + 18px)) rotate(-1deg);
+  }
   .article-note-arrow {
     top: 5px;
     left: -43px;
