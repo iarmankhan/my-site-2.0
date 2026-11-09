@@ -33,7 +33,7 @@ So I added a `--match all` flag for when you want every condition to hold:
 git-tidy --match all --pattern 'sync-*' --age 7 --scope remote
 ```
 
-<Note>`--age 7` checks the tip commit’s author date, not when the branch was created.</Note>
+<Note anchor="code">`--age 7` checks the tip commit’s author date, not when the branch was created.</Note>
 
 Then I used it on three repos. I read each preview before executing. Most of the candidates were old sync branches from a bot that had never been cleaned up.
 

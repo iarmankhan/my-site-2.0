@@ -132,9 +132,9 @@ function CopyablePre({ children, ...props }: PreProps) {
   )
 }
 
-function Note({ children }: { children: ReactNode }) {
+function Note({ children, anchor }: { children: ReactNode; anchor?: "code" }) {
   return (
-    <aside className="article-note">
+    <aside className={`article-note${anchor === "code" ? " article-note-code" : ""}`}>
       <svg className="article-note-arrow" aria-hidden="true" viewBox="0 0 38 28" fill="none">
         <path
           d="M36 3C22 2 21 19 3 19m0 0 8-6m-8 6 9 5"
