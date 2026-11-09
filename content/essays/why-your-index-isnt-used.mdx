@@ -1,5 +1,5 @@
 ---
-title: "Wrap the column, lose the index"
+title: "When a cast keeps Postgres from using an index"
 seoTitle: "Why Postgres Stops Using an Index When You Cast or Wrap a Column"
 slug: why-your-index-isnt-used
 date: 2026-07-02
@@ -10,15 +10,13 @@ featured: true
 draft: false
 ---
 
-You added the index. The query filters on that exact column. Somehow it still scans the whole table.
+In the synthetic events query below, an index on `created_at` exists, but the date filter still triggers a full table scan.
 
 > Postgres may ignore a normal index when your `WHERE` clause casts, wraps, or does math on the indexed column. Keep the column bare and move the work to the constant side, or create an expression index when the expression is the thing you actually query.
 
-This is more annoying than a missing index because it looks like it should work. The column is indexed. The `WHERE` clause mentions the column. Then the plan comes back with a `Seq Scan` and a `Filter`, and the index is just sitting there doing nothing.
+The column is indexed, and the `WHERE` clause mentions it. But the plan shows a `Seq Scan` with a `Filter`. The predicate asks Postgres to compare a value derived from the column, while the ordinary index stores the column's original values.
 
-The usual reason: you didn't really filter on the column. You filtered on something derived from it.
-
-I used a small fake analytics dataset for this: 500k users and 3 million events. The setup script is at the end. The plans are from one run, so your timings will differ, but the shape should be the same. If you want the longer version of reading plans first, that's in the [previous post](/writing/reading-postgres-query-plans). For this one, just keep `EXPLAIN (ANALYZE, BUFFERS)` in front of every query.
+The examples use a synthetic analytics dataset with 500k users and 3 million events. The setup script is at the end. Your timings and plan choices may differ. If you want the longer version of reading plans first, that's in the [previous post](/writing/reading-postgres-query-plans). For this one, just keep `EXPLAIN (ANALYZE, BUFFERS)` in front of every query.
 
 ## The index stores the column
 
@@ -37,7 +35,7 @@ EXPLAIN (ANALYZE, BUFFERS)
 SELECT count(*) FROM events WHERE created_at::date = '2025-06-01';
 ```
 
-It asks for all events on one day, and there is an index on `created_at`. Easy win, right?
+It asks for all events on one day, and there is an index on `created_at`.
 
 Not quite. `created_at::date` is not `created_at`. It is a cast applied to the column. The index stores raw timestamps, not the date you get after truncating each timestamp. So Postgres can't just jump into the index and find `2025-06-01`. It has to read rows, cast each timestamp, then compare.
 
@@ -74,6 +72,8 @@ SELECT count(*) FROM events
 WHERE created_at >= '2025-06-01' AND created_at < '2025-06-02';
 ```
 
+<Note>For `timestamptz`, decide which time zone defines midnight.</Note>
+
 ```
 Aggregate  (cost=127.97..127.98 rows=1 width=8) (actual time=0.405..0.405 rows=1 loops=1)
   Buffers: shared hit=13
@@ -87,7 +87,7 @@ Execution Time: 0.421 ms
 
 Same rows. Same answer. Now `created_at` is bare, so the index can do its job.
 
-This is the move behind most "sargability" advice. Ugly word, useful idea: don't hide the indexed column inside work Postgres has to do row by row.
+This is often called sargability: keeping the indexed column bare so Postgres can compare its stored values with a boundary.
 
 For dates:
 
@@ -99,27 +99,7 @@ WHERE created_at::date = $1
 WHERE created_at >= $1 AND created_at < $1 + interval '1 day'
 ```
 
-For simple math:
-
-```sql
--- Avoid
-WHERE amount_cents / 100 > 50
-
--- Prefer
-WHERE amount_cents > 5000
-```
-
-For timestamp arithmetic:
-
-```sql
--- Avoid
-WHERE created_at + interval '1 day' > now()
-
--- Prefer
-WHERE created_at > now() - interval '1 day'
-```
-
-The constant side gets computed once. The column side can be compared against the index.
+This rewrite leaves the indexed column bare, so Postgres can compare it with a boundary.
 
 ## Casts are where this gets sneaky
 
@@ -172,7 +152,7 @@ Execution Time: 76.350 ms
 
 This is also how you get burned by ORMs and drivers. The SQL looks fine, but the bound parameter comes in as `numeric` or `double precision` against a `bigint` column. You don't see the mismatch unless you look at the plan.
 
-The rule is simple: match the types so the cast lands on the value, not the column.
+Match parameter types to the indexed column where possible. In this example, a cast on the value leaves the column available to the index.
 
 ## Sometimes the expression is the point
 
@@ -229,19 +209,19 @@ Execution Time: 0.062 ms
 
 Now the index stores lowercased emails, and the query asks for a lowercased email. They line up.
 
-This is an expression index. Postgres also calls it an index on expression. It's the right tool when the expression is genuinely what you query by: `date_trunc('month', created_at)` for monthly buckets, `(data->>'user_id')` for a JSON field, `EXTRACT(year FROM created_at)` for year filters.
+This is an expression index. Postgres also calls it an index on expression. It is useful when the query really searches by a transformed value, such as `lower(email)` or `(data->>'user_id')`. PostgreSQL requires the functions in an index expression to be immutable.
 
 Two catches.
 
-First, the expression has to match. An index on `lower(email)` does nothing for `upper(email)`. An index on `created_at::date` does nothing for `date_trunc('day', created_at)`, even if those feel like the same idea. Postgres matches the structure of the expression, not your intent.
+First, the expression has to match. An index on `lower(email)` does not directly serve a predicate on `upper(email)`. Check the plan instead of assuming two different expressions are interchangeable.
 
 Second, an expression index is still an index. It takes space, it slows writes, and Postgres keeps separate stats for it. So I try the bare-column rewrite first. I reach for an expression index when there is no rewrite, or when the expression is the thing the product actually queries.
 
-## The ten-second check
+## Check the plan
 
 Before you add another index because the first one "isn't working," read the plan and look at the `Filter`.
 
-If your indexed column shows up wrapped in anything — `lower(...)`, `::date`, `+ interval`, `/ 100` — the plain index was never going to help. The query hid the column inside an expression.
+In the plans above, the transformed column appears in `Filter` rather than `Index Cond`, and the plain column index does not help those scans.
 
 Either strip the expression off the column, or index the expression itself. Those are the two moves.
 

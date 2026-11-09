@@ -1,15 +1,15 @@
 ---
-title: "I built a thing to delete dead git branches"
-seoTitle: "git-tidy: A Safe CLI for Cleaning Up Stale Git Branches"
+title: "I built git-tidy to clean up old branches"
+seoTitle: "git-tidy: Preview and Clean Up Stale Git Branches"
 slug: git-tidy
 date: 2026-06-17
-description: "git-tidy: a small CLI for cleaning up stale branches. I used it to clear 449 dead ones across three repos."
-seoDescription: "git-tidy is a small CLI for safely cleaning up stale Git branches with dry-run output, protected branches, remote branch support, and JSON output for agents."
+description: "I built git-tidy to preview old branches before deletion. One filter mistake showed why that preview matters."
+seoDescription: "git-tidy previews stale Git branches before deletion, with merge filters, protected names, remote branch support, and JSON output."
 featured: true
 draft: false
 ---
 
-One of my repos had 485 branches. Maybe 50 were alive. The rest were merged-and-forgotten features, dead spikes, and a few hundred `sync-main-to-dev-*` branches some automation kept spitting out and never cleaning up.
+One of my repos had a long list of branches to review: merged features, abandoned experiments, and `sync-main-to-dev-*` branches that automation kept creating.
 
 > `git-tidy` is a small CLI that finds stale Git branches, previews what it would delete, protects important branches, and only deletes after you explicitly run it.
 
@@ -19,18 +19,22 @@ Deleting them by hand is the kind of chore I'll avoid for months, partly because
 npx git-tidy-cli
 ```
 
-It only ever offers to delete stuff that's safe: branches already merged into your default branch (the commits live on in `main`, so you lose nothing), and never `main`/`develop`/`staging`/`production` or whatever you're sitting on. And it's dry-run by default, so a first run just prints a list.
+The tool can filter for merged branches and skip protected names such as `main` and `develop`. Age and pattern filters can also match unmerged branches, so I read the preview before deleting anything. Dry run is the default; the first command prints candidates without deleting them.
 
 It also has a `--json` mode, which means I can point an agent at it: "tidy the merged branches older than 90 days on origin" and it shows me the list before touching anything.
 
-The first time I used it for real I nearly made a mess. I wanted to clear out old sync branches, so I ran `--pattern 'sync-*' --age 7`. The dry-run came back with about half the repo. Took me a second to realise the filters were OR'd: it read that as "sync branches, or anything older than a week." Not what I meant. So I added a `--match all` flag for when you want every condition to hold:
+The first time I used it for real I nearly made a mess. I wanted to clear out old sync branches, so I ran `--pattern 'sync-*' --age 7`. The dry-run came back with about half the repo. Took me a second to realise the filters were OR'd: it read that as "sync branches, or anything older than a week." Not what I meant.
 
 <Note>The preview let me catch the filter mistake before deleting anything.</Note>
+
+So I added a `--match all` flag for when you want every condition to hold:
 
 ```bash
 git-tidy --match all --pattern 'sync-*' --age 7 --scope remote
 ```
 
-Then I pointed it at three of my repos. I read each dry-run, hit execute, and watched 449 branches disappear — 884 down to 435. Didn't lose anything that wasn't already in `main`. The funny part was how little of that was real work. Almost all of it was one sync bot that had been quietly littering for a year because nobody wired up the cleanup.
+<Note>`--age 7` checks the tip commit’s author date, not when the branch was created.</Note>
 
-That's the whole tool. It's on [npm](https://www.npmjs.com/package/git-tidy-cli) and [GitHub](https://github.com/ArmandBrworworworx/git-tidy). Go run it on your worst repo and see what falls out.
+Then I used it on three repos. I read each preview before executing. Most of the candidates were old sync branches from a bot that had never been cleaned up.
+
+That's the whole tool. It's on [npm](https://www.npmjs.com/package/git-tidy-cli) and [GitHub](https://github.com/iarmankhan/git-tidy). If you try it on a repo with a lot of old branches, start with the preview and check every candidate.
